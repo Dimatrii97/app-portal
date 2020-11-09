@@ -1,0 +1,83 @@
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+
+ul[class],
+ol[class] {
+  padding: 0;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  font-weight: normal;
+  margin: 0;
+}
+
+
+body {
+  min-height: 100vh;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+}
+
+
+ul[class],
+ol[class] {
+  list-style: none;
+}
+
+input:focus {
+  outline: none;
+}
+button:focus{
+  outline: none;
+}
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+a:active, /* активная/посещенная ссылка */
+a:hover,  /* при наведении */
+a {
+  text-decoration: none;
+}
+textarea {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  width: 100%;
+  font-size: 1.3rem;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  border: none;
+}

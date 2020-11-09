@@ -1,0 +1,88 @@
+@import '../scss/_variables.scss';
+@import '../scss/_media.scss';
+
+.chart__canvas {
+  height: 400px;
+  width: 100%;
+  min-width: 300px;
+  @include _768{
+    height: 300px;
+  }
+
+}
+
+// card
+.news{
+  &__list{
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -15px;
+  }
+}
+.card {
+  flex: 0 1 calc(33.33333333% - 30px);
+  background-color: #fff;
+  box-shadow: 0px 2.83078px 3.96309px rgba(0, 0, 0, 0.25);
+  display: flex;
+  margin: 0 15px 20px 15px;
+  flex-direction: column;
+
+  // .card__img
+  &__img {
+    height: 220px;
+    width: 100%;
+    overflow: hidden;
+    background-color: #8d8d8d;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+  // .card__info
+  &__info {
+    padding: 0 15px
+  }
+  &__title{
+    color: $title;
+    font-weight: 600;
+    margin: 10px 0 10px 0;
+  }
+  &__text{
+    color: $default;
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+  .wrap-gray{
+    margin-top: auto;
+    padding: 25px 0px;
+    background-color: $bg-gray;
+  }
+  // .card__link
+  &__link {
+    color: $text-dark;
+    font-size: 1.2rem;
+    font-weight: 400;
+    position: relative;
+    transition: .5s;
+    &:hover{
+      color:$dark
+    }
+  }
+  @include _1170{
+    flex: 0 1 calc(50% - 30px);
+    &__title,&__text {
+      margin: 10px;
+    }
+  }
+  @include _768{
+    flex: 0 1 calc(100% - 30px);
+    &__link{
+      width: auto;
+      text-align: center;
+    }
+
+  }
+}
+
+
+
+//@import"../media.scss"

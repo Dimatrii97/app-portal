@@ -1,0 +1,41 @@
+
+  @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600&display=swap');
+  
+  @font-face {
+    font-family: 'fontello';
+    src: local('fontello'),
+      url('~@/assets/fonts/basket.woff') format('woff'),
+      url('~@/assets/fonts/basket.woff2') format('woff2');
+    font-weight: 100;
+    font-style: normal;
+  }
+  [class^="icon-"]:before, [class*=" icon-"]:before {
+    font-family: "fontello";
+    font-style: normal;
+    font-weight: normal;
+  }
+  
+.icon-search:before { content: '\e805'; } 
+.icon-mail:before { content: '\e800'; } 
+.icon-file:before { content: '\f114'; }
+.icon-out:before { content: '\e801'; } 
+.icon-user:before { content: '\f2c0'; }
+.icon-graph:before { content: '\f201'; }
+.icon-new-tasks:before { content: '\e810'; }
+.icon-calendar:before { content: '\e802'; }
+.icon-check:before { content: '\e803'; } 
+.icon-check-s:before { content: '\e806'; }
+.icon-card:before { content: '\e807'; }
+.icon-close:before { content: '\e808'; }
+.icon-settings:before { content: '\e809'; }
+.icon-help:before { content: '\e80a'; }
+.icon-file-doc:before { content: '\f0f6'; } 
+.icon-download:before { content: '\f02e'; }
+.icon-src:before { content: '\e804'; }    
+.icon-edit:before { content: '\e80b'; }
+.icon-arrow-left:before { content: '\e80d'; }
+.icon-arrow-right:before { content: '\e80c'; }
+.icon-arrow-bottom:before { content: '\e80e'; }
+.icon-arrow-top:before { content: '\e80f'; }
+.icon-arrow-drop-down:before { content: '\e811'; }
+.icon-moon:before {content:'\f186'}

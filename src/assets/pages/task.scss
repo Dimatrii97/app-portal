@@ -1,0 +1,32 @@
+@import '../scss/_variables.scss';
+@import '../scss/_media.scss';
+.button-left .btn-primary__error {
+  margin-right: 15px;
+}
+.task-info {
+  // .task-info__row
+  &__row {
+    display: flex;
+    margin: 10px 0 30px 0;
+  }
+  // .task-info__subtitle
+  &__subtitle {
+    flex: 1 0 calc(50% - 20px);
+    margin: 0 10px;
+  }
+  // .task-info__text
+  &__text {
+    color: $default;
+    font-size: 18px;
+    &_b {
+      font-size: 22px;
+      margin-left: 15px;
+    }
+  }
+  // .task-info__executors
+  &__executors {
+    flex: 1 0 calc(50% - 20px);
+    margin: 0 10px;
+  }
+  // .task-info__date
+}

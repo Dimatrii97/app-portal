@@ -1,0 +1,62 @@
+@import '../scss/_variables.scss';
+@import '../scss/_media.scss';
+.profile {
+  display: flex;
+  article {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  // .profile__left
+  &__left {
+    flex: 1;
+    margin-right: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-self: flex-start;
+  }
+  // .profile__name
+  &__name {
+    display: flex;
+    align-items: center;
+    margin-bottom: 35px;
+    .title-default {
+      margin: 0;
+      margin-left: 10px;
+    }
+  }
+
+  // .profile__table
+  &__table {
+    display: flex;
+    justify-content: center;
+  }
+  @include _768 {
+    display: block;
+    &__left{
+      margin-right: 0;
+    }
+    &__static{
+      margin-top: 35px;
+    }
+  }
+}
+
+.table {
+  border-collapse: collapse;
+  width: 80%;
+  min-width: 300px;
+  //.table__cell
+  &__cell {
+    border-bottom: 1px solid $title;
+    color: $text-dark;
+    padding: 10px 10px 5px 10px;
+    &_f {
+      text-align: left;
+    }
+    &_l {
+      text-align: right;
+    }
+  }
+}

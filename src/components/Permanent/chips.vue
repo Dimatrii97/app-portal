@@ -1,0 +1,59 @@
+<template>
+  <span class="chip">
+    <user-img
+      :src="{ img: user.img, name: user.name }"
+      class="chip__img"
+      className="sm"
+    ></user-img>
+    <span class="chip__name">{{ user.name }}</span>
+    <i
+      v-if="close"
+      @click.stop="$emit('deleteChips', user.user_id)"
+      class="icon-close"
+    ></i>
+  </span>
+</template>
+
+<script>
+import userImg from "@/components/Permanent/img-user";
+export default {
+  components: {
+    userImg
+  },
+
+  props: {
+    user: Object,
+    close: {
+      type: Boolean,
+      default: false
+    }
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+.chip {
+  margin: 5px 10px 5px 0px;
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  padding: 2px 5px 2px 0px;
+  background: $bg-gray;
+  border-radius: 15px;
+  color: $text-dark;
+  white-space: nowrap;
+  &:first-child {
+    margin-left: 5px;
+  }
+  &__img {
+    position: absolute;
+    left: -2px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+  }
+  &__name {
+    margin: 0px 5px 0 34px;
+  }
+}
+</style>

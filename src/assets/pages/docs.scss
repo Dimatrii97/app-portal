@@ -1,0 +1,160 @@
+@import '../scss/_variables.scss';
+@import '../scss/_media.scss';
+.row-search {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  @include _1170{
+    flex-direction: column;
+    align-items:inherit;
+  }
+}
+.select {
+  flex: 0 20%;
+}
+.sort {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .icon {
+    font-size: 1.2rem;
+    transition: 0.5s;
+    margin: 0 8px;
+  }
+  .icon.active {
+    color: #5062fe;
+  }
+}
+.docs {
+  &__sort{
+      background-color: #fff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      color: $title;
+      margin-bottom: 25px;
+  }
+  & .substrate{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+  @include _1170{
+    & .substrate{
+      flex-direction: row;
+      background-color: transparent;
+      box-shadow:none;
+      padding: 0;
+      border-radius: none;
+    }
+    &__search{
+      order: 1;
+      align-self: flex-start;
+      margin-left: 18px;
+    }
+  }
+  @include _768{
+    & .substrate {
+      flex-direction: column;
+    }
+    &__search{
+      order: 0;
+      align-self: inherit;
+      margin-left: 0;
+      margin-bottom: 18px;
+    }
+  }
+
+}
+.doc-table {
+  font-size: 15px;
+  margin-top: 20px;
+  margin-bottom: 40px;
+  border-collapse: collapse;
+  text-align: left;
+  width: 100%;
+  &__search {
+    font-size: 1.4rem;
+    flex: 1;
+    justify-content: space-between;
+    margin: 31px 25px 0 0;
+  }
+  &__row:nth-child(even) {
+    background-color: $bg-gray;
+  }
+  &__row {
+    color: $title;
+    font-weight: 400;
+  }
+  &__cell {
+    padding: 5px 0px 5px 0;
+    font-size: 1.2rem;
+  }
+  &__cell:not(.title) {
+    text-align: center;
+  }
+  &__cell .title-default {
+    white-space: nowrap;
+  }
+  @include _1170 {
+    margin-top: 0px;
+    &__search{
+      margin: 0;
+    }
+   &__row:nth-child(even) {
+    background-color: #fff;
+  }
+  &__row {
+    border-bottom: 3px solid #ddd;
+    display: block;
+    margin-bottom: .625em;
+    background-color: #fff;
+    padding: 5px;
+    border-radius: 4px;
+  }
+  &__cell {
+    padding: 5px 0px 5px 0;
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: 1em;
+    text-align: right;
+  }
+  &__cell:not(.title) {
+    text-align: right;
+  }
+
+   
+
+   
+  &__cell::before {
+     content: attr(data-label);
+     float: left;
+     font-weight: bold;
+     text-transform: uppercase;
+   }
+   
+   &__cell:last-child {
+     border-bottom: 0;
+   }
+ 
+ }
+}
+@include _1170 {
+  table {
+   border: 0;
+ }
+
+ table caption {
+   font-size: 1.3em;
+ }
+ 
+ table thead {
+   border: none;
+   clip: rect(0 0 0 0);
+   height: 1px;
+   margin: -1px;
+   overflow: hidden;
+   padding: 0;
+   position: absolute;
+   width: 1px;
+ }
+}
