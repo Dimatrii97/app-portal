@@ -15,13 +15,14 @@
       </div>
     </div>
     <transition-expand>
-      <div v-if="isOpen" class="task__all">
+      <div v-if="isOpen"  @click.stop="" class="task__all">
         <div class="task__subtitle">
           <h3 class="task__title">Задача:</h3>
           <p class="task__text" v-html="additionalInfo.subtitle"></p>
         </div>
-        <ul v-show="additionalInfo.subtasks.length" class="subtasks">
-          <h3 class="task__title">Структура выполнения:</h3>
+        <div v-show="additionalInfo.subtasks.length">
+           <h3 class="task__title">Структура выполнения:</h3>
+          <ul class="subtasks">
           <li v-for="subTask in additionalInfo.subtasks" :key="subTask.id">
             <div
               v-if="!subTask.status"
@@ -41,6 +42,7 @@
             </div>
           </li>
         </ul>
+        </div>
         <div class="task__executors">
           <h3 class="task__title">Исполнительный состав:</h3>
           <v-chip v-for="(user, i) in users" :key="i" :user="user" />
@@ -230,7 +232,26 @@ export default {
 }
 
 .subtasks {
+  max-height: 350px;
+  overflow: auto;
   margin-top: 10px;
+&::-webkit-scrollbar {
+  width: 5px;
+
+}
+&::-webkit-scrollbar-track {
+  background: transparent;
+}
+&::-webkit-scrollbar-thumb {
+  background: rgb(63, 63, 63);
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+&::-webkit-scrollbar-thumb:hover {
+  background: rgb(47, 47, 47);
+  
+}
   // .subtasks__item
   & .task__title {
     margin-bottom: 5px;

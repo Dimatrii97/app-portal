@@ -1,5 +1,5 @@
 <template>
-  <div class="autocomplit" v-ass-type="outside" @click="inside()">
+  <div class="autocomplit" v-click-outside="outside" @click="inside()">
     <div class="autocomplit__wrapper">
       <div
         :class="[
@@ -74,14 +74,10 @@
 <script>
 import vChip from "@/components/Permanent/chips";
 import userImg from "@/components/Permanent/img-user";
-import outside from "@/plugins/click-outside";
 export default {
   components: {
     vChip,
     userImg
-  },
-  directives: {
-    assType: outside
   },
 
   props: {

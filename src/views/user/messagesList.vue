@@ -8,41 +8,42 @@
         className="messages__search"
       />
       <ul class="messages__list" v-if="getUsersmess.length">
-        <router-link
-          v-for="(messageInfo, i) in getUsersmess"
-          :key="i"
-          :to="'/message/' + messageInfo.user_id"
-          tag="li"
-          class="message__link"
-        >
-          <user-img
-            :src="{ img: messageInfo.img, name: messageInfo.name }"
-            class="message__img"
-          ></user-img>
-          <div class="message__info">
-            <div class="message__header">
-              <span class="message__header-name"> {{ messageInfo.name }}</span>
-              <span v-if="isMessages(messageInfo)" class="message__time">
-                {{ getInterval(messageInfo.date) }}
-              </span>
-            </div>
-            <div
-              v-if="isMessages(messageInfo)"
-              :class="['message__last', { check: !messageInfo.scanned }]"
-            >
-              <div class="message__user">
-                <user-img
-                  v-if="messageInfo.fromid == user.id"
-                  :src="user"
-                  className="sm"
-                ></user-img>
-                <p class="message__text">
-                  {{ messageInfo.text }}
-                </p>
+        <li v-for="(messageInfo, i) in getUsersmess" :key="i">
+          <router-link
+            :to="'/message/' + messageInfo.user_id"
+            class="message__link"
+          >
+            <user-img
+              :src="{ img: messageInfo.img, name: messageInfo.name }"
+              class="message__img"
+            ></user-img>
+            <div class="message__info">
+              <div class="message__header">
+                <span class="message__header-name">
+                  {{ messageInfo.name }}</span
+                >
+                <span v-if="isMessages(messageInfo)" class="message__time">
+                  {{ getInterval(messageInfo.date) }}
+                </span>
+              </div>
+              <div
+                v-if="isMessages(messageInfo)"
+                :class="['message__last', { check: !messageInfo.scanned }]"
+              >
+                <div class="message__user">
+                  <user-img
+                    v-if="messageInfo.fromid == user.id"
+                    :src="user"
+                    className="sm"
+                  ></user-img>
+                  <p class="message__text">
+                    {{ messageInfo.text }}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        </router-link>
+          </router-link>
+        </li>
       </ul>
       <div v-else class="clearMess">
         Тут будут отоброжаться ваши сообщения

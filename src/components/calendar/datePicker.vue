@@ -178,7 +178,7 @@ export default {
   width: 80%;
   transform: translate(-50%, -50%);
   z-index: 1000;
-  max-width: 850px;
+  max-width: 800px;
 }
 .date-picker__backgrount {
   position: absolute;
@@ -190,6 +190,7 @@ export default {
   z-index: 30;
 }
 .button-footer {
+  margin: 7px 0;
   background-color: $dark;
   display: flex;
   justify-content: flex-end;

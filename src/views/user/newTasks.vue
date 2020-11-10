@@ -13,7 +13,7 @@
       >
         <v-input
           v-model.trim="$v.fields.title.$model"
-          :config="{ name: 'title', placeholder: 'Описание задачи' }"
+          :config="{ name: 'title', placeholder: 'Заголовок задачи' }"
           :error="$v.fields.title.$error"
         >
           <template #errors>

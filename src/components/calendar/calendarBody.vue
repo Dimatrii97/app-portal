@@ -2,6 +2,13 @@
   <div class="app">
     <slot name="header"></slot>
     <div class="wrap">
+      <div class="day-name">Пн</div>
+      <div class="day-name">Вт</div>
+      <div class="day-name">Ср</div>
+      <div class="day-name">Чт</div>
+      <div class="day-name">Пт</div>
+      <div class="day-name">Сб</div>
+      <div class="day-name">Вс</div>
       <div
         v-for="(date, i) in getMonth"
         :key="i"

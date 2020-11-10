@@ -88,7 +88,7 @@ export default {
       this.visibleMonth = addMonths(this.visibleMonth, 1);
     },
     setOpenTask(idTasks) {
-      this.openTaskId = idTasks;
+      this.openTaskId = this.openTaskId === idTasks ? "" : idTasks;
     },
     setTasks(id) {
       this.tasksDay = id;

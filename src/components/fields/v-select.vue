@@ -1,5 +1,5 @@
 <template>
-  <div v-ass-type="outside" @click="inside()" class="select">
+  <div v-click-outside="outside" @click="inside()" class="select">
     <div
       :class="[
         { focus: showList },
@@ -34,7 +34,6 @@
 </template>
 
 <script>
-import outside from "@/plugins/click-outside";
 export default {
   props: {
     value: Array,
@@ -54,9 +53,6 @@ export default {
       type: Boolean,
       default: false
     }
-  },
-  directives: {
-    assType: outside
   },
 
   data() {

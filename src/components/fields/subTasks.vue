@@ -1,9 +1,15 @@
 /* eslint-disable vue/no-parsing-error */
 <template>
   <div class="subtasks">
-    <div class="form__group form__group_a">
+    <div
+      :class="[
+        { errors: $v.textSubtask.$error },
+        'form__group',
+        'form__group_a'
+      ]"
+    >
       <input
-        v-model="textSubtask"
+        v-model="$v.textSubtask.$model"
         @keyup.enter.stop="pushSubtask()"
         class="form__field"
         placeholder="Структура выполнения"
@@ -23,17 +29,22 @@
         v-for="(subtask, i) in value"
         :key="i"
         :subtask="subtask"
+        :max="$v.textSubtask.$params.maxLength.max"
         @changeItem="changeItem($event)"
-        @deleteItem="deleteItem($event)"
+        @delete-item="deleteItem($event)"
       >
       </subtask-item>
     </ul>
+    <div class="error" v-if="!$v.textSubtask.maxLength">
+      Поле должно содержать меньше
+      {{ $v.textSubtask.$params.maxLength.max }} симвлов.
+    </div>
   </div>
 </template>
 
 <script>
 import subtaskItem from "./subtask-item";
-
+import { maxLength } from "vuelidate/lib/validators";
 export default {
   props: {
     value: Array
@@ -48,12 +59,19 @@ export default {
       textSubtask: ""
     };
   },
+  validations: {
+    textSubtask: {
+      maxLength: maxLength(180)
+    }
+  },
 
   methods: {
     pushSubtask() {
-      if (this.textSubtask == "") return;
-      this.$emit("input", { title: this.textSubtask, type: "add" });
-      this.textSubtask = "";
+      if (!this.$v.textSubtask.$invalid && !this.textSubtask == "") {
+        this.$emit("input", { title: this.textSubtask, type: "add" });
+        this.textSubtask = "";
+      }
+      return;
     },
     changeItem(e) {
       this.$emit("input", { type: "change", ...e });
@@ -70,7 +88,7 @@ export default {
   position: relative;
   & .field__list {
     max-height: 100px;
-    z-index: 11;
+    position: relative;
   }
 }
 </style>

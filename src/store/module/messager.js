@@ -97,16 +97,12 @@ export default {
       );
     },
     socket_setNewMess({ commit, dispatch, rootState, rootGetters }, message) {
-      console.log("Получение нового сообщения");
       let idCurrentUser = rootGetters["user/getUserId"];
       let nameNewLastMessage =
         idCurrentUser === message.fromid ? message.toid : message.fromid;
-      console.log(!hasOwnProperty(rootState.users.users, nameNewLastMessage));
       if (!hasOwnProperty(rootState.users.users, nameNewLastMessage)) {
-        console.log("рефреш всех последних сообщений");
         this._vm.$socket.client.emit("getUserLastMess");
       } else {
-        console.log("else update");
         commit("UPDATE_LAST_MESS", { message, id: nameNewLastMessage });
       }
     },

@@ -39,12 +39,17 @@
       </div>
       <div class="chat__input">
         <textarea
-          v-model="messText"
+          v-model="setMessText"
           @keyup.enter="sendMess"
           class="input"
           placeholder="Напишите сообщение..."
           type="text"
+          ref="textMess"
         ></textarea>
+        <div class="error" v-if="!$v.messText.maxLength">
+          Поле должно содержать не более
+          {{ $v.messText.$params.maxLength.max }} симвлов.
+        </div>
       </div>
     </article>
   </section>
@@ -53,6 +58,8 @@
 import InfiniteLoading from "vue-infinite-loading";
 import userImg from "@/components/Permanent/img-user";
 import { getJWTPayload, getAccessToken } from "@/store/utils/JWT";
+import textarea from "@/plugins/texarea-mixin";
+import { maxLength } from "vuelidate/lib/validators";
 import { datePostgres } from "@/plugins/dateFilers";
 import { mapGetters } from "vuex";
 export default {
@@ -60,7 +67,7 @@ export default {
     InfiniteLoading,
     userImg
   },
-
+  mixins: [textarea],
   data() {
     return {
       id: null,
@@ -79,8 +86,18 @@ export default {
       if (interlocutor) return interlocutor;
       this.$store.dispatch("users/getUserById", this.$route.params.id);
       return "";
+    },
+    setMessText: {
+      get() {
+        return this.messText;
+      },
+      set(value) {
+        this.messText = value;
+        this.mixin_textarea_resize(this.$refs.textMess);
+      }
     }
   },
+
   sockets: {
     SetNewMess(message) {
       if (
@@ -109,10 +126,16 @@ export default {
       });
     }
   },
+
   mounted() {
     this.$store.dispatch("messages/updateViewedMess", this.$route.params.id);
   },
 
+  validations: {
+    messText: {
+      maxLength: maxLength(240)
+    }
+  },
   methods: {
     infiniteHandler($state) {
       this.$http
@@ -135,7 +158,8 @@ export default {
         });
     },
     sendMess() {
-      if (this.messText) {
+      this.$v.messText.$touch();
+      if (this.messText && !this.$v.messText.$error) {
         let date = datePostgres(new Date());
         this.$store.dispatch("messages/newMessUsers", {
           fromid: this.user.id,

@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import textarea from "@/plugins/texarea-mixin";
 export default {
   props: {
     config: Object,
@@ -28,6 +29,7 @@ export default {
       default: false
     }
   },
+  mixins: [textarea],
   computed: {
     setValue: {
       get() {
@@ -35,18 +37,13 @@ export default {
       },
       set(value) {
         this.$emit("input", value);
-        this.resizeTextarea();
+        this.mixin_textarea_resize(this.$refs.textArea);
       }
     }
   },
   methods: {
-    resizeTextarea() {
-      this.$refs.textArea.style.height = "5px";
-      this.$refs.textArea.style.height =
-        this.$refs.textArea.scrollHeight + "px";
-    },
     clearResizeTextarea() {
-      this.$refs.textArea.style.height = "41px";
+      this.mixin_textarea_clearResize(this.$refs.textArea, "41px");
     }
   }
 };

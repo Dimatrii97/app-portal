@@ -111,7 +111,9 @@ export default {
     outUser() {
       cleanTokensData();
       this.$socket.disconnected;
-      this.$router.push("/login");
+      this.$router.push("/login").then(() => {
+        document.location.reload();
+      });
     }
   }
 };
