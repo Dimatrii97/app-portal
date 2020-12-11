@@ -1,24 +1,24 @@
 <template>
   <span class="chip">
-    <user-img
+    <User-Img
       :src="{ img: user.img, name: user.name }"
       class="chip__img"
       className="sm"
-    ></user-img>
+    />
     <span class="chip__name">{{ user.name }}</span>
     <i
       v-if="close"
-      @click.stop="$emit('deleteChips', user.user_id)"
+      @click.stop="$emit('delete-chips', user.user_id)"
       class="icon-close"
     ></i>
   </span>
 </template>
 
 <script>
-import userImg from "@/components/Permanent/img-user";
+import UserImg from "@/components/ImgUser.vue";
 export default {
   components: {
-    userImg
+    UserImg
   },
 
   props: {

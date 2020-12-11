@@ -56,7 +56,7 @@
 
 <script>
 import VSearch from "@/components/fields/FieldSearch.vue";
-import UserImg from "@/components/Permanent/img-user";
+import UserImg from "@/components/ImgUser.vue";
 import { mapGetters, mapMutations } from "vuex";
 import { cleanTokensData } from "@/store/utils/JWT";
 import { debounce } from "@/utils/throttling";

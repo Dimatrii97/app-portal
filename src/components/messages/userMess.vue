@@ -7,10 +7,10 @@
       tag="li"
       class="message__link"
     >
-      <user-img
+      <User-Img
         :src="{ img: messInfo.img, name: messInfo.name }"
         class="message__img"
-      ></user-img>
+      />
       <div class="message__info">
         <div class="message__header">
           <span class="message__header-name"> {{ messInfo.name }}</span>
@@ -23,14 +23,14 @@
 </template>
 
 <script>
-import userImg from "@/components/Permanent/img-user";
+import UserImg from "@/components/ImgUser.vue";
 export default {
   props: {
     filterSearch: Array,
     showListUser: Boolean
   },
   components: {
-    userImg
+    UserImg
   }
 };
 </script>

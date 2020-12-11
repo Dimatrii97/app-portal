@@ -56,7 +56,7 @@
           @click="pushUser(user)"
           :class="['form__selected', isActive(i), isSelected(user.user_id)]"
         >
-          <user-img
+          <User-Img
             :src="{ img: user.img, name: user.name }"
             class="form__selected-img"
             alt=""
@@ -72,13 +72,13 @@
 </template>
 
 <script>
-import vChip from "@/components/Permanent/chips";
-import userImg from "@/components/Permanent/img-user";
+import vChip from "@/components/chips";
+import UserImg from "@/components/ImgUser.vue";
 import outside from "@/plugins/click-outside";
 export default {
   components: {
     vChip,
-    userImg
+    UserImg
   },
   directives: {
     assType: outside

@@ -3,9 +3,7 @@
     <h3 class="main-title">Личная переписка</h3>
     <article class="chat">
       <div class="chat__header">
-        <user-img
-          :src="{ img: interlocutor.img, name: interlocutor.name }"
-        ></user-img>
+        <User-Img :src="{ img: interlocutor.img, name: interlocutor.name }" />
         <div class="chat__header-text">
           <span>{{ interlocutor.name }}</span>
           <span @click="back()">
@@ -51,14 +49,14 @@
 </template>
 <script>
 import InfiniteLoading from "vue-infinite-loading";
-import userImg from "@/components/Permanent/img-user";
+import UserImg from "@/components/ImgUser.vue";
 import { getJWTPayload, getAccessToken } from "@/store/utils/JWT";
 import { datePostgres } from "@/utils/dateType";
 import { mapGetters } from "vuex";
 export default {
   components: {
     InfiniteLoading,
-    userImg
+    UserImg
   },
 
   data() {

@@ -4,7 +4,7 @@
     <section class="profile">
       <div class="profile__left">
         <article class="profile__name">
-          <user-img :src="{ img: user.img, name: user.name }"></user-img>
+          <User-Img :src="{ img: user.img, name: user.name }" />
           <h3 class="title-default">{{ user.name }}</h3>
         </article>
         <article class="profile__main">
@@ -43,11 +43,11 @@
 
 <script>
 import VueApexCharts from "vue-apexcharts";
-import userImg from "@/components/Permanent/img-user";
+import UserImg from "@/components/ImgUser.vue";
 import { mapGetters } from "vuex";
 export default {
   components: {
-    userImg,
+    UserImg,
     apexchart: VueApexCharts
   },
 

@@ -31,11 +31,11 @@
               :class="['message__last', { check: !messageInfo.scanned }]"
             >
               <div class="message__user">
-                <user-img
+                <User-Img
                   v-if="messageInfo.fromid == user.id"
                   :src="user"
                   className="sm"
-                ></user-img>
+                />
                 <p class="message__text">
                   {{ messageInfo.text }}
                 </p>
@@ -53,7 +53,7 @@
 
 <script>
 import VSearch from "@/components/fields/FieldSearch.vue";
-import UserImg from "@/components/Permanent/img-user";
+import UserImg from "@/components/ImgUser.vue";
 import { hasOwnProperty } from "@/store/utils/helper";
 import { mapGetters, mapState, mapMutations } from "vuex";
 import { differenceInCalendarDays } from "date-fns";

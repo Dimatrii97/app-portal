@@ -81,8 +81,8 @@
 </template>
 <script>
 import TransitionExpand from "../transition-expand.vue";
-import ImgUser from "../Permanent/img-user.vue";
-import vChip from "@/components/Permanent/chips";
+import ImgUser from "@/components/ImgUser.vue";
+import vChip from "@/components/chips";
 import { mapGetters } from "vuex";
 export default {
   components: {
