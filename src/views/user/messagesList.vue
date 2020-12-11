@@ -2,7 +2,7 @@
   <section class="page">
     <h3 class="main-title">Сообщения</h3>
     <article class="substrate">
-      <v-search
+      <V-Search
         title="Пользователи"
         v-model="setSearchNameUsers"
         className="messages__search"
@@ -15,10 +15,10 @@
           tag="li"
           class="message__link"
         >
-          <user-img
+          <User-Img
             :src="{ img: messageInfo.img, name: messageInfo.name }"
             class="message__img"
-          ></user-img>
+          />
           <div class="message__info">
             <div class="message__header">
               <span class="message__header-name"> {{ messageInfo.name }}</span>
@@ -52,16 +52,16 @@
 </template>
 
 <script>
-import vSearch from "@/components/fields/v-search.vue";
-import userImg from "@/components/Permanent/img-user";
+import VSearch from "@/components/fields/FieldSearch.vue";
+import UserImg from "@/components/Permanent/img-user";
 import { hasOwnProperty } from "@/store/utils/helper";
 import { mapGetters, mapState, mapMutations } from "vuex";
 import { differenceInCalendarDays } from "date-fns";
-import { dM } from "@/plugins/dateFilers";
+import { dayMonth } from "@/utils/dateType";
 export default {
   components: {
-    userImg,
-    vSearch
+    UserImg,
+    VSearch
   },
 
   data() {
@@ -106,7 +106,7 @@ export default {
         }
 
         case difference > 30: {
-          return dM(lastMess);
+          return dayMonth(lastMess);
         }
 
         default:

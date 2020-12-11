@@ -53,7 +53,7 @@
 import InfiniteLoading from "vue-infinite-loading";
 import userImg from "@/components/Permanent/img-user";
 import { getJWTPayload, getAccessToken } from "@/store/utils/JWT";
-import { datePostgres } from "@/plugins/dateFilers";
+import { datePostgres } from "@/utils/dateType";
 import { mapGetters } from "vuex";
 export default {
   components: {

@@ -1,10 +1,14 @@
 <template>
-  <div :style="{ backgroundColor: task.color }" @click="open()" class="task">
-    <div class="task__row">
-      <h3 class="task__title">
+  <div
+    :style="{ backgroundColor: task.color }"
+    @click="open()"
+    class="task-list"
+  >
+    <div class="task-list__row">
+      <h3 class="task-list__title">
         {{ task.title }}
       </h3>
-      <div :class="['task__users', { phontom: hide }]">
+      <div :class="['task-list__users', { phontom: hide }]">
         <img-user
           v-for="(user, i) in sliceHide"
           :src="{ img: user.img, name: user.name }"
@@ -15,54 +19,56 @@
       </div>
     </div>
     <transition-expand>
-      <div v-if="isOpen" class="task__all">
-        <div class="task__subtitle">
-          <h3 class="task__title">Задача:</h3>
-          <p class="task__text" v-html="additionalInfo.subtitle"></p>
+      <div v-if="isOpen" @click.stop="" class="task__all">
+        <div class="task-list__subtitle">
+          <h3 class="task-list__title">Задача:</h3>
+          <p class="task-list__text" v-html="additionalInfo.subtitle"></p>
         </div>
-        <ul v-show="additionalInfo.subtasks.length" class="subtasks">
-          <h3 class="task__title">Структура выполнения:</h3>
-          <li v-for="subTask in additionalInfo.subtasks" :key="subTask.id">
-            <div
-              v-if="!subTask.status"
-              @click="performSubTask(subTask.id)"
-              class="subtasks__item"
-            >
-              <div class="circle uncom">
-                <i
-                  :class="{ ['icon-check']: changes.includes(subTask.id) }"
-                ></i>
+        <div v-show="additionalInfo.subtasks.length">
+          <h3 class="task-list__title">Структура выполнения:</h3>
+          <ul class="subtasks">
+            <li v-for="subTask in additionalInfo.subtasks" :key="subTask.id">
+              <div
+                v-if="!subTask.status"
+                @click="performSubTask(subTask.id)"
+                class="subtasks__item"
+              >
+                <div class="circle uncom">
+                  <i
+                    :class="{ ['icon-check']: changes.includes(subTask.id) }"
+                  ></i>
+                </div>
+                <p class="task-list__text">{{ subTask.title }}</p>
               </div>
-              <p class="task__text">{{ subTask.title }}</p>
-            </div>
-            <div v-else class="subtasks__item">
-              <div class="circle com"><i class="icon-check"></i></div>
-              <p class="task__text">{{ subTask.title }}</p>
-            </div>
-          </li>
-        </ul>
-        <div class="task__executors">
-          <h3 class="task__title">Исполнительный состав:</h3>
+              <div v-else class="subtasks__item">
+                <div class="circle com"><i class="icon-check"></i></div>
+                <p class="task-list__text">{{ subTask.title }}</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="task-list__executors">
+          <h3 class="task-list__title">Исполнительный состав:</h3>
           <v-chip v-for="(user, i) in users" :key="i" :user="user" />
           <v-chip :user="user" />
         </div>
-        <div class="task__date">
-          <h3 class="task__title">
+        <div class="task-list__date">
+          <h3 class="task-list__title">
             Дата начала:
-            <div class="task__text">{{ task.startdate }}.</div>
+            <div class="task-list__text">{{ task.startdate }}.</div>
           </h3>
-          <h3 class="task__title">
+          <h3 class="task-list__title">
             Дата окончания:
-            <div class="task__text">{{ task.deadline }}.</div>
+            <div class="task-list__text">{{ task.deadline }}.</div>
           </h3>
         </div>
         <div class="button-left">
-          <button v-if="allComplite" @click="next()" class="btn-primary">
+          <button v-if="allComplite" @click="next()" class="btn btn-primary">
             Выполнить задачу
           </button>
           <button
             v-else
-            class="btn-primary"
+            class="btn btn-primary"
             @click="next()"
             :disabled="!changes.length"
           >
@@ -90,13 +96,18 @@ export default {
     };
   },
   props: {
-    isOpen: Boolean,
-    task: Object
+    isOpen: {
+      default: false,
+      type: Boolean
+    },
+    task: {
+      default: () => {},
+      type: Object
+    }
   },
   mounted() {
     this.$store.dispatch("users/thereAreUsers", this.usersIdArray);
   },
-
   computed: {
     ...mapGetters("user", { user: "getUserHeaderInfo" }),
     additionalInfo() {
@@ -116,7 +127,6 @@ export default {
     usersIdArray() {
       return this.task.users.map(i => i.id);
     },
-
     allComplite() {
       if (this.additionalInfo.subtasks) {
         return this.additionalInfo.subtasks.every(task => task.status);
@@ -124,13 +134,12 @@ export default {
       return false;
     }
   },
-
   methods: {
     open() {
       this.$emit("open", this.$vnode.key);
-      this.$store.dispatch("tasks/viewedTask", this.$vnode.key);
+      if (!this.task.scanned)
+        this.$store.dispatch("tasks/viewedTask", this.$vnode.key);
     },
-
     performSubTask(id) {
       if (!this.changes.includes(id)) {
         this.changes.push(id);
@@ -142,7 +151,6 @@ export default {
       this.$store.dispatch("tasks/updateSubTask", this.changes);
       this.changes = [];
     },
-
     completeTask() {
       this.$store.dispatch("tasks/completeTask", this.$vnode.key);
     },
@@ -156,20 +164,16 @@ export default {
     },
     enter(element) {
       const width = getComputedStyle(element).width;
-
       element.style.width = width;
       element.style.position = "absolute";
       element.style.visibility = "hidden";
       element.style.height = "auto";
-
       const height = getComputedStyle(element).height;
-
       element.style.width = null;
       element.style.position = null;
       element.style.visibility = null;
       element.style.height = 0;
       getComputedStyle(element).height;
-
       requestAnimationFrame(() => {
         element.style.height = height;
       });
@@ -178,33 +182,33 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.task {
+.task-list {
   margin: 10px 0;
   padding: 10px 8px;
   border-radius: 10px;
   color: #fff;
-  // .task__row
+  // .task-list__row
   &__row {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  // .task__title
+  // .task-list__title
   &__title {
     font-size: 1.4rem;
     word-break: break-all;
   }
-  // .task__all
+  // .task-list__all
   &__all {
     margin-top: 20px;
   }
-  // .task__users
+  // .task-list__users
   &__users {
     display: flex;
     position: relative;
   }
-  //.task__subtitle
-  // .task__date
+  //.task-list__subtitle
+  // .tas-listk__date
   &__subtitle,
   &__date,
   &__executors {
@@ -219,7 +223,7 @@ export default {
       margin-top: 8px;
     }
   }
-  // .task__text
+  // .task-list__text
   &__text {
     font-size: 1.2rem;
     word-break: break-all;
@@ -228,11 +232,26 @@ export default {
 .user-item {
   margin: 0 3px;
 }
-
 .subtasks {
+  max-height: 350px;
+  overflow: auto;
   margin-top: 10px;
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgb(63, 63, 63);
+    border-radius: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgb(47, 47, 47);
+  }
   // .subtasks__item
-  & .task__title {
+  & .task-list__title {
     margin-bottom: 5px;
   }
   &__item {
@@ -244,7 +263,7 @@ export default {
     margin: 10px 0;
     font-size: 1.2rem;
     cursor: pointer;
-    & .task__text {
+    & .task-list__text {
       margin: 0 0 0 15px;
       margin-left: 39px;
     }

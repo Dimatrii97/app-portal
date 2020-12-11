@@ -3,7 +3,7 @@
     <button
       @click="emit(activePage - 1)"
       :disabled="previousClick"
-      class="btn-primary"
+      class="btn btn-primary"
     >
       Назад
     </button>
@@ -20,7 +20,7 @@
     <button
       @click="emit(activePage + 1)"
       :disabled="nextClick"
-      class="btn-primary"
+      class="btn btn-primary"
     >
       Далее
     </button>

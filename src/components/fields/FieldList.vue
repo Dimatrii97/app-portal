@@ -13,7 +13,11 @@
         autocomplete="off"
       />
       <label for="Subtask" class="form__label">Структура выполнения</label>
-      <button @click="pushSubtask()" class="btn-ghost__square" type="button">
+      <button
+        @click="pushSubtask()"
+        class="btn btn-ghost-primary btn-square"
+        type="button"
+      >
         +
       </button>
     </div>
@@ -23,8 +27,8 @@
         v-for="(subtask, i) in value"
         :key="i"
         :subtask="subtask"
-        @changeItem="changeItem($event)"
-        @deleteItem="deleteItem($event)"
+        @change-item="changeItem($event)"
+        @delete-item="deleteItem($event)"
       >
       </subtask-item>
     </ul>
@@ -32,7 +36,7 @@
 </template>
 
 <script>
-import subtaskItem from "./subtask-item";
+import SubtaskItem from "./FieldListItem";
 
 export default {
   props: {
@@ -40,7 +44,7 @@ export default {
   },
 
   components: {
-    subtaskItem
+    SubtaskItem
   },
 
   data() {

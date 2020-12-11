@@ -11,7 +11,7 @@
         <slot name="body"></slot>
       </div>
       <div class="button-left">
-        <button @click="$emit('next')" class="btn-primary">Отправить</button>
+        <button @click="$emit('next')" class="btn btn-primary">Отправить</button>
       </div>
     </div>
   </div>

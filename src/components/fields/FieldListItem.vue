@@ -3,7 +3,7 @@
     <span v-if="settings" @click="changeSettings()" class="form__selected"
       >{{ subtask.title }}
       <i
-        @click.stop="$emit('deleteItem', { id: $vnode.key })"
+        @click.stop="$emit('delete-item', { id: $vnode.key })"
         class="icon-close"
       ></i>
     </span>
@@ -38,7 +38,7 @@ export default {
     changeItem() {
       this.settings = true;
       if (this.copySubtask != this.subtask.title)
-        this.$emit("changeItem", {
+        this.$emit("change-item", {
           id: this.$vnode.key,
           title: this.copySubtask
         });

@@ -1,5 +1,5 @@
 <template>
-  <div :class="['form__group', {errors: error} ]">
+  <div :class="['form__group', { errors: error }]">
     <input
       v-model="setValue"
       :placeholder="config.name"
@@ -22,7 +22,7 @@ export default {
   props: {
     config: Object,
     value: String,
-    error:{
+    error: {
       type: Boolean,
       default: false
     }

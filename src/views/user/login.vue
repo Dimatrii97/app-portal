@@ -52,7 +52,7 @@
           <button
             :disabled="$v.fields.$invalid"
             @click="login()"
-            class="btn-primary"
+            class="btn btn-primary"
           >
             Вход
           </button>
@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import VInput from "@/components/fields/v-input.vue";
+import VInput from "@/components/fields/FieldInput.vue";
 import { required, minLength, email } from "vuelidate/lib/validators";
 // import { setTokens } from "@/store/utils/JWT";
 export default {

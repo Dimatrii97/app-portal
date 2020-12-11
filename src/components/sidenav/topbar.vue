@@ -4,7 +4,7 @@
       <figure class="logo__img">
         <img src="@/assets/img/logo.png" alt="" />
       </figure>
-      <v-search title="Web Portal" className="top-bar__search" />
+      <V-Search title="Web Portal" className="top-bar__search" />
     </div>
 
     <div class="top-bar__list" v-if="isSizeDesktop">
@@ -22,11 +22,11 @@
             <ul class="profile__list">
               <router-link class="profile__item" to="/profile" tag="li">
                 <div class="profile__img">
-                  <user-img
+                  <User-Img
                     class="profile__img"
                     className="sm"
                     :src="{ img: user.img, name: user.name }"
-                  ></user-img>
+                  ></User-Img>
                 </div>
                 <a class="profile__link" href="">Профиль</a>
               </router-link>
@@ -55,15 +55,15 @@
 </template>
 
 <script>
-import vSearch from "@/components/fields/v-search.vue";
-import userImg from "@/components/Permanent/img-user";
+import VSearch from "@/components/fields/FieldSearch.vue";
+import UserImg from "@/components/Permanent/img-user";
 import { mapGetters, mapMutations } from "vuex";
 import { cleanTokensData } from "@/store/utils/JWT";
 import { debounce } from "@/utils/throttling";
 export default {
   components: {
-    userImg,
-    vSearch
+    UserImg,
+    VSearch
   },
 
   data() {

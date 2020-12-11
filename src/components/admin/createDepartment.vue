@@ -56,7 +56,7 @@
           @click.prevent="submit()"
           type="button"
           :disabled="$v.fields.$invalid"
-          class="btn-primary"
+          class="btn btn-primary"
         >
           Создать
         </button>
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import VInput from "../fields/v-input.vue";
+import VInput from "../fields/FieldInput.vue";
 import {
   required,
   numeric,

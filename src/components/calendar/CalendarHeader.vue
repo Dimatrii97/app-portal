@@ -1,12 +1,20 @@
 <template>
   <div class="control">
-    <button class="btn-ghost__square" type="button" @click="$emit('back')">
+    <button
+      class="btn btn-ghost-primary btn-square"
+      type="button"
+      @click="$emit('back')"
+    >
       <i class="icon-arrow-left"></i>
     </button>
     <h3 class="monthName">
-      {{ visibleMonth | localRuMM }}
+      {{ visibleMonth | localRuMMYYYY }}
     </h3>
-    <button class="btn-ghost__square" type="button" @click="$emit('next')">
+    <button
+      class="btn btn-ghost-primary btn-square"
+      type="button"
+      @click="$emit('next')"
+    >
       <i class="icon-arrow-right"></i>
     </button>
   </div>

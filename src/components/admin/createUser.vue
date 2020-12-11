@@ -110,7 +110,7 @@
           @click.prevent="submit()"
           type="button"
           :disabled="$v.fields.$invalid"
-          class="btn-primary"
+          class="btn btn-primary"
         >
           Создать пользователя
         </button>
@@ -120,8 +120,8 @@
 </template>
 
 <script>
-import VInput from "../fields/v-input.vue";
-import mySelect from "@/components/fields/v-select.vue";
+import VInput from "../fields/FieldInput.vue";
+import mySelect from "@/components/fields/FieldSelect.vue";
 
 import { mapGetters } from "vuex";
 import { required, email } from "vuelidate/lib/validators";

@@ -6,16 +6,16 @@
         <div class="docs__search">
           <div v-if="getSize <= 1170" class="docs__sort">
             <h3 class="default-title">Сортировка</h3>
-            <radio-btn v-model="setSort"></radio-btn>
+            <Radio-Btn v-model="setSort" />
           </div>
           <div class="row-search">
-            <v-search
+            <V-Search
               title="Название"
               placeholder="Поиск по названию"
               v-model="search"
               className="doc-table__search"
             />
-            <v-select
+            <V-Select
               v-model="setFilterByType"
               placeholder="Поиск по типу"
               :recovery="true"
@@ -25,17 +25,17 @@
         </div>
         <div class="table">
           <table ref="tbody" class="doc-table">
-            <the-header-table
+            <The-Header-Table
               v-model="setHeader"
               :orderBy="orderBy"
               :orderDirection="orderDirection"
             />
-            <the-main-table
+            <The-Main-Table
               :list="paginationTrimming"
               :countItemDocs="countItemDocs"
             />
           </table>
-          <the-pagination v-model="setActivePage" :activePage="activePage" />
+          <The-Pagination v-model="setActivePage" :activePage="activePage" />
         </div>
       </article>
     </section>
@@ -44,18 +44,18 @@
 
 <script>
 import RadioBtn from "@/components/radio-btn.vue";
-import VSearch from "@/components/fields/v-search.vue";
-import vSelect from "@/components/fields/v-select.vue";
-import thePagination from "@/components/docs/v-pagination.vue";
-import theMainTable from "@/components/docs/main-table.vue";
-import theHeaderTable from "@/components/docs/header-table.vue";
+import VSearch from "@/components/fields/FieldSearch.vue";
+import VSelect from "@/components/fields/FieldSelect.vue";
+import ThePagination from "@/components/docs/v-pagination.vue";
+import TheMainTable from "@/components/docs/main-table.vue";
+import TheHeaderTable from "@/components/docs/header-table.vue";
 import { mapGetters, mapMutations, mapState } from "vuex";
 export default {
   components: {
-    theHeaderTable,
-    theMainTable,
-    thePagination,
-    vSelect,
+    TheHeaderTable,
+    TheMainTable,
+    ThePagination,
+    VSelect,
     VSearch,
     RadioBtn
   },

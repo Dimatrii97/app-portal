@@ -3,7 +3,7 @@
     <nav class="sideBar__navigation">
       <ul class="nav-list">
         <li class="nav-list__item">
-          <v-search title="Web Portal" className="nav-list__search" />
+          <V-Search title="Web Portal" className="nav-list__search" />
         </li>
         <li
           v-for="(navItem, i) in navlist"
@@ -28,11 +28,11 @@
   </aside>
 </template>
 <script>
-import vSearch from "@/components/fields/v-search.vue";
+import VSearch from "@/components/fields/FieldSearch.vue";
 import { mapGetters, mapMutations } from "vuex";
 import { cleanTokensData } from "@/store/utils/JWT";
 export default {
-  components: { vSearch },
+  components: { VSearch },
   computed: {
     ...mapGetters(["isOpenSidebar"]),
     ...mapGetters("mapList", { navlist: "getNavlist" })

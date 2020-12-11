@@ -4,31 +4,40 @@
     <div class="calendar__wrapper">
       <div class="calendar__container">
         <article class="substrate">
-          <the-calendar
+          <Calendar-Body
             :activeDay="activeDay"
             :visibleMonth="visibleMonth"
-            :events="calendarEvents"
-            @setTasks="setTasks($event)"
-            @setDay="setActiveDay($event)"
+            :month="getMonth"
+            @set-day="setActiveDay($event)"
           >
             <template #header>
-              <header-c
+              <Calendar-Header
                 :visibleMonth="visibleMonth"
-                @back="back()"
-                @next="next()"
+                @back="m_back()"
+                @next="m_next()"
               />
             </template>
-          </the-calendar>
+            <template #events="propsSlot">
+              <div :class="['tasks', { phontom: hide(propsSlot.tasks) }]">
+                <div
+                  v-for="(task, i) in sliceHide(propsSlot.tasks)"
+                  :key="i"
+                  :style="{ backgroundColor: task.color }"
+                  class="task"
+                ></div>
+              </div>
+            </template>
+          </Calendar-Body>
         </article>
       </div>
       <div class="calendar__tasks">
         <article class="substrate">
-          <task-list
-            v-for="task in idTasksDay"
+          <Calendar-Task-List
+            v-for="task in getTasksDay"
             :key="task.id"
             :isOpen="task.id === openTaskId"
             :task="task"
-            @open="setOpenTask($event)"
+            @open="toggleTask($event)"
           />
         </article>
       </div>
@@ -37,17 +46,20 @@
 </template>
 
 <script>
-import TaskList from "@/components/calendar/task-list.vue";
-import HeaderC from "@/components/calendar/headerDefault.vue";
-import theCalendar from "@/components/calendar/calendarBody.vue";
-import { addMonths, subMonths } from "date-fns";
+import CalendarTaskList from "@/components/calendar/CalendarTaskList.vue";
+import CalendarHeader from "@/components/calendar/CalendarHeader.vue";
+import CalendarBody from "@/components/calendar/CalendarBody";
+import CalendarRouter from "@/plugins/mixins/calendar-router";
+import { Month } from "@/components/calendar/CreateCalendar";
 import { mapGetters } from "vuex";
 export default {
   components: {
-    theCalendar,
-    HeaderC,
-    TaskList
+    CalendarBody,
+    CalendarHeader,
+    CalendarTaskList
   },
+  mixins: [CalendarRouter],
+
   data() {
     return {
       activeDay: new Date(),
@@ -58,40 +70,59 @@ export default {
   },
   computed: {
     ...mapGetters("tasks", { events: "getTasks" }),
-    idTasksDay() {
-      return this.events.filter(task => {
-        return this.tasksDay.includes(task.id);
-      });
+
+    getMonth() {
+      return Month.createMonth(this.visibleMonth)
+        .setTasks(this.events)
+        .getMonth();
     },
-    calendarEvents() {
-      return this.events.map(({ id, startdate, deadline, color, scanned }) => {
-        return { id, startdate, deadline, color, scanned };
+
+    getTasksDay() {
+      return this.events.filter(task => {
+        return this.isWithinInterval(task.startdate, task.deadline);
       });
     }
   },
+
   watch: {
-    idTasksDay(newValue) {
+    getTasksDay(newValue) {
       this.$store.dispatch(
         "tasks/thereAreTaskInfo",
         newValue.map(i => i.id)
       );
     }
   },
+
   methods: {
     setActiveDay(date) {
       this.activeDay = date;
     },
-    back() {
-      this.visibleMonth = subMonths(this.visibleMonth, 1);
+
+    toggleTask(idTasks) {
+      this.openTaskId == idTasks
+        ? (this.openTaskId = "")
+        : (this.openTaskId = idTasks);
     },
-    next() {
-      this.visibleMonth = addMonths(this.visibleMonth, 1);
-    },
-    setOpenTask(idTasks) {
-      this.openTaskId = idTasks;
-    },
+
     setTasks(id) {
       this.tasksDay = id;
+    },
+
+    isWithinInterval(startdate, deadline) {
+      let stD = new Date(startdate).setHours(0, 0, 0, 0);
+      let dlD = new Date(deadline).setHours(0, 0, 0, 0);
+      let firstB = stD <= this.activeDay;
+      let LastB = this.activeDay <= dlD;
+      return firstB && LastB;
+    },
+
+    sliceHide(arr) {
+      if (arr) return arr.slice(0, 3);
+      return null;
+    },
+
+    hide(tasks) {
+      return tasks && tasks.length > 4;
     }
   }
 };

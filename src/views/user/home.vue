@@ -15,7 +15,7 @@
       <h2 class="main-title">Новости</h2>
       <div>
         <div class="news__list">
-          <the-news-card
+          <The-News-Card
             v-for="(newsItem, i) in getNews"
             :news="newsItem"
             :key="i"
@@ -28,12 +28,13 @@
 </template>
 
 <script>
-import theNewsCard from "@/components/home/card";
+import TheNewsCard from "@/components/home/HomeCard";
 import VueApexCharts from "vue-apexcharts";
 import { mapGetters } from "vuex";
+
 export default {
   components: {
-    theNewsCard,
+    TheNewsCard,
     apexcharts: VueApexCharts
   },
   data: function() {
@@ -91,7 +92,6 @@ export default {
     ...mapGetters(["getNews"])
   }
 };
-
 </script>
 <style lang="scss">
 @import "@/assets/pages/home";

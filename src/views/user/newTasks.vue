@@ -80,7 +80,7 @@
             @click.prevent="submit()"
             type="button"
             :disabled="$v.fields.$invalid"
-            class="btn-primary"
+            class="btn btn-primary"
           >
             Отправить
           </button>
@@ -91,12 +91,12 @@
 </template>
 
 <script>
-import VTextarea from "../../components/fields/v-textarea.vue";
-import VInput from "@/components/fields/v-input.vue";
-import SubTasks from "@/components/fields/subTasks.vue";
-import VSelect from "@/components/fields/v-select.vue";
-import DatePicker from "@/components/calendar/datePicker.vue";
-import autocomplete from "@/components/fields/autocomplitform.vue";
+import VTextarea from "@/components/fields/FieldTextarea.vue";
+import VInput from "@/components/fields/FieldInput.vue";
+import SubTasks from "@/components/fields/FieldList.vue";
+import VSelect from "@/components/fields/FieldSelect.vue";
+import DatePicker from "@/components/fields/FieldDatePicker.vue";
+import autocomplete from "@/components/fields/FieldAutocomplit.vue";
 import { required, minLength } from "vuelidate/lib/validators";
 import { mapGetters } from "vuex";
 export default {
