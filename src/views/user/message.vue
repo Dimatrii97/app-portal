@@ -37,12 +37,17 @@
       </div>
       <div class="chat__input">
         <textarea
-          v-model="messText"
+          v-model="setMessText"
           @keyup.enter="sendMess"
           class="input"
           placeholder="Напишите сообщение..."
           type="text"
+          ref="textMess"
         ></textarea>
+        <div class="error" v-if="!$v.messText.maxLength">
+          Поле должно содержать не более
+          {{ $v.messText.$params.maxLength.max }} симвлов.
+        </div>
       </div>
     </article>
   </section>
@@ -50,6 +55,7 @@
 <script>
 import InfiniteLoading from "vue-infinite-loading";
 import UserImg from "@/components/ImgUser.vue";
+import { maxLength } from "vuelidate/lib/validators";
 import { getJWTPayload, getAccessToken } from "@/store/utils/JWT";
 import { datePostgres } from "@/utils/dateType";
 import { mapGetters } from "vuex";
@@ -58,7 +64,6 @@ export default {
     InfiniteLoading,
     UserImg
   },
-
   data() {
     return {
       id: null,
@@ -77,8 +82,18 @@ export default {
       if (interlocutor) return interlocutor;
       this.$store.dispatch("users/getUserById", this.$route.params.id);
       return "";
+    },
+    setMessText: {
+      get() {
+        return this.messText;
+      },
+      set(value) {
+        this.messText = value;
+        this.mixin_textarea_resize(this.$refs.textMess);
+      }
     }
   },
+
   sockets: {
     SetNewMess(message) {
       if (
@@ -107,10 +122,16 @@ export default {
       });
     }
   },
+
   mounted() {
     this.$store.dispatch("messages/updateViewedMess", this.$route.params.id);
   },
 
+  validations: {
+    messText: {
+      maxLength: maxLength(240)
+    }
+  },
   methods: {
     infiniteHandler($state) {
       this.$http
@@ -133,7 +154,8 @@ export default {
         });
     },
     sendMess() {
-      if (this.messText) {
+      this.$v.messText.$touch();
+      if (this.messText && !this.$v.messText.$error) {
         let date = datePostgres(new Date());
         this.$store.dispatch("messages/newMessUsers", {
           fromid: this.user.id,
@@ -157,7 +179,7 @@ export default {
       return true;
     },
     back() {
-      this.$router.push("/messagesList");
+      this.$router.go(-1);
     },
     genImg(id) {
       return id == this.user.id
