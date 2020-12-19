@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import RadioBtn from "@/components/radio-btn.vue";
+import RadioBtn from "@/components/fields/FieldRadio.vue";
 import VSearch from "@/components/fields/FieldSearch.vue";
 import VSelect from "@/components/fields/FieldSelect.vue";
 import ThePagination from "@/components/docs/v-pagination.vue";

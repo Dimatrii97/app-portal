@@ -3,7 +3,9 @@
     <the-sidebar class="sidebar"></the-sidebar>
     <div class="wrap__main__content">
       <the-topbar class="conteiner-max"></the-topbar>
-      <router-view class="conteiner"></router-view>
+      <div class="conteiner">
+        <router-view></router-view>
+      </div>
     </div>
   </div>
 </template>
@@ -29,5 +31,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss"></style>

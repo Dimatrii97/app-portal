@@ -9,7 +9,7 @@ const routes = [
   {
     path: "/login",
     name: "login",
-    component: () => import("../views/user/login.vue"),
+    component: () => import("../views/user/Login.vue"),
     meta: {
       layout: "empty",
       guest: true
@@ -25,7 +25,7 @@ const routes = [
   {
     path: "/home",
     name: "home",
-    component: () => import("../views/user/home.vue"),
+    component: () => import("../views/user/Home.vue"),
     meta: {
       layout: "user",
       requiresAuth: true
@@ -34,16 +34,16 @@ const routes = [
   {
     path: "/calendar",
     name: "calendar",
-    component: () => import("../views/user/calendar.vue"),
+    component: () => import("../views/user/Calendar.vue"),
     meta: {
       layout: "user",
       requiresAuth: true
     }
   },
   {
-    path: "/messagesList",
-    name: "messagesList",
-    component: () => import("../views/user/messagesList.vue"),
+    path: "/chat",
+    name: "chat",
+    component: () => import("../views/user/Chat.vue"),
     meta: {
       layout: "user",
       requiresAuth: true
@@ -51,7 +51,7 @@ const routes = [
   },
   {
     path: "/message/:id",
-    component: () => import("../views/user/message.vue"),
+    component: () => import("../views/user/Message.vue"),
     meta: {
       layout: "user",
       requiresAuth: true
@@ -60,7 +60,7 @@ const routes = [
   {
     path: "/newTasks",
     name: "newTasks",
-    component: () => import("../views/user/newTasks.vue"),
+    component: () => import("../views/user/NewTasks.vue"),
     meta: {
       layout: "user",
       requiresAuth: true
@@ -69,7 +69,7 @@ const routes = [
   {
     path: "/docs",
     name: "docs",
-    component: () => import("../views/user/docs.vue"),
+    component: () => import("../views/user/Docs.vue"),
     meta: {
       layout: "user",
       requiresAuth: true
@@ -78,7 +78,7 @@ const routes = [
   {
     path: "/admin/",
     name: "admin",
-    component: () => import("../views/admin/admin.vue"),
+    component: () => import("../views/admin/Admin.vue"),
     meta: {
       layout: "admin",
       requiresAuth: true
@@ -96,7 +96,7 @@ const routes = [
   },
   {
     path: "/profile",
-    component: () => import("../views/user/profile.vue"),
+    component: () => import("../views/user/Profile.vue"),
     meta: {
       layout: "user",
       requiresAuth: true
@@ -105,7 +105,7 @@ const routes = [
   {
     path: "/*",
     name: "all",
-    component: () => import("../views/user/login.vue"),
+    component: () => import("../views/user/Login.vue"),
     meta: {
       layout: "empty"
     }

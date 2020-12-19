@@ -48,7 +48,7 @@
 <script>
 import CalendarTaskList from "@/components/calendar/CalendarTaskList.vue";
 import CalendarHeader from "@/components/calendar/CalendarHeader.vue";
-import CalendarBody from "@/components/calendar/CalendarBody";
+import CalendarBody from "@/components/calendar/СalendarBody";
 import CalendarRouter from "@/plugins/mixins/calendar-router";
 import { Month } from "@/components/calendar/CreateCalendar";
 import { mapGetters } from "vuex";
