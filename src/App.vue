@@ -7,6 +7,7 @@
 import userLayout from "@/layout/userLayout";
 import adminLayout from "@/layout/adminLayout";
 import emptyLayout from "@/layout/empty";
+import bodyHidden from "@/plugins/mixins/body-hidden";
 import { mapGetters } from "vuex";
 export default {
   computed: {
@@ -15,17 +16,15 @@ export default {
       return this.$route.meta.layout + "-layout";
     }
   },
+  mixins: [bodyHidden],
   components: {
     userLayout,
     emptyLayout,
     adminLayout
   },
   watch: {
-    isOpenSidebar(newValue) {
-      let body = document.querySelector("body");
-      if (!newValue) {
-        body.style = "overflow:auto;";
-      } else body.style = "overflow:hidden;";
+    isOpenSidebar() {
+      this.bodyOverflowToggle();
     }
   }
 };
