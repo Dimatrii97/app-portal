@@ -6,9 +6,10 @@ import Vuelidate from "vuelidate";
 import VueResourse from "vue-resource";
 import VueSocketIOExt from "vue-socket.io-extended";
 import io from "socket.io-client";
-import "./plugins/dateFilers";
+import "./plugins/filters/dateFilers";
+import "./plugins/directives/click-outside";
 
-const socket = io("localhost:5000/", {
+const socket = io("http://localhost:5000/", {
   autoConnect: false,
   query: {
     token: null

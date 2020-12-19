@@ -14,7 +14,7 @@ export default {
       },
       messages: {
         ruName: "Сообщения",
-        to: "/messagesList",
+        to: "/chat",
         icon: "mail"
       },
       newTask: {
@@ -76,7 +76,7 @@ export default {
         name: "Дата изменения",
         sort: "default"
       }
-    },
+    }
   },
   getters: {
     getNavlist(state, _, __, getters) {
