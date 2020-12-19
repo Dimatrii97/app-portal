@@ -1,17 +1,3 @@
-// import {
-//   endOfMonth,
-//   startOfMonth,
-//   lastDayOfISOWeek,
-//   startOfISOWeek,
-//   subMonths,
-//   eachDayOfInterval,
-//   differenceInCalendarDays,
-//   areIntervalsOverlapping,
-//   getDaysInMonth,
-//   isToday,
-//   isEqual,
-//   isDate
-// } from "date-fns";
 import {
   endOfMonth,
   startOfMonth,
@@ -30,7 +16,6 @@ export class Month {
   }
 
   constructor(currentDate) {
-    // this.visibleMonth
     this.currentDate = currentDate;
     this.firstDay = startOfISOWeek(endOfMonth(subMonths(currentDate, 1)));
     this.lastDay = lastDayOfISOWeek(endOfMonth(currentDate));

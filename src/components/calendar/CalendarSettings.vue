@@ -49,7 +49,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .date-settings {
   padding: 0px 0 0 10px;
   margin: 0 0 0 5px;

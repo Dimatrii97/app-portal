@@ -19,7 +19,7 @@
       </div>
     </div>
     <transition-expand>
-      <div v-if="isOpen" @click.stop="" class="task__all">
+      <div v-if="isOpen" @click.stop="" class="task-list__all">
         <div class="task-list__subtitle">
           <h3 class="task-list__title">Задача:</h3>
           <p class="task-list__text" v-html="additionalInfo.subtitle"></p>
