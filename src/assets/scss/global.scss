@@ -43,6 +43,31 @@ font-family: 'Raleway', sans-serif;;
   position: relative;
 }
 
+ //.dropdown
+.dropdown {
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+  background-color: #fff;
+  border-bottom: 1px solid #6f6f6f;
+  border-left: 1px solid #6f6f6f;
+  border-right: 1px solid #6f6f6f;
+  border-radius: 0 0 10px 10px;
+  max-height: 200px;
+  overflow: auto;
+  scroll-behavior: smooth;
+  //.dropdown__item
+  &__item {
+    display: flex;
+    align-items: center;
+    background: $bg-gray;
+    color: $text-dark;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 18px;
+  }
+}
+
 .main-title {
   color: $title;
   font-weight: 100;
@@ -122,7 +147,7 @@ font-family: 'Raleway', sans-serif;;
   box-shadow: 1px 4px 4px rgba(0, 0, 0, 0.24);
 }
 
-.btn-ghost{
+.btn-ghost-primary{
   color:$blue;
   border:1px solid $blue;
 }
@@ -151,12 +176,6 @@ font-family: 'Raleway', sans-serif;;
   font-size: 0.899999rem;
 }
 
-.ad-form {
-  padding: 20px;
-  & .button-left{
-    margin-top: 110px;
-  }
-}
 
 .form__group {
   position: relative;
@@ -167,26 +186,21 @@ font-family: 'Raleway', sans-serif;;
   margin-top: 16px;
 }
 
-
-.form {
-  &__group_a {
-    display: flex;
-    border-bottom: 2px solid $dark;
-    .form__field {
-      border-bottom: none;
-    }
+.multi-field {
+  display: flex;
+  border-bottom: 2px solid $dark;
+  flex-wrap: wrap;
+  align-items: center;
+  & .form__field {
+    flex: 1;
+    min-width: 150px;
   }
-  &__icon {
-    align-self: center;
-    font-size: 1.5rem;
-    flex-shrink: 0;
-    color: $text-dark;
-  }
-  &__position-user {
-    font-size: 14px;
-    font-weight: 600;
+  & .form__field {
+    border-bottom: none;
   }
 }
+
+
 
 .form__field {
   font-family: inherit;
@@ -203,8 +217,7 @@ font-family: 'Raleway', sans-serif;;
     color: transparent;
   }
 
-  &:placeholder-shown ~ .form__label,
-  .fill {
+  &:placeholder-shown ~ .form__label {
     font-size: 1.3rem;
     cursor: text;
     top: 20px;
@@ -222,8 +235,8 @@ font-family: 'Raleway', sans-serif;;
 }
 
 .form__field:focus,
-.focus {
-  ~ .form__label, & .form__label.empty, & .form__label.filled{
+.focus, .focus .form__field {
+  ~ .form__label{
     position: absolute;
     top: 0;
     display: block;
@@ -247,37 +260,8 @@ font-family: 'Raleway', sans-serif;;
   font-size: 1.3rem;
   top: 20px;
 }
-.form__selected {
-  display: flex;
-  align-items: center;
-  background: $bg-gray;
-  color: $text-dark;
-  padding: 5px 10px;
-  border-radius: 10px;
-  margin: 10px 0;
-  font-size: 18px;
-  &.active {
-    filter: drop-shadow(2px 7px 6px #00000061);
-    transform: translate(0px, -3px);
-  }
-  &.selected {
-    background: #4f88f1bf;
-    color: #ffffffcf;
-  }
-  &-img.img-user {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    margin-right: 15px;
-  }
-  &-input {
-    flex-grow: 1;
-    color: $text-dark;
-    border: none;
-    background: transparent;
-    padding: 0;
-  }
-}
+
+
 
 .errors {
 &  .form__field {
@@ -297,43 +281,7 @@ font-family: 'Raleway', sans-serif;;
   font-size: 0.8rem;
 }
 
-.field{
-  // .field__list
-&__list {
-  position: absolute;
-  width: 100%;
-  z-index: 10;
-  background-color: #fff;
-  border-bottom: 1px solid $text-dark;
-  border-left: 1px solid $text-dark;
-  border-right: 1px solid $text-dark;
-  border-radius: 0 0 10px 10px;
-  max-height: 200px;
-  overflow: auto;
-}
-// .field__item
-&__item {
-  margin-left: 5px;
-}
-}
-.list{
-  &__item{
-    position: relative;
-    display: flex;
-    align-items: center;
-    background: $bg-gray;
-    color: $text-dark;
-    padding: 5px 10px;
-    border-radius: 10px;
-    margin: 10px 0;
-    font-size: 18px;
-    cursor: pointer;
-  }
-  &__text-m{
-    margin: 0 0 0 15px;
-    margin-left: 39px;
-  }
-}
+
 
 .title-default {
   color: $title;
@@ -345,9 +293,11 @@ font-family: 'Raleway', sans-serif;;
 }
 
 .button-left {
-  margin-top: 20px;
   display: flex;
   justify-content: flex-end;
+  &.m110 {
+    margin-top: 110px;
+  }
 }
 
 
@@ -359,5 +309,7 @@ font-family: 'Raleway', sans-serif;;
   border: 1px solid $text-dark;
   font-size: 0.8rem;
   line-height: 22px;
+  flex: 0 0 22px;
+  margin-left: 5px;
 }
 

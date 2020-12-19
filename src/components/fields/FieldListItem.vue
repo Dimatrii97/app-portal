@@ -1,22 +1,19 @@
 <template>
-  <li class="form__item">
-    <span v-if="settings" @click="changeSettings()" class="form__selected"
-      >{{ subtask.title }}
-      <i
-        @click.stop="$emit('delete-item', { id: $vnode.key })"
-        class="icon-close"
-      ></i>
+  <li v-click-outside="changeItem" class="dropdown__content">
+    <span v-if="settings" @click="changeSettings()" class="dropdown__item"
+      >{{ item }}
+      <i @click.stop="$emit('delete-item')" class="icon-close"></i>
     </span>
-    <span class="form__selected" v-else>
+    <span class="dropdown__item" v-else>
       <input
-        v-model="copySubtask"
+        v-model="setValue"
         ref="input-edit"
-        @blur="changeItem()"
-        class="form__selected-input"
+        class="dropdown__item-input"
         type="text"
         autocomplete="off"
       />
-      <i class="icon-edit"></i>
+
+      <i @click.stop="changeItem()" class="icon-edit"></i>
     </span>
   </li>
 </template>
@@ -24,24 +21,35 @@
 <script>
 export default {
   props: {
-    subtask: Object
+    item: {
+      default: "",
+      type: String
+    }
   },
 
   data() {
     return {
       settings: true,
-      copySubtask: this.subtask.title
+      copyItem: this.item
     };
   },
-
+  computed: {
+    setValue: {
+      get() {
+        return this.copyItem;
+      },
+      set(value) {
+        this.copyItem = value;
+        this.mixin_textarea_resize(this.$refs["input-edit"]);
+      }
+    }
+  },
   methods: {
     changeItem() {
       this.settings = true;
-      if (this.copySubtask != this.subtask.title)
-        this.$emit("change-item", {
-          id: this.$vnode.key,
-          title: this.copySubtask
-        });
+      if (this.copyItem != this.item) {
+        this.$emit("change-item", this.copyItem);
+      } else this.copyItem = this.item;
     },
     changeSettings() {
       this.settings = false;
@@ -54,9 +62,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.form__selected {
-  justify-content: space-between;
+.dropdown {
+  &__item {
+    justify-content: space-between;
+    //.dropdown__item-input
+    &-input {
+      flex-grow: 1;
+      color: $text-dark;
+      border: none;
+      background: transparent;
+      padding: 0;
+    }
+  }
+  //.dropdown__content
+  &__content {
+    margin: 5px 0 5px 0;
+  }
 }
+
 .icon-close,
 .icon-edit {
   color: $blue;

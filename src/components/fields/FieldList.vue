@@ -1,18 +1,20 @@
-/* eslint-disable vue/no-parsing-error */
 <template>
-  <div class="subtasks">
-    <div class="form__group form__group_a">
+  <div v-click-outside="outside">
+    <div :class="[{ focus: isFocus }, 'multi-field']">
       <input
         v-model="textSubtask"
+        :placeholder="$attrs.placeholder"
+        :id="$attrs.id"
         @keyup.enter.stop="pushSubtask()"
+        @focus="focus = true"
         class="form__field"
-        placeholder="Структура выполнения"
-        name="Subtask"
-        id="Subtask"
         type="text"
         autocomplete="off"
+        ref="input"
       />
-      <label for="Subtask" class="form__label">Структура выполнения</label>
+
+      <slot name="label"></slot>
+
       <button
         @click="pushSubtask()"
         class="btn btn-ghost-primary btn-square"
@@ -22,59 +24,76 @@
       </button>
     </div>
 
-    <ul v-if="value.length" class="field__list">
-      <subtask-item
-        v-for="(subtask, i) in value"
+    <ul v-if="value.length" class="dropdown">
+      <Field-List-Item
+        v-for="(item, i) in value"
         :key="i"
-        :subtask="subtask"
-        @change-item="changeItem($event)"
-        @delete-item="deleteItem($event)"
-      >
-      </subtask-item>
+        :item="item"
+        @change-item="changeItem(i, $event)"
+        @delete-item="deleteItem(i)"
+      />
     </ul>
   </div>
 </template>
 
 <script>
-import SubtaskItem from "./FieldListItem";
-
+import FieldListItem from "./FieldListItem";
 export default {
+  inheritAttrs: false,
   props: {
-    value: Array
+    value: {
+      default: () => [],
+      type: Array
+    }
   },
 
   components: {
-    SubtaskItem
+    FieldListItem
   },
 
   data() {
     return {
-      textSubtask: ""
+      textSubtask: "",
+      focus: false
     };
+  },
+
+  computed: {
+    isFocus() {
+      return this.focus || this.textSubtask;
+    }
   },
 
   methods: {
     pushSubtask() {
-      if (this.textSubtask == "") return;
-      this.$emit("input", { title: this.textSubtask, type: "add" });
+      this.$refs.input.focus();
+      if (!(this.textSubtask === "")) {
+        let newValue = [...this.value];
+        newValue.push(this.textSubtask);
+        this.$emit("input", newValue);
+      }
       this.textSubtask = "";
     },
-    changeItem(e) {
-      this.$emit("input", { type: "change", ...e });
+    changeItem(index, newItem) {
+      let newValue = [...this.value];
+      newValue[index] = newItem;
+      this.$emit("input", newValue);
     },
-    deleteItem(e) {
-      this.$emit("input", { type: "delete", ...e });
+    deleteItem(index) {
+      let newValue = [...this.value];
+      newValue.splice(index, 1);
+      this.$emit("input", newValue);
+    },
+    outside() {
+      this.focus = false;
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.subtasks {
-  position: relative;
-  & .field__list {
-    max-height: 100px;
-    z-index: 11;
-  }
+.dropdown {
+  z-index: 9;
+  max-height: 90px;
 }
 </style>

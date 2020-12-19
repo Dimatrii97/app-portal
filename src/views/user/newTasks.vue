@@ -1,216 +1,113 @@
 <template>
   <section class="page">
     <h3 class="main-title">Создать новую задачу</h3>
-    <!-- <pre>
-      {{ $v.fields }}
-    </pre> -->
     <article class="substrate">
-      <form
-        class="ad-form"
-        @submit.prevent=""
-        @keyup.enter.prevent=""
-        action=""
-      >
-        <v-input
-          v-model.trim="$v.fields.title.$model"
-          :config="{ name: 'title', placeholder: 'Описание задачи' }"
-          :error="$v.fields.title.$error"
-        >
-          <template #errors>
-            <div class="error" v-if="requiredDirty('title')">
-              Поле не должно быть пустым.
-            </div>
-            <div class="error" v-if="!$v.fields.title.minLength">
-              Поле должно содержать больше
-              {{ $v.fields.title.$params.minLength.min }} симвлов.
-            </div>
-          </template>
-        </v-input>
-        <v-textarea
-          v-model.trim="$v.fields.subtitle.$model"
-          :config="{ name: 'subtitle', placeholder: 'Описание задачи' }"
-          :error="$v.fields.subtitle.$error"
-          ref="textarea"
-        >
-          <template #errors>
-            <div class="error" v-if="requiredDirty('subtitle')">
-              Поле не должно быть пустым
-            </div>
-            <div class="error" v-if="!$v.fields.subtitle.minLength">
-              Поле должно содержать больше
-              {{ $v.fields.subtitle.$params.minLength.min }} симвлов.
-            </div>
-          </template>
-        </v-textarea>
-        <date-picker v-model="fields.date" ref="date-picker">
-          <template #errors>
-            <div class="error" v-if="requiredDirty('date')">
-              Поле не должно быть пустым
-            </div>
-          </template>
-        </date-picker>
-        <autocomplete
-          v-model="setUsers"
-          :users="users"
-          :error="$v.fields.executor.$error"
-          ref="autocomplit"
-        >
-          <template #errors>
-            <div class="error" v-if="requiredDirty('executor')">
-              Поле не должно быть пустым
-            </div>
-          </template>
-        </autocomplete>
-        <v-select
-          v-model="setType"
-          :recovery="true"
-          :error="$v.fields.type.$error"
-          ref="select"
-          placeholder="Выбирите приоритет"
-        >
-          <template #errors>
-            <div class="error" v-if="requiredDirty('type')">
-              Поле не должно быть пустым
-            </div>
-          </template>
-        </v-select>
-        <sub-tasks v-model="setSubTasks"></sub-tasks>
-        <div class="button-left">
-          <button
-            @click.prevent="submit()"
-            type="button"
-            :disabled="$v.fields.$invalid"
-            class="btn btn-primary"
-          >
-            Отправить
-          </button>
-        </div>
-      </form>
+      <FormFactory @input="inputValue($event)" :fields="fields">
+        <template #button="propsFactory">
+          <div class="button-left m110">
+            <button :disabled="propsFactory.valid" class="btn btn-primary">
+              Отправить
+            </button>
+          </div>
+        </template>
+      </FormFactory>
+      <div class="test"></div>
     </article>
   </section>
 </template>
 
 <script>
-import VTextarea from "@/components/fields/FieldTextarea.vue";
-import VInput from "@/components/fields/FieldInput.vue";
-import SubTasks from "@/components/fields/FieldList.vue";
-import VSelect from "@/components/fields/FieldSelect.vue";
-import DatePicker from "@/components/fields/FieldDatePicker.vue";
-import autocomplete from "@/components/fields/FieldAutocomplit.vue";
+// import FormBuilder from "./builder/FormBuilder";
+
+import FormInput from "@/components/fields/FieldInput";
+import SelectBuilder from "@/builder/SelectBuilder";
+import SelectDirector from "@/builder/SelectDirecrot";
+import FormDatePicker from "@/components/fields/FieldDatePicker";
+import FormTextarea from "@/components/fields/FieldTextarea";
+import FormFactory from "@/components/fields/FormFactory";
+import FormList from "@/components/fields/FieldList";
 import { required, minLength } from "vuelidate/lib/validators";
 import { mapGetters } from "vuex";
 export default {
-  components: {
-    DatePicker,
-    autocomplete,
-    VSelect,
-    SubTasks,
-    VInput,
-    VTextarea
-  },
   data() {
     return {
-      fields: {
-        title: "",
-        subtitle: "",
-        date: "",
-        executor: [],
-        type: "",
-        subtasks: []
-      },
-      type: ["Высокий", "Средний", "Низкий"]
+      field: [],
+      users: []
     };
   },
-  computed: {
-    ...mapGetters("users", { users: "getRangeLevelUsers" }),
-    setType: {
-      get() {
-        return this.type;
-      },
-      set(value) {
-        this.$v.fields.type.$touch();
-        this.fields.type = value;
-      }
-    },
-    setUsers: {
-      get() {
-        return this.users;
-      },
-      set(value) {
-        this.$v.fields.executor.$touch();
-        this.fields.executor = value;
-      }
-    },
-    setSubTasks: {
-      get() {
-        return this.fields.subtasks;
-      },
-      set(value) {
-        switch (value.type) {
-          case "add":
-            this.fields.subtasks.push({ title: value.title });
-            break;
-          case "change":
-            this.fields.subtasks[value.id].title = value.title;
-            break;
-          case "delete":
-            this.fields.subtasks.splice(value.id, 1);
-            break;
-          case "clear":
-            this.fields.subtasks = [];
-            break;
-        }
-      }
-    }
+  components: {
+    FormFactory
   },
   created() {
     this.$store.dispatch("users/getUsersDepartment");
+    this.fields = [
+      {
+        component: FormInput,
+        label: "Заголовок",
+        name: "Title",
+        options: { attrs: { placeholder: "Заголовок" } },
+        validation: { required, minLength: minLength(10) }
+      },
+      {
+        component: FormTextarea,
+        label: "Описание",
+        name: "subtitle",
+        options: { attrs: { placeholder: "Описание" } },
+        validation: { required, minLength: minLength(10) }
+      },
+      {
+        component: FormDatePicker,
+        label: "Сроки выполнения",
+        name: "date",
+        options: { attrs: { placeholder: "Сроки выполнения" } },
+        validation: { required }
+      },
+      {
+        component: new SelectDirector(new SelectBuilder()).makeMultiSelect(),
+        label: "Назначить сотрудников",
+        name: "executor",
+        options: {
+          attrs: { placeholder: "Назначить сотрудников" },
+          props: { selectList: this.users, searchProp: "name" },
+          defaultValue: []
+        },
+        validation: { required }
+      },
+      {
+        component: new SelectDirector(new SelectBuilder()).makeSelect(),
+        label: "Приоритет",
+        name: "type",
+        options: {
+          attrs: { placeholder: "Приоритет" },
+          props: { selectList: ["Высокий", "Средний", "Низкий"] }
+        },
+        validation: { required }
+      },
+      {
+        component: FormList,
+        label: "Структура выполнения",
+        name: "subtasks",
+        options: {
+          attrs: { placeholder: "Структура выполнения" },
+          defaultValue: []
+        },
+        validation: {}
+      }
+    ];
   },
-
-  validations: {
-    fields: {
-      title: {
-        required,
-        minLength: minLength(10)
-      },
-      subtitle: {
-        required,
-        minLength: minLength(10)
-      },
-      date: {
-        required
-      },
-      executor: {
-        required
-      },
-      type: {
-        required
-      },
-      subtasks: {}
+  computed: {
+    ...mapGetters("users", { getUsers: "getRangeLevelUsers" })
+  },
+  watch: {
+    getUsers(newValue) {
+      this.users.push(...newValue);
     }
   },
-
   methods: {
-    submit() {
-      if (!this.$v.fields.$invalid) {
-        this.fields.subtitle = this.fields.subtitle.replace(/\n/g, "<br/>");
-        this.$store.dispatch("tasks/setTask", this.fields);
-        this.fields.title = "";
-        this.fields.subtitle = "";
-        this.$refs.textarea.clearResizeTextarea();
-        this.$refs["date-picker"].clearEl();
-        this.$refs.autocomplit.clearEl();
-        this.$refs.select.clearEl();
-        this.fields.subtasks = [];
-        this.$v.$reset();
-      }
-    },
-    setTouch(name) {
-      this.$v.fields[name].$touch();
-    },
-
-    requiredDirty(name) {
-      return this.$v.fields[name].$dirty && !this.$v.fields[name].required;
+    inputValue(e) {
+      console.log(e);
+      //         this.fields.subtitle = this.fields.subtitle.replace(/\n/g, "<br/>");
+      //         this.$store.dispatch("tasks/setTask", this.fields);
     }
   }
 };

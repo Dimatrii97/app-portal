@@ -1,31 +1,23 @@
 <template>
-  <div :class="['form__group', { errors: error }]">
+  <div>
     <textarea
       v-model="setValue"
-      :placeholder="config.name"
-      :name="config.name"
-      :id="config.name"
-      ref="textArea"
+      ref="textarea"
       class="form__field"
-      autocomplete="off"
-      required
-    >
-    </textarea>
-    <label :for="config.name" class="form__label">{{
-      config.placeholder
-    }}</label>
-    <slot name="errors"></slot>
+      :id="$attrs.id"
+    />
+    <slot name="label"></slot>
   </div>
 </template>
 
 <script>
 export default {
+  inheritAttrs: false,
+  name: "FormTextarea",
   props: {
-    config: Object,
-    value: String,
-    error: {
-      type: Boolean,
-      default: false
+    value: {
+      default: "",
+      type: String
     }
   },
   computed: {
@@ -34,19 +26,24 @@ export default {
         return this.value;
       },
       set(value) {
+        this.textarea_resize();
         this.$emit("input", value);
-        this.resizeTextarea();
       }
     }
   },
+  watch: {
+    value(newValue) {
+      if (!newValue) this.textarea_clearResize();
+    }
+  },
   methods: {
-    resizeTextarea() {
-      this.$refs.textArea.style.height = "5px";
-      this.$refs.textArea.style.height =
-        this.$refs.textArea.scrollHeight + "px";
+    textarea_resize() {
+      this.$refs.textarea.style.height = "5px";
+      this.$refs.textarea.style.height =
+        this.$refs.textarea.scrollHeight + "px";
     },
-    clearResizeTextarea() {
-      this.$refs.textArea.style.height = "41px";
+    textarea_clearResize() {
+      this.$refs.textarea.style.height = "41px";
     }
   }
 };
@@ -54,5 +51,6 @@ export default {
 <style>
 textarea.form__field {
   height: 41px;
+  max-height: 230px;
 }
 </style>

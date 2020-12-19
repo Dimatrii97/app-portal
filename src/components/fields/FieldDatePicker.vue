@@ -1,14 +1,10 @@
 <template>
-  <div class="date-picker">
-    <div @click="isActive = !isActive" class="form__group">
-      <div :class="[{ focus: isActive }, 'form__field', 'date']">
-        {{ value.start }} {{ value.end }}
-      </div>
-      <label :class="[{ empty: isEmpty }, 'form__label']">
-        Сроки исполнения
-      </label>
+  <div v-click-outside="outside" :class="[{ focus: isActive }, 'date-picker']">
+    <div @click="inside()">
+      <div class="form__field date">{{ value }}</div>
+      <slot name="label"></slot>
     </div>
-    <slot></slot>
+
     <div class="calendar" v-if="isActive">
       <Calendar-Body
         :interval="interval"
@@ -38,9 +34,10 @@
 
 <script>
 import CalendarSettings from "@/components/calendar/CalendarSettings.vue";
-import CalendarBody from "@/components/calendar/CalendarBody.vue";
+import CalendarBody from "@/components/calendar/СalendarBody";
 import CalendarHeader from "@/components/calendar/CalendarHeader.vue";
 import CalendarRouter from "@/plugins/mixins/calendar-router";
+import bodyHidden from "@/plugins/mixins/body-hidden";
 import { Month } from "@/components/calendar/CreateCalendar";
 import { format, isAfter, subDays, isEqual, isDate } from "date-fns";
 export default {
@@ -50,7 +47,7 @@ export default {
       type: String
     }
   },
-  mixins: [CalendarRouter],
+  mixins: [CalendarRouter, bodyHidden],
   components: {
     CalendarBody,
     CalendarHeader,
@@ -69,23 +66,45 @@ export default {
   },
 
   computed: {
-    isEmpty() {
-      return !this.value && !this.isActive;
-    },
     getMonth() {
       return Month.createMonth(this.visibleMonth)
         .setInterval(this.interval)
         .getMonth();
     }
   },
+  watch: {
+    isActive() {
+      if (this.$store.getters.getSize <= 600) {
+        this.bodyOverflowToggle();
+      }
+    },
+    value(newValue) {
+      if (!newValue) {
+        this.interval.start = new Date();
+        this.interval.end = null;
+        this.active = "start";
+      }
+    }
+  },
 
   methods: {
+    outside() {
+      this.isActive = false;
+    },
+
+    inside() {
+      this.isActive = true;
+    },
+
     emitValue() {
       if (isDate(this.interval.start) && isDate(this.interval.end)) {
-        this.$emit("input", {
-          start: format(this.interval.start, "yyyy-MM-dd"),
-          end: format(this.interval.end, "yyyy-MM-dd")
-        });
+        this.$emit(
+          "input",
+          `${format(this.interval.start, "yyyy-MM-dd")}/${format(
+            this.interval.end,
+            "yyyy-MM-dd"
+          )}`
+        );
         this.isActive = false;
       }
     },
@@ -119,6 +138,7 @@ export default {
           throw new Error("this.interval.active = 'end' || 'start'");
       }
     },
+
     setIntervalActive(status) {
       this.interval.active = status;
     },
@@ -136,22 +156,13 @@ export default {
         isEqual(date, this.interval.start)
       );
     }
-  },
-  watch: {
-    value(newValue) {
-      if (newValue) {
-        this.interval.start = new Date();
-        this.interval.end = null;
-        this.active = "start";
-      }
-    }
   }
 };
 </script>
 
 <style lang="scss">
 .date-picker {
-  position: relative;
+  // position: relative;
   & .day {
     font-size: 1.2rem;
   }
@@ -170,7 +181,7 @@ export default {
     min-width: 490px;
     width: 80%;
     transform: translate(1%, 99%);
-    z-index: 10;
+    z-index: 12;
     box-shadow: 1px 2px 5px #0000002e;
     border-radius: 5px;
     overflow: hidden;
@@ -194,17 +205,18 @@ export default {
     padding: 5px 0;
   }
   & .btn-square {
-    padding: 6px;
+    padding: 0px;
     width: 30px;
     height: 30px;
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
   @include _600 {
-    position: inherit;
     & .day {
       font-size: 1rem;
     }
     & .calendar {
+      position: fixed;
+      z-index: 10000;
       min-width: 100%;
       left: 50%;
       top: 50%;
