@@ -1,4 +1,5 @@
-const OutsideClick = {
+import Vue from "vue";
+Vue.directive("click-outside", {
   bind: function(el, binding, vNode) {
     if (typeof binding.value !== "function") {
       const compName = vNode.context.name;
@@ -23,5 +24,4 @@ const OutsideClick = {
     document.removeEventListener("click", el.__vueClickOutside__);
     el.__vueClickOutside__ = null;
   }
-};
-export default OutsideClick;
+});
