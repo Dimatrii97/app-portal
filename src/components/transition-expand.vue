@@ -11,11 +11,17 @@
 
 <script>
 export default {
+  props: {
+    time: {
+      default: 1,
+      type: Number
+    }
+  },
   name: "TransitionExpand",
   methods: {
     enter(element) {
       const width = getComputedStyle(element).width;
-
+      element.style.transition = `height ${this.time}s ease-in-out`;
       element.style.width = width;
       element.style.position = "absolute";
       element.style.visibility = "hidden";
@@ -34,8 +40,10 @@ export default {
     },
     afterEnter(element) {
       element.style.height = "auto";
+      element.style.transition = "none";
     },
     leave(element) {
+      element.style.transition = `height ${this.time / 1.5}s ease-in-out`;
       const height = getComputedStyle(element).height;
 
       element.style.height = height;
@@ -59,7 +67,6 @@ export default {
 }
 .expand-enter-active,
 .expand-leave-active {
-  transition: height 1s ease-in-out;
   overflow: hidden;
 }
 
