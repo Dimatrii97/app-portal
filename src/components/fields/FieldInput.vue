@@ -2,6 +2,7 @@
   <div>
     <input
       :id="$attrs.id"
+      :type="$attrs.type || 'text'"
       @input="$emit('input', $event.target.value)"
       :class="['form__field', { errors: $attrs.error }]"
     />
