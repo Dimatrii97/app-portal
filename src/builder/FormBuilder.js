@@ -15,7 +15,12 @@ export default class FormBuilder {
 
     return {
       render(h) {
-        return h(FormFactory, { props, on: { ...this.$listeners }, ref: "gg" });
+        return h(FormFactory, {
+          props,
+          on: { ...this.$listeners },
+          ref: "gg",
+          scopedSlots: { ...this.$scopedSlots }
+        });
       }
     };
   }
