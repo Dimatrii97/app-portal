@@ -30,7 +30,7 @@
                 </div>
                 <a class="profile__link" href="">Профиль</a>
               </router-link>
-              <router-link class="profile__item" to="/" tag="li">
+              <router-link class="profile__item" to="/home" tag="li">
                 <a class="profile__link" href="">Помощь</a>
               </router-link>
               <li class="profile__item" @click="outUser()">
