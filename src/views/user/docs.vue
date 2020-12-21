@@ -1,3 +1,4 @@
+/* eslint-disable vue/no-unused-vars */
 <template>
   <div class="page">
     <h2 class="main-title">Документы</h2>
@@ -15,12 +16,28 @@
               v-model="search"
               className="doc-table__search"
             />
-            <V-Select
-              v-model="setFilterByType"
-              placeholder="Поиск по типу"
-              :recovery="true"
-              class="select"
-            />
+            <div class="form__group">
+              <V-Select
+                v-model="setFilterByType"
+                :selectList="selectList"
+                :dropValue="true"
+                id="search-type-docs"
+                placeholder="Поиск по типу"
+              >
+                <template #default="slotProps">
+                  <V-Select-Body v-bind="slotProps" />
+                </template>
+                <template #label>
+                  <FormLabel for="search-type-docs" :class="{ empty: !isSort }">
+                    Поиск по типу
+                  </FormLabel>
+                </template>
+
+                <template #list="slotProps">
+                  <V-Select-List v-bind="slotProps" />
+                </template>
+              </V-Select>
+            </div>
           </div>
         </div>
         <div class="table">
@@ -43,26 +60,34 @@
 </template>
 
 <script>
+// select experimental component
 import RadioBtn from "@/components/fields/FieldRadio.vue";
 import VSearch from "@/components/fields/FieldSearch.vue";
-import VSelect from "@/components/fields/FieldSelect.vue";
+import VSelect from "@/components/fields/FieldSelect";
+import VSelectBody from "@/components/fields/select/SelectBody";
+import VSelectList from "@/components/fields/select/SelectList";
+import FormLabel from "@/components/fields/FormLabel.vue";
 import ThePagination from "@/components/docs/v-pagination.vue";
 import TheMainTable from "@/components/docs/main-table.vue";
 import TheHeaderTable from "@/components/docs/header-table.vue";
 import { mapGetters, mapMutations, mapState } from "vuex";
+
 export default {
   components: {
     TheHeaderTable,
     TheMainTable,
     ThePagination,
-    VSelect,
     VSearch,
-    RadioBtn
+    RadioBtn,
+    VSelect,
+    VSelectBody,
+    VSelectList,
+    FormLabel
   },
 
   data() {
     return {
-      //height: null
+      isSort: ""
     };
   },
   computed: {
@@ -86,12 +111,17 @@ export default {
       }
     },
 
+    selectList() {
+      return Object.keys(this.mapDocumentTypeSort).filter(el => el);
+    },
+
     setFilterByType: {
       get() {
-        return Object.keys(this.mapDocumentTypeSort).filter(el => el);
+        return this.isSort;
       },
       set(type) {
         this.SET_DOCUMENT_TYPE(type);
+        this.isSort = type;
       }
     },
 
@@ -135,6 +165,10 @@ export default {
     countListPages() {
       return Math.ceil(this.docs.length / this.countItemDocs);
     }
+  },
+  destroyed() {
+    this.SET_DOCUMENT_TYPE("");
+    this.SET_ORDER_BY("name");
   },
 
   methods: {
