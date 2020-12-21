@@ -75,6 +75,11 @@ export default {
     searchProp: {
       default: "",
       type: String
+    },
+
+    dropValue: {
+      default: false,
+      type: Boolean
     }
   },
 
@@ -89,7 +94,12 @@ export default {
 
   computed: {
     list() {
-      return this.selectList;
+      return [
+        (() => {
+          if (this.dropValue) return this.$attrs.placeholder;
+        })(),
+        ...this.selectList
+      ];
     },
 
     styleConfig() {
@@ -201,6 +211,10 @@ export default {
       switch (this.type) {
         case "select": {
           this.outside();
+          if (item === this.$attrs.placeholder) {
+            this.$emit("input", "");
+            return;
+          }
           this.$emit("input", item);
           break;
         }
