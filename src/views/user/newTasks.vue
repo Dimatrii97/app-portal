@@ -17,7 +17,7 @@
 </template>
 
 <script>
-// import FormBuilder from "./builder/FormBuilder";
+// Select || FormFactory experimental component
 
 import FormInput from "@/components/fields/FieldInput";
 import SelectBuilder from "@/builder/SelectBuilder";
@@ -44,7 +44,7 @@ export default {
       {
         component: FormInput,
         label: "Заголовок",
-        name: "Title",
+        name: "title",
         options: { attrs: { placeholder: "Заголовок" } },
         validation: { required, minLength: minLength(10) }
       },
@@ -105,9 +105,11 @@ export default {
   },
   methods: {
     inputValue(e) {
-      console.log(e);
-      //         this.fields.subtitle = this.fields.subtitle.replace(/\n/g, "<br/>");
-      //         this.$store.dispatch("tasks/setTask", this.fields);
+      let [start, end] = e.date.split("/");
+      let date = { start, end };
+      let executor = e.executor.map(us => us.user_id);
+      let subtitle = e.subtitle.replace(/\n/g, "<br/>");
+      this.$store.dispatch("tasks/setTask", { ...e, date, executor, subtitle });
     }
   }
 };
