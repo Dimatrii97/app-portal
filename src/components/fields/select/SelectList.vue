@@ -1,9 +1,11 @@
 <template>
-  <div :class="[
+  <div
+    :class="[
       'dropdown__item',
       { active: params.isActive },
       { selected: params.isSelected }
-    ]">
+    ]"
+  >
     {{ item }}
   </div>
 </template>
@@ -27,7 +29,7 @@ export default {
 .dropdown__item {
   //.dropdown__item.active
   &.active {
-    border:1.5px solid $blue;
+    border: 1.5px solid $blue;
   }
   //.dropdown__item.selected
   &.selected {
@@ -35,5 +37,4 @@ export default {
     color: #ffffffcf;
   }
 }
-
 </style>

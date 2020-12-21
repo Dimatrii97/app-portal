@@ -19,7 +19,7 @@ Vue.filter("localRuMMYYYY", function(date) {
       typeof ending[getMonth(date)] === "string" ? ending[getMonth(date)] : "ь";
     let month = format(date, "MMMM", { locale: ru }).replace(/.$/gi, symbolEnd);
     month = month[0].toUpperCase() + month.slice(1);
-    let year = format(date, "yyyy", { locale: ru })
+    let year = format(date, "yyyy", { locale: ru });
     return `${month} ${year}`;
   }
 });

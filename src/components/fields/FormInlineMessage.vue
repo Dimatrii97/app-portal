@@ -1,6 +1,6 @@
 <template>
   <div class="form-inline-message">
-    <slot/>
+    <slot />
   </div>
 </template>
 
