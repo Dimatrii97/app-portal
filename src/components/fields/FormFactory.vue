@@ -5,9 +5,13 @@
         <Component
           v-model="data[field.name]"
           :is="field.component"
-          v-bind="{ ...field.options.props, ...field.options.attrs }"
+          v-bind="{
+            ...field.options.props,
+            ...field.options.attrs,
+            error: $v.data[field.name].$error
+          }"
           :id="field.name"
-          @input="$v.data[field.name].$touch()"
+          @input="delayTouch($v.data[field.name])"
         >
           <template #label>
             <FormLabel
@@ -19,7 +23,6 @@
             </FormLabel>
           </template>
         </Component>
-
         <FormInlineMessage v-if="$v.data[field.name].$error"
           >Введите корректные данные.</FormInlineMessage
         >
@@ -35,6 +38,8 @@ import { validationMixin } from "vuelidate";
 import FormGroup from "./FormGroup.vue";
 import FormInlineMessage from "./FormInlineMessage.vue";
 import FormLabel from "./FormLabel.vue";
+
+const touchMap = new WeakMap();
 
 const defaultField = {
   component: null,
@@ -78,14 +83,12 @@ export default {
       this.$set(this.data, field.name, field.options.defaultValue || "");
     });
   },
-  // Вписать в дату значение полей
+
   methods: {
     submit() {
       this.$v.$touch();
       if (this.$v.$error) return;
       this.$emit("input", this.data);
-      // const { success } = await this.post(this.data);
-      // this.success = success;
     },
     isEmpty(options) {
       let type = typeof options;
@@ -103,10 +106,16 @@ export default {
         default:
           return true;
       }
+    },
+    delayTouch($v) {
+      $v.$reset();
+      if (touchMap.has($v)) {
+        clearTimeout(touchMap.get($v));
+      }
+      touchMap.set($v, setTimeout($v.$touch, 1000));
     }
   },
-  // The vuelidate validation configuration is
-  // automatically generated for us.
+
   validations() {
     const data = this.fieldsWithDefaults
       .filter(x => x.validation)
@@ -122,8 +131,7 @@ export default {
 };
 </script>
 <style lang="scss">
-.form-factory{
+.form-factory {
   padding: 20px;
 }
-  
 </style>

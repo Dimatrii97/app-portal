@@ -1,6 +1,6 @@
 <template>
   <div v-click-outside="outside">
-    <div :class="[{ focus: isFocus }, 'multi-field']">
+    <div :class="[{ focus: isFocus }, { errors: $attrs.error }, 'multi-field']">
       <input
         v-model="textSubtask"
         :placeholder="$attrs.placeholder"

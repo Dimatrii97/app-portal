@@ -3,7 +3,7 @@
     <textarea
       v-model="setValue"
       ref="textarea"
-      class="form__field"
+      :class="['form__field', { errors: $attrs.error }]"
       :id="$attrs.id"
     />
     <slot name="label"></slot>

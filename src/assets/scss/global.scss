@@ -264,13 +264,11 @@ font-family: 'Raleway', sans-serif;;
 
 
 .errors {
-&  .form__field {
+&.form__field {
     border-bottom: 2px solid $red;
 }
-&.form__group_a .form__field{
-  border-bottom: none;
-}
-&.form__group_a {
+
+&.multi-field {
   border-bottom: 2px solid $red;
 }
 }

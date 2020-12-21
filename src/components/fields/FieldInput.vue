@@ -3,7 +3,7 @@
     <input
       :id="$attrs.id"
       @input="$emit('input', $event.target.value)"
-      class="form__field"
+      :class="['form__field', { errors: $attrs.error }]"
     />
     <slot name="label"></slot>
   </div>

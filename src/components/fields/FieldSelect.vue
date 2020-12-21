@@ -1,6 +1,8 @@
 <template>
   <div class="select" v-click-outside="outside" @click="inside()">
-    <div :class="[{ focus: showList }, 'multi-field']">
+    <div
+      :class="[{ focus: showList }, { errors: $attrs.error }, 'multi-field']"
+    >
       <slot @close="clickItem($event)" :value="value"></slot>
       <input
         v-model="setTextInput"
