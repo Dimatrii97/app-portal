@@ -94,12 +94,11 @@ export default {
 
   computed: {
     list() {
-      return [
-        (() => {
-          if (this.dropValue) return this.$attrs.placeholder;
-        })(),
-        ...this.selectList
-      ];
+      if (this.dropValue) {
+        let copySelectList = [...this.selectList];
+        return copySelectList.unshift(this.$attrs.placeholder);
+      }
+      return this.selectList;
     },
 
     styleConfig() {
@@ -110,6 +109,7 @@ export default {
 
     search() {
       if (this.searchProp) {
+        console.log(this.list);
         return this.list.filter(item => {
           return item[this.searchProp]
             .toLowerCase()
