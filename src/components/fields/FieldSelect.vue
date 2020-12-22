@@ -234,8 +234,8 @@ export default {
       }
     },
 
-    isSelected({ user_id }) {
-      return Object.prototype.hasOwnProperty.call(this.value, user_id);
+    isSelected(item) {
+      return this.value.includes(item);
     },
 
     isActive(i) {

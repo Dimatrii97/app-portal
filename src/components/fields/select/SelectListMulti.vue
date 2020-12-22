@@ -31,6 +31,9 @@ export default {
       type: [Object, Array]
     }
   },
+  mounted() {
+    console.log(this.$props, this.$attrs);
+  },
   components: {
     UserImg
   }

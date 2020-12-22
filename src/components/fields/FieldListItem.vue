@@ -40,7 +40,6 @@ export default {
       },
       set(value) {
         this.copyItem = value;
-        this.mixin_textarea_resize(this.$refs["input-edit"]);
       }
     }
   },
