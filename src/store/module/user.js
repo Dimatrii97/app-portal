@@ -1,6 +1,6 @@
 import * as authApi from '@/api/user'
-import { setTokens } from '@/store/utils/JWT'
-import router from '@/router'
+import * as Token from '@/utils/token'
+// import router from '@/router'
 export default {
   namespaced: true,
   state: {
@@ -44,23 +44,46 @@ export default {
   },
   actions: {
     async login({ commit }, payload) {
-      let { token, user, is_admin } = await authApi.login(payload)
-      if (token) {
-        setTokens(token)
-        commit('SET_USER', user)
-        if (is_admin == 1) {
-          commit('admin/SET_ADMIN', true, { root: true })
-          router.push('/admin')
-          return
-        }
-        router.push('/home')
+      // eslint-disable-next-line no-unused-vars
+      let { data, ok } = await authApi.login(payload)
+      // TODO: повесить на ok
+      if (data.res) {
+        Token.setTokens(data.token)
+        commit('SET_USER', data.user)
+        return true
+      } else {
+        return data
+      }
+
+      // if (token) {
+      //   setTokens(token)
+      //   commit('SET_USER', user)
+      //   if (is_admin == 1) {
+      //     commit('admin/SET_ADMIN', true, { root: true })
+      //     router.push('/admin')
+      //     return
+      //   }
+      //   router.push('/home')
+      // }
+    },
+    async loadCurrentUser({ commit }) {
+      // eslint-disable-next-line no-unused-vars
+      let { data, ok } = await authApi.current()
+      if (data.res) {
+        commit('SET_USER', data.user)
+        return true
+      } else {
+        return data
       }
     },
-    getUser() {
-      this._vm.$socket.client.emit('getUser')
-    },
-    socket_currentUser({ commit }, user) {
-      commit('SET_USER', user)
+    async loadUsersDepartment() {
+      // eslint-disable-next-line no-unused-vars
+      let { data, ok } = await authApi.usersDepartment()
+      if (data.res) {
+        return data
+      } else {
+        return false
+      }
     }
   }
 }

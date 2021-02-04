@@ -1,5 +1,9 @@
 import server from './http'
-export async function login({ login, password }) {
-  const data = await server.post('api/login', { login, password })
+export async function all() {
+  const data = await server.get('/api/tasks/user')
+  return data
+}
+export async function byId(id) {
+  const data = await server.get('/api/task/id', { id })
   return data
 }

@@ -7,9 +7,9 @@
         v-model="setSearchNameUsers"
         className="messages__search"
       />
-      <ul class="messages__list" v-if="getUsersmess.length">
+      <ul class="messages__list" v-if="messagesList.length">
         <router-link
-          v-for="(messageInfo, i) in getUsersmess"
+          v-for="(messageInfo, i) in messagesList"
           :key="i"
           :to="'/message/' + messageInfo.user_id"
           tag="li"
@@ -55,10 +55,12 @@
 import VSearch from '@/components/fields/FieldSearch.vue'
 import UserImg from '@/components/ImgUser.vue'
 import { hasOwnProperty } from '@/store/utils/helper'
-import { mapGetters, mapState, mapMutations } from 'vuex'
+import * as apiMessages from '@/api/messages.js'
+// import { mapGetters, mapState, mapMutations } from 'vuex'
 import { differenceInCalendarDays } from 'date-fns'
 import { dayMonth } from '@/utils/dateType'
 export default {
+  name: 'Messages-List',
   components: {
     UserImg,
     VSearch
@@ -67,14 +69,15 @@ export default {
   data() {
     return {
       messList: [],
+      messagesList: [],
       messServerList: []
     }
   },
 
   computed: {
-    ...mapState('users', ['searchUsersName']),
-    ...mapGetters('messages', ['getUsersmess']),
-    ...mapGetters('user', { user: 'getUserNameIdImg' }),
+    // ...mapState('users', ['searchUsersName']),
+    // ...mapGetters('messages', ['getUsersmess']),
+    // ...mapGetters('user', { user: 'getUserNameIdImg' }),
     setSearchNameUsers: {
       get() {
         return this.searchUsersName
@@ -91,8 +94,11 @@ export default {
       return this.messUsers
     }
   },
+  async created() {
+    this.messagesList = await apiMessages.last()
+  },
   methods: {
-    ...mapMutations('users', ['SET_SEARCH_USERS']),
+    // ...mapMutations('users', ['SET_SEARCH_USERS']),
     getInterval(date) {
       let lastMess = new Date(date)
       let difference = differenceInCalendarDays(new Date(), lastMess)

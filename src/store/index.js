@@ -6,9 +6,8 @@ import user from './module/user'
 import users from './module/users'
 import admin from './module/admin'
 import docs from './module/docs'
-import messages from './module/messager'
 import mapList from './module/mapList'
-import * as newsHttp from '@/api/news'
+
 Vue.use(Vuex)
 
 let news
@@ -18,8 +17,7 @@ export default new Vuex.Store({
     sizeDesktop: true,
     size: null,
     interval: null,
-    time: null,
-    news: []
+    time: null
   },
   getters: {
     isShowNavbar: state => state.navbarSnow,
@@ -38,29 +36,22 @@ export default new Vuex.Store({
     SET_SIDEBAR_OPEN(state, params) {
       state.navbarSnow = params
     },
-    SET_TIME(state) {
-      state.time = new Date()
-    },
-    SET_INTERVAL(state) {
-      state.interval = setInterval(() => {
-        this.commit('SET_TIME')
-      }, 1000)
-    },
+    // SET_TIME(state) {
+    //   state.time = new Date()
+    // },
+    // SET_INTERVAL(state) {
+    //   state.interval = setInterval(() => {
+    //     this.commit('SET_TIME')
+    //   }, 1000)
+    // },
     DELETE_INTERVAL(state) {
       if (state.interval) {
         clearInterval(state.interval)
         state.time = null
       }
-    },
-    SET_NEWS(state, news) {
-      state.news = Object.freeze(news)
     }
   },
   actions: {
-    async setNews({ commit }, payload) {
-      const news = await newsHttp.getAll()
-      commit('SET_NEWS', news)
-    },
     setSize({ commit, getters, state, dispatch }, value) {
       commit('SET_SIZE', value)
       commit('SET_SIDEBAR_OPEN', false)
@@ -70,5 +61,5 @@ export default new Vuex.Store({
       }
     }
   },
-  modules: { tasks, user, users, admin, messages, mapList, docs }
+  modules: { tasks, user, users, admin, mapList, docs }
 })

@@ -16,7 +16,7 @@
       <div>
         <div class="news__list">
           <The-News-Card
-            v-for="(newsItem, i) in getNews"
+            v-for="(newsItem, i) in news"
             :news="newsItem"
             :key="i"
             class="news__item"
@@ -30,8 +30,8 @@
 <script>
 import TheNewsCard from '@/components/home/HomeCard'
 import VueApexCharts from 'vue-apexcharts'
-import { mapGetters } from 'vuex'
-
+// import { mapGetters } from 'vuex'
+import * as newsApi from '@/api/news'
 export default {
   components: {
     TheNewsCard,
@@ -82,15 +82,18 @@ export default {
           name: '3 неделя',
           data: [23, 30, 15, 19]
         }
-      ]
+      ],
+      news: []
     }
   },
-  created() {
-    this.$store.dispatch('setNews')
+  async created() {
+    try {
+      this.news = await newsApi.get()
+    } catch (error) {
+      console.log('2', error)
+    }
   },
-  computed: {
-    ...mapGetters(['getNews'])
-  }
+  computed: {}
 }
 </script>
 <style lang="scss">

@@ -1,6 +1,5 @@
-import Vue from 'vue'
-// http://localhost:5000
-export async function getAll() {
-  const articles = await Vue.http.get('/api/news').then(res => res.json())
-  return articles
+import server from './http'
+export async function get() {
+  const { data } = await server.get('/api/news')
+  return data
 }

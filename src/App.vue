@@ -10,6 +10,7 @@ import emptyLayout from '@/layout/empty'
 import bodyHidden from '@/plugins/mixins/body-hidden'
 import { mapGetters } from 'vuex'
 export default {
+  name: 'App',
   computed: {
     ...mapGetters(['isOpenSidebar']),
     getLayout() {

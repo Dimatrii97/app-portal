@@ -9,7 +9,7 @@
 
     <div class="top-bar__list" v-if="isSizeDesktop">
       <div class="top-bar__time">
-        <h3 class="topBar__time">{{ getTime | localRuHMDM }}</h3>
+        <h3 class="topBar__time">{{ time | localRuHMDM }}</h3>
       </div>
       <div
         @mouseout="setShowProfile(false)"
@@ -44,7 +44,7 @@
     <div v-else class="nav__toggle">
       <button type="button" class="nav__toggle__button">
         <div
-          @click="isShowSideNav()"
+          @click="$emit('input')"
           :class="['menu-btn', { open: isOpenSidebar }]"
         >
           <div class="menu-btn__burger"></div>
@@ -57,28 +57,30 @@
 <script>
 import VSearch from '@/components/fields/FieldSearch.vue'
 import UserImg from '@/components/ImgUser.vue'
-import { mapGetters, mapMutations } from 'vuex'
-import { cleanTokensData } from '@/store/utils/JWT'
+import { mapGetters } from 'vuex'
 import { debounce } from '@/utils/throttling'
 export default {
   components: {
     UserImg,
     VSearch
   },
+  props: {
+    size: Number,
+    isOpenSidebar: Boolean
+  },
 
   data() {
     return {
       date: null,
-      resizeTimer: null,
+      time: null,
       profileNav: false
     }
   },
 
   computed: {
     ...mapGetters('user', { user: 'getUserHeaderInfo' }),
-    ...mapGetters(['isSizeDesktop', 'isOpenSidebar', 'getTime']),
-    resizeDebounce() {
-      return debounce(this.setSize, 100)
+    isSizeDesktop() {
+      return this.size > 600
     },
     mouseDebounce() {
       return debounce(params => (this.profileNav = params), 400)
@@ -86,34 +88,17 @@ export default {
   },
 
   created() {
-    this.$store.dispatch('user/getUser')
-    this.setSize()
-    window.addEventListener('resize', this.resizeDebounce)
-  },
-
-  beforeDestroy() {
-    window.removeEventListener('resize', this.resizeDebounce)
+    const idInterval = setInterval(() => {
+      this.time = new Date()
+    }, 1000)
+    this.$once('hook:beforeDestroy', () => {
+      clearInterval(idInterval)
+    })
   },
 
   methods: {
-    ...mapMutations(['SET_SIDEBAR_OPEN']),
-
-    isShowSideNav() {
-      this.SET_SIDEBAR_OPEN(!this.isOpenSidebar)
-    },
     setShowProfile(params) {
       this.mouseDebounce(params)
-    },
-
-    setSize() {
-      this.$store.dispatch('setSize', +window.innerWidth)
-    },
-    outUser() {
-      cleanTokensData()
-      this.$socket.disconnected
-      this.$router.push('/login').then(() => {
-        document.location.reload()
-      })
     }
   }
 }

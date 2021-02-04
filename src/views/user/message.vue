@@ -58,7 +58,7 @@ import UserImg from '@/components/ImgUser.vue'
 import textareaMixin from '@/plugins/mixins/textarea'
 import { maxLength } from 'vuelidate/lib/validators'
 import { getJWTPayload, getAccessToken } from '@/store/utils/JWT'
-import { datePostgres } from '@/utils/dateType'
+
 import { mapGetters } from 'vuex'
 export default {
   components: {
@@ -103,7 +103,7 @@ export default {
       ) {
         this.masseges.push(message)
         this.scrollEnd()
-        this.$store.dispatch('messages/updateViewedMess', this.$route.params.id)
+        // this.$store.dispatch('messages/updateViewedMess', this.$route.params.id)
       }
       if (
         message.toid === this.$route.params.id &&
@@ -122,7 +122,7 @@ export default {
   },
 
   mounted() {
-    this.$store.dispatch('messages/updateViewedMess', this.$route.params.id)
+    // this.$store.dispatch('messages/updateViewedMess', this.$route.params.id)
   },
 
   validations: {
@@ -154,14 +154,14 @@ export default {
     sendMess() {
       this.$v.messText.$touch()
       if (this.messText && !this.$v.messText.$error) {
-        let date = datePostgres(new Date())
-        this.$store.dispatch('messages/newMessUsers', {
-          fromid: this.user.id,
-          toid: this.$route.params.id,
-          text: this.messText,
-          scanned: false,
-          date
-        })
+        // let date = datePostgres(new Date())
+        // this.$store.dispatch('messages/newMessUsers', {
+        //   fromid: this.user.id,
+        //   toid: this.$route.params.id,
+        //   text: this.messText,
+        //   scanned: false,
+        //   date
+        // })
         this.messText = ''
         this.scrollEnd()
       }

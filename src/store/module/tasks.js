@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
-import Vue from 'vue'
+import * as apiTask from '@/api/task.js'
 import { getJWTPayload, getAccessToken } from '../utils/JWT'
 import { normalizeState } from '../utils/normalize'
+// TODO: можно сделать нормализе task и sub
 export default {
   namespaced: true,
   state: {
@@ -21,23 +22,15 @@ export default {
   },
   mutations: {
     SET_NEW_TASK(state, newTask) {
-      Vue.set(newTask, 'scanned', newTask.scanned)
       state.tasks.push(newTask)
     },
-    SET_ALL_TASKS(state, allTasks) {
+    SET_TASKS(state, allTasks) {
       state.tasks = allTasks
     },
-    SET_TASK_ADDITIONAL(state, tasksAdd) {
-      tasksAdd.forEach(task => {
-        normalizeState(state.AdditionalTask, task, task.id)
-      })
-    },
     DELETE_TASK(state, idTask) {
-      let ind = state.tasks.findIndex(task => task.id === idTask)
-      if (ind === -1) return
-      state.tasks.splice(ind, 1)
-      Vue.delete(state.AdditionalTask, idTask)
+      state.tasks = state.tasks.filter(task => task.id !== idTask)
     },
+    // TODO: вряд-ли vue навешает observer на task obj
     UPDATE_SCANNED_TASK(state, id) {
       state.tasks.forEach(task => {
         if (task.id == id) {
@@ -53,48 +46,25 @@ export default {
     }
   },
   actions: {
-    setTask({ state }, data) {
-      this._vm.$socket.client.emit('setTasks', data)
+    async loadTasks({ commit }) {
+      let { data, ok } = await apiTask.all()
+      console.log(data, '333')
+      if (data.res) {
+        commit('SET_TASKS', data.tasks)
+      }
     },
-    getTasks() {
-      this._vm.$socket.client.emit('getTasks')
-    },
-    viewedTask({ commit }, id) {
-      this._vm.$socket.client.emit('updateViewedTask', id)
-      commit('UPDATE_SCANNED_TASK', id)
-    },
-    updateSubTask({ state }, id) {
-      this._vm.$socket.client.emit('updateSubTask', id)
-    },
-    thereAreTaskInfo({ state, dispatch }, idTask) {
-      let taskIdServer = idTask.filter(id => !state.AdditionalTask[id])
-      if (taskIdServer.length) {
-        dispatch('getTaskById', taskIdServer)
+    async loadById({ commit }, id) {
+      let { data, ok } = await apiTask.byId(id)
+      if (data.res) {
+        return data.task
       }
     },
 
-    getTaskById({ state }, id) {
-      this._vm.$socket.client.emit('getTaskById', id)
-    },
     completeTask({ state }, id) {
       this._vm.$socket.client.emit('completeTask', id)
     },
     socket_newTasksOnline({ commit }, newTask) {
       commit('SET_NEW_TASK', newTask)
-    },
-    socket_getAllTasks({ commit, state, rootGetters }, allTasks) {
-      for (const task of allTasks) {
-        let ind = task.users.findIndex(
-          task => task.id === getJWTPayload(getAccessToken()).id
-        )
-        if (ind === -1) return
-        task.users.splice(ind, 1)
-      }
-
-      commit('SET_ALL_TASKS', allTasks)
-    },
-    socket_setTaskAdditional({ commit, dispatch }, addInfo) {
-      commit('SET_TASK_ADDITIONAL', addInfo)
     },
     socket_updatedSubtask({ commit }, payload) {
       commit('UPDATE_SUBTASKS', payload)
