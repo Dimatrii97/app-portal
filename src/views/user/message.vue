@@ -53,12 +53,13 @@
   </section>
 </template>
 <script>
-import InfiniteLoading from "vue-infinite-loading";
-import UserImg from "@/components/ImgUser.vue";
-import { maxLength } from "vuelidate/lib/validators";
-import { getJWTPayload, getAccessToken } from "@/store/utils/JWT";
-import { datePostgres } from "@/utils/dateType";
-import { mapGetters } from "vuex";
+import InfiniteLoading from 'vue-infinite-loading'
+import UserImg from '@/components/ImgUser.vue'
+import textareaMixin from '@/plugins/mixins/textarea'
+import { maxLength } from 'vuelidate/lib/validators'
+import { getJWTPayload, getAccessToken } from '@/store/utils/JWT'
+import { datePostgres } from '@/utils/dateType'
+import { mapGetters } from 'vuex'
 export default {
   components: {
     InfiniteLoading,
@@ -69,27 +70,27 @@ export default {
       id: null,
       masseges: [],
       countMessage: 0,
-      messText: ""
-    };
+      messText: ''
+    }
   },
-
+  mixins: [textareaMixin],
   computed: {
-    ...mapGetters("user", { user: "getUserNameIdImg" }),
+    ...mapGetters('user', { user: 'getUserNameIdImg' }),
     interlocutor() {
-      let interlocutor = this.$store.getters["users/findUserId"](
+      let interlocutor = this.$store.getters['users/findUserId'](
         this.$route.params.id
-      );
-      if (interlocutor) return interlocutor;
-      this.$store.dispatch("users/getUserById", this.$route.params.id);
-      return "";
+      )
+      if (interlocutor) return interlocutor
+      this.$store.dispatch('users/getUserById', this.$route.params.id)
+      return ''
     },
     setMessText: {
       get() {
-        return this.messText;
+        return this.messText
       },
       set(value) {
-        this.messText = value;
-        this.mixin_textarea_resize(this.$refs.textMess);
+        this.messText = value
+        this.m_textarea_resize(this.$refs.textMess)
       }
     }
   },
@@ -100,31 +101,28 @@ export default {
         message.toid === this.user.id &&
         message.fromid === this.$route.params.id
       ) {
-        this.masseges.push(message);
-        this.scrollEnd();
-        this.$store.dispatch(
-          "messages/updateViewedMess",
-          this.$route.params.id
-        );
+        this.masseges.push(message)
+        this.scrollEnd()
+        this.$store.dispatch('messages/updateViewedMess', this.$route.params.id)
       }
       if (
         message.toid === this.$route.params.id &&
         message.fromid === this.user.id
       ) {
-        this.masseges.push(message);
-        this.scrollEnd();
+        this.masseges.push(message)
+        this.scrollEnd()
       }
     },
     updateAllScanned() {
       this.masseges = this.masseges.map(el => {
-        el.scanned = true;
-        return el;
-      });
+        el.scanned = true
+        return el
+      })
     }
   },
 
   mounted() {
-    this.$store.dispatch("messages/updateViewedMess", this.$route.params.id);
+    this.$store.dispatch('messages/updateViewedMess', this.$route.params.id)
   },
 
   validations: {
@@ -135,64 +133,64 @@ export default {
   methods: {
     infiniteHandler($state) {
       this.$http
-        .post("http://localhost:5000/api/userMes/", {
+        .post('http://localhost:5000/api/userMes/', {
           toid: this.$route.params.id,
           fromid: getJWTPayload(getAccessToken()).id,
           offset: this.countMessage
         })
         .then(mess => {
-          return mess.json();
+          return mess.json()
         })
         .then(mess => {
           if (mess.length) {
-            this.countMessage += 15;
-            this.masseges.unshift(...mess);
-            $state.loaded();
+            this.countMessage += 15
+            this.masseges.unshift(...mess)
+            $state.loaded()
           } else {
-            $state.complete();
+            $state.complete()
           }
-        });
+        })
     },
     sendMess() {
-      this.$v.messText.$touch();
+      this.$v.messText.$touch()
       if (this.messText && !this.$v.messText.$error) {
-        let date = datePostgres(new Date());
-        this.$store.dispatch("messages/newMessUsers", {
+        let date = datePostgres(new Date())
+        this.$store.dispatch('messages/newMessUsers', {
           fromid: this.user.id,
           toid: this.$route.params.id,
           text: this.messText,
           scanned: false,
           date
-        });
-        this.messText = "";
-        this.scrollEnd();
+        })
+        this.messText = ''
+        this.scrollEnd()
       }
     },
     scrollEnd() {
       this.$nextTick(() => {
-        this.$refs.mesContainer.scrollTop = this.$refs.mesContainer.scrollHeight;
-      });
+        this.$refs.mesContainer.scrollTop = this.$refs.mesContainer.scrollHeight
+      })
     },
     showImg(i) {
-      if (i == 0) return true;
-      if (this.masseges[i - 1].fromid === this.masseges[i].fromid) return false;
-      return true;
+      if (i == 0) return true
+      if (this.masseges[i - 1].fromid === this.masseges[i].fromid) return false
+      return true
     },
     back() {
-      this.$router.go(-1);
+      this.$router.go(-1)
     },
     genImg(id) {
       return id == this.user.id
         ? { img: this.user.img, name: this.user.name }
-        : { img: this.interlocutor.img, name: this.interlocutor.name };
+        : { img: this.interlocutor.img, name: this.interlocutor.name }
     },
     classMess(fromid) {
-      return fromid == this.user.id ? "mess__item_me" : "mess__item_you";
+      return fromid == this.user.id ? 'mess__item_me' : 'mess__item_you'
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/pages/chat";
+@import '@/assets/pages/chat';
 </style>

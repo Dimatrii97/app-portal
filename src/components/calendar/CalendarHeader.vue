@@ -25,7 +25,7 @@ export default {
   props: {
     visibleMonth: Date
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

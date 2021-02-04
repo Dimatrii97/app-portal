@@ -33,24 +33,24 @@
 </template>
 
 <script>
-import { validationMixin } from "vuelidate";
+import { validationMixin } from 'vuelidate'
 
-import FormGroup from "./FormGroup.vue";
-import FormInlineMessage from "./FormInlineMessage.vue";
-import FormLabel from "./FormLabel.vue";
+import FormGroup from './FormGroup.vue'
+import FormInlineMessage from './FormInlineMessage.vue'
+import FormLabel from './FormLabel.vue'
 
-const touchMap = new WeakMap();
+const touchMap = new WeakMap()
 
 const defaultField = {
   component: null,
-  label: "",
-  name: "",
+  label: '',
+  name: '',
   options: {},
   validation: {}
-};
+}
 
 export default {
-  name: "FormFactory",
+  name: 'FormFactory',
   mixins: [validationMixin],
   components: {
     FormGroup,
@@ -71,48 +71,54 @@ export default {
     return {
       data: {},
       success: false
-    };
+    }
   },
   computed: {
     fieldsWithDefaults() {
-      return this.fields.map(x => ({ ...defaultField, ...x }));
+      return this.fields.map(x => ({ ...defaultField, ...x }))
     }
   },
   created() {
     this.$props.fields.forEach(field => {
-      this.$set(this.data, field.name, field.options.defaultValue || "");
-    });
+      this.$set(this.data, field.name, field.options.defaultValue || '')
+    })
   },
 
   methods: {
     submit() {
-      this.$v.$touch();
-      if (this.$v.$error) return;
-      this.$emit("input", this.data);
+      this.$v.$touch()
+      if (this.$v.$error) return
+      this.$emit('input', this.data)
     },
     isEmpty(options) {
-      let type = typeof options;
+      let type = typeof options
       switch (type) {
-        case "string": {
-          return !options;
+        case 'string': {
+          return !options
         }
-        case "object": {
+        case 'object': {
           if (Array.isArray(options)) {
-            return !options.length;
+            return !options.length
           }
-          return !Object.keys(options).length;
+          return !Object.keys(options).length
         }
 
         default:
-          return true;
+          return true
       }
     },
     delayTouch($v) {
-      $v.$reset();
+      $v.$reset()
       if (touchMap.has($v)) {
-        clearTimeout(touchMap.get($v));
+        clearTimeout(touchMap.get($v))
       }
-      touchMap.set($v, setTimeout($v.$touch, 1000));
+      touchMap.set($v, setTimeout($v.$touch, 1000))
+    },
+    clear() {
+      this.$props.fields.forEach(field => {
+        this.$set(this.data, field.name, field.options.defaultValue || '')
+      })
+      this.$v.$reset()
     }
   },
 
@@ -125,10 +131,10 @@ export default {
           [field.name]: field.validation
         }),
         {}
-      );
-    return { data };
+      )
+    return { data }
   }
-};
+}
 </script>
 <style lang="scss">
 .form-factory {

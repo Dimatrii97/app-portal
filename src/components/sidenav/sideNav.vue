@@ -28,39 +28,39 @@
   </aside>
 </template>
 <script>
-import VSearch from "@/components/fields/FieldSearch.vue";
-import { mapGetters, mapMutations } from "vuex";
-import { cleanTokensData } from "@/store/utils/JWT";
+import VSearch from '@/components/fields/FieldSearch.vue'
+import { mapGetters, mapMutations } from 'vuex'
+import { cleanTokensData } from '@/store/utils/JWT'
 export default {
   components: { VSearch },
   computed: {
-    ...mapGetters(["isOpenSidebar"]),
-    ...mapGetters("mapList", { navlist: "getNavlist" })
+    ...mapGetters(['isOpenSidebar']),
+    ...mapGetters('mapList', { navlist: 'getNavlist' })
   },
   watch: {
     $route() {
       if (this.isOpenSidebar) {
-        this.SET_SIDEBAR_OPEN(false);
+        this.SET_SIDEBAR_OPEN(false)
       }
     }
   },
 
   methods: {
-    ...mapMutations(["SET_SIDEBAR_OPEN"]),
+    ...mapMutations(['SET_SIDEBAR_OPEN']),
     navClick(event) {
-      if (event) this[event]();
+      if (event) this[event]()
     },
     outUser() {
-      cleanTokensData();
-      this.$socket.disconnected;
-      this.$router.push("/login").then(() => {
-        document.location.reload();
-      });
+      cleanTokensData()
+      this.$socket.disconnected
+      this.$router.push('/login').then(() => {
+        document.location.reload()
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/pages/userLayout";
+@import '@/assets/pages/userLayout';
 </style>

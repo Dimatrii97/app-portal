@@ -22,24 +22,24 @@ export default {
   },
   data() {
     return {
-      active: ""
-    };
+      active: ''
+    }
   },
   computed: {
     setValue: {
       get() {
-        return this.active;
+        return this.active
       },
       set(value) {
-        this.active = value;
-        this.$emit("input", value);
+        this.active = value
+        this.$emit('input', value)
       }
     }
   },
   mounted() {
-    this.active = this.value[0];
+    this.active = this.value[0]
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -69,7 +69,7 @@ export default {
 
 .cr::before,
 .cr::after {
-  content: "";
+  content: '';
   display: block;
   border-radius: inherit;
   position: absolute;

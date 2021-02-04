@@ -40,25 +40,25 @@ export default {
   computed: {
     getList() {
       if (this.value < this.MaxButtonPagination) {
-        return this.generateList(1);
+        return this.generateList(1)
       }
       if (this.activePage + 2 > this.value) {
-        return this.generateList(this.value - (this.MaxButtonPagination - 1));
+        return this.generateList(this.value - (this.MaxButtonPagination - 1))
       }
       if (this.activePage > 3) {
-        return this.generateList(this.activePage - 2);
+        return this.generateList(this.activePage - 2)
       }
-      return this.generateList(1);
+      return this.generateList(1)
     },
     lengthPagination() {
-      if (this.value > 5) return 5;
-      return this.value;
+      if (this.value > 5) return 5
+      return this.value
     },
     nextClick() {
-      return this.activePage === this.value;
+      return this.activePage === this.value
     },
     previousClick() {
-      return this.activePage === 1;
+      return this.activePage === 1
     }
   },
   methods: {
@@ -66,13 +66,13 @@ export default {
       return Array.from(
         { length: this.lengthPagination },
         (_, i) => i + firstCount
-      );
+      )
     },
     emit(numPage) {
-      this.$emit("input", numPage);
+      this.$emit('input', numPage)
     }
   }
-};
+}
 </script>
 
 <style lang="scss">

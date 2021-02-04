@@ -11,42 +11,34 @@
 </template>
 
 <script>
+import textareaMixin from '@/plugins/mixins/textarea'
 export default {
   inheritAttrs: false,
-  name: "FormTextarea",
+  name: 'FormTextarea',
   props: {
     value: {
-      default: "",
+      default: '',
       type: String
     }
   },
+  mixins: [textareaMixin],
   computed: {
     setValue: {
       get() {
-        return this.value;
+        return this.value
       },
       set(value) {
-        this.textarea_resize();
-        this.$emit("input", value);
+        this.m_textarea_resize(this.$refs.textarea)
+        this.$emit('input', value)
       }
     }
   },
   watch: {
     value(newValue) {
-      if (!newValue) this.textarea_clearResize();
-    }
-  },
-  methods: {
-    textarea_resize() {
-      this.$refs.textarea.style.height = "5px";
-      this.$refs.textarea.style.height =
-        this.$refs.textarea.scrollHeight + "px";
-    },
-    textarea_clearResize() {
-      this.$refs.textarea.style.height = "41px";
+      if (!newValue) this.m_textarea_clearResize(this.$refs.textarea)
     }
   }
-};
+}
 </script>
 <style>
 textarea.form__field {

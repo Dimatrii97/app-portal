@@ -7,7 +7,7 @@ export default {
   props: {
     value: [Number, String]
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 .select__header {

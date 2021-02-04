@@ -66,24 +66,19 @@
 </template>
 
 <script>
-import VInput from "../fields/FieldInput.vue";
-import {
-  required,
-  numeric,
-  minLength,
-  between
-} from "vuelidate/lib/validators";
+import VInput from '../fields/FieldInput.vue'
+import { required, numeric, minLength, between } from 'vuelidate/lib/validators'
 export default {
   components: { VInput },
 
   data() {
     return {
       fields: {
-        department: "",
-        position: "",
-        range: ""
+        department: '',
+        position: '',
+        range: ''
       }
-    };
+    }
   },
   validations: {
     fields: {
@@ -104,17 +99,17 @@ export default {
   methods: {
     submit() {
       if (!this.$v.fields.$invalid) {
-        this.$store.dispatch("admin/addDepartment", this.fields);
-        this.fields.department = "";
-        this.fields.position = "";
-        this.fields.range = "";
-        this.$v.$reset();
+        this.$store.dispatch('admin/addDepartment', this.fields)
+        this.fields.department = ''
+        this.fields.position = ''
+        this.fields.range = ''
+        this.$v.$reset()
       }
     },
     requiredDirty(name) {
-      return this.$v.fields[name].$dirty && !this.$v.fields[name].required;
+      return this.$v.fields[name].$dirty && !this.$v.fields[name].required
     }
   }
-};
+}
 </script>
 <style scoped></style>

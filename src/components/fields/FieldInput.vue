@@ -3,7 +3,7 @@
     <input
       :id="$attrs.id"
       :type="$attrs.type || 'text'"
-      @input="$emit('input', $event.target.value)"
+      v-model="setValue"
       :class="['form__field', { errors: $attrs.error }]"
     />
     <slot name="label"></slot>
@@ -11,6 +11,22 @@
 </template>
 <script>
 export default {
-  inheritAttrs: false
-};
+  inheritAttrs: false,
+  props: {
+    value: {
+      default: '',
+      type: String
+    }
+  },
+  computed: {
+    setValue: {
+      get() {
+        return this.value
+      },
+      set(value) {
+        this.$emit('input', value)
+      }
+    }
+  }
+}
 </script>

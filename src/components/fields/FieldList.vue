@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import FieldListItem from "./FieldListItem";
+import FieldListItem from './FieldListItem'
 export default {
   inheritAttrs: false,
   props: {
@@ -53,42 +53,42 @@ export default {
 
   data() {
     return {
-      textSubtask: "",
+      textSubtask: '',
       focus: false
-    };
+    }
   },
 
   computed: {
     isFocus() {
-      return this.focus || this.textSubtask;
+      return this.focus || this.textSubtask
     }
   },
 
   methods: {
     pushSubtask() {
-      this.$refs.input.focus();
-      if (!(this.textSubtask === "")) {
-        let newValue = [...this.value];
-        newValue.push(this.textSubtask);
-        this.$emit("input", newValue);
+      this.$refs.input.focus()
+      if (!(this.textSubtask === '')) {
+        let newValue = [...this.value]
+        newValue.push(this.textSubtask)
+        this.$emit('input', newValue)
       }
-      this.textSubtask = "";
+      this.textSubtask = ''
     },
     changeItem(index, newItem) {
-      let newValue = [...this.value];
-      newValue[index] = newItem;
-      this.$emit("input", newValue);
+      let newValue = [...this.value]
+      newValue[index] = newItem
+      this.$emit('input', newValue)
     },
     deleteItem(index) {
-      let newValue = [...this.value];
-      newValue.splice(index, 1);
-      this.$emit("input", newValue);
+      let newValue = [...this.value]
+      newValue.splice(index, 1)
+      this.$emit('input', newValue)
     },
     outside() {
-      this.focus = false;
+      this.focus = false
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

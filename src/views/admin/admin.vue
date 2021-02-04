@@ -6,14 +6,14 @@
 </template>
 
 <script>
-import theCreateDepartment from "@/components/admin/createDepartment";
-import theCreateUser from "@/components/admin/createUser";
+import theCreateDepartment from '@/components/admin/createDepartment'
+import theCreateUser from '@/components/admin/createUser'
 export default {
   components: {
     theCreateDepartment,
     theCreateUser
   }
-};
+}
 </script>
 
 <style></style>

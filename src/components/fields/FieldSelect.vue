@@ -40,16 +40,16 @@
 </template>
 
 <script>
-import TransitionExpand from "@/components/transition-expand";
+import TransitionExpand from '@/components/transition-expand'
 export default {
-  name: "field-select",
+  name: 'field-select',
 
   inheritAttrs: false,
 
   provide: function() {
     return {
       clickItem: this.clickItem
-    };
+    }
   },
 
   components: {
@@ -63,7 +63,7 @@ export default {
     },
 
     type: {
-      default: "select",
+      default: 'select',
       type: String
     },
 
@@ -73,7 +73,7 @@ export default {
     },
 
     searchProp: {
-      default: "",
+      default: '',
       type: String
     },
 
@@ -87,162 +87,161 @@ export default {
     return {
       showList: false,
       toggleBackspace: true,
-      textInput: "",
+      textInput: '',
       activeUser: null
-    };
+    }
   },
 
   computed: {
     list() {
       if (this.dropValue) {
-        let copySelectList = [...this.selectList];
-        return copySelectList.unshift(this.$attrs.placeholder);
+        let copySelectList = [...this.selectList]
+        copySelectList.unshift(this.$attrs.placeholder)
+        return copySelectList
       }
-      return this.selectList;
+      return this.selectList
     },
 
     styleConfig() {
       return this.showList
-        ? { transform: "translate(-50%, -50%) rotate(180deg)" }
-        : {};
+        ? { transform: 'translate(-50%, -50%) rotate(180deg)' }
+        : {}
     },
 
     search() {
       if (this.searchProp) {
-        console.log(this.list);
         return this.list.filter(item => {
           return item[this.searchProp]
             .toLowerCase()
-            .includes(this.textInput.toLowerCase());
-        });
-      } else return this.list;
+            .includes(this.textInput.toLowerCase())
+        })
+      } else return this.list
     },
 
     heightArrayElementList() {
       return Array.prototype.map.call(
         this.$refs.list.children,
         el => +window.getComputedStyle(el).height.slice(0, -2)
-      );
+      )
     },
 
     heightElementList() {
       let marginAverage =
         (+window
           .getComputedStyle(this.$refs.list.children[0])
-          ["marginTop"].slice(0, -2) +
+          ['marginTop'].slice(0, -2) +
           +window
             .getComputedStyle(this.$refs.list.children[0])
-            ["marginBottom"].slice(0, -2)) /
-        2;
+            ['marginBottom'].slice(0, -2)) /
+        2
       return this.heightArrayElementList
         .slice(0, this.activeUser ? this.activeUser - 1 : this.activeUser)
-        .reduce((acc, el) => (acc += el + marginAverage), 0);
+        .reduce((acc, el) => (acc += el + marginAverage), 0)
     },
 
     setTextInput: {
       get() {
-        return this.textInput;
+        return this.textInput
       },
 
       set(values) {
-        this.textInput = values;
-        this.toggleBackspace = false;
+        this.textInput = values
+        this.toggleBackspace = false
       }
     }
   },
 
   methods: {
     outside() {
-      this.showList = false;
-      this.$refs.input.blur();
-      this.activeUser = null;
-      this.textInput = "";
+      this.showList = false
+      this.$refs.input.blur()
+      this.activeUser = null
+      this.textInput = ''
     },
 
     inside() {
-      this.$refs.input.focus();
+      this.$refs.input.focus()
     },
 
     onShowList() {
-      this.showList = true;
+      this.showList = true
     },
 
     closeIcon(event) {
       if (this.showList) {
-        event.stopPropagation();
-        this.outside();
+        event.stopPropagation()
+        this.outside()
       }
     },
 
     onEnter() {
-      if (this.activeUser !== null)
-        this.clickItem(this.search[this.activeUser]);
+      if (this.activeUser !== null) this.clickItem(this.search[this.activeUser])
     },
 
     onBackspace() {
-      if (this.toggleBackspace && typeof this.value === "object") {
-        this.$emit("input", this.value.slice(0, this.value.length - 1));
+      if (this.toggleBackspace && typeof this.value === 'object') {
+        this.$emit('input', this.value.slice(0, this.value.length - 1))
       }
-      if (!this.textInput) this.toggleBackspace = true;
+      if (!this.textInput) this.toggleBackspace = true
     },
 
     onKeyUp() {
       this.activeUser !== 0
         ? (this.activeUser -= 1)
-        : (this.activeUser = this.search.length - 1);
-      this.scrollUp();
+        : (this.activeUser = this.search.length - 1)
+      this.scrollUp()
     },
 
     onKeyDown() {
       this.activeUser !== this.search.length - 1
         ? (this.activeUser += 1)
-        : (this.activeUser = 0);
+        : (this.activeUser = 0)
 
-      this.scrollUp();
+      this.scrollUp()
     },
 
     scrollUp() {
-      this.$refs.list.scrollTop = +this.heightElementList;
+      this.$refs.list.scrollTop = +this.heightElementList
     },
 
     //TODO: переписать стукдуру users во Vuex на id или же придумать как прокидывать фк сюда
 
     clickItem(item) {
       switch (this.type) {
-        case "select": {
-          this.outside();
+        case 'select': {
+          this.outside()
           if (item === this.$attrs.placeholder) {
-            this.$emit("input", "");
-            return;
+            this.$emit('input', '')
+            return
           }
-          this.$emit("input", item);
-          break;
+          this.$emit('input', item)
+          break
         }
-        case "multiSelect": {
-          const newValue = [...this.value];
-          const isItem = newValue.indexOf(item);
+        case 'multiSelect': {
+          const newValue = [...this.value]
+          const isItem = newValue.indexOf(item)
           if (isItem !== -1) {
-            newValue.splice(isItem, 1);
+            newValue.splice(isItem, 1)
           } else {
-            newValue.push(item);
+            newValue.push(item)
           }
-          this.$emit("input", newValue);
-          break;
+          this.$emit('input', newValue)
+          break
         }
         default:
-          break;
+          break
       }
     },
 
     isSelected(item) {
-      return this.value.includes(item);
+      return this.value.includes(item)
     },
 
     isActive(i) {
-      return this.activeUser === i;
+      return this.activeUser === i
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

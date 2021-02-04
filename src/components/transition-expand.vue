@@ -17,45 +17,45 @@ export default {
       type: Number
     }
   },
-  name: "TransitionExpand",
+  name: 'TransitionExpand',
   methods: {
     enter(element) {
-      const width = getComputedStyle(element).width;
-      element.style.transition = `height ${this.time}s ease-in-out`;
-      element.style.width = width;
-      element.style.position = "absolute";
-      element.style.visibility = "hidden";
-      element.style.height = "auto";
+      const width = getComputedStyle(element).width
+      element.style.transition = `height ${this.time}s ease-in-out`
+      element.style.width = width
+      element.style.position = 'absolute'
+      element.style.visibility = 'hidden'
+      element.style.height = 'auto'
 
-      const height = getComputedStyle(element).height;
+      const height = getComputedStyle(element).height
 
-      element.style.width = null;
-      element.style.position = null;
-      element.style.visibility = null;
-      element.style.height = 0;
-      getComputedStyle(element).height;
+      element.style.width = null
+      element.style.position = null
+      element.style.visibility = null
+      element.style.height = 0
+      getComputedStyle(element).height
       requestAnimationFrame(() => {
-        element.style.height = height;
-      });
+        element.style.height = height
+      })
     },
     afterEnter(element) {
-      element.style.height = "auto";
-      element.style.transition = "none";
+      element.style.height = 'auto'
+      element.style.transition = 'none'
     },
     leave(element) {
-      element.style.transition = `height ${this.time / 1.5}s ease-in-out`;
-      const height = getComputedStyle(element).height;
+      element.style.transition = `height ${this.time / 1.5}s ease-in-out`
+      const height = getComputedStyle(element).height
 
-      element.style.height = height;
+      element.style.height = height
 
-      getComputedStyle(element).height;
+      getComputedStyle(element).height
 
       requestAnimationFrame(() => {
-        element.style.height = 0;
-      });
+        element.style.height = 0
+      })
     }
   }
-};
+}
 </script>
 
 <style scoped>

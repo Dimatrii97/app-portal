@@ -46,12 +46,12 @@
 </template>
 
 <script>
-import CalendarTaskList from "@/components/calendar/CalendarTaskList.vue";
-import CalendarHeader from "@/components/calendar/CalendarHeader.vue";
-import CalendarBody from "@/components/calendar/СalendarBody";
-import CalendarRouter from "@/plugins/mixins/calendar-router";
-import { Month } from "@/components/calendar/CreateCalendar";
-import { mapGetters } from "vuex";
+import CalendarTaskList from '@/components/calendar/CalendarTaskList.vue'
+import CalendarHeader from '@/components/calendar/CalendarHeader.vue'
+import CalendarBody from '@/components/calendar/СalendarBody'
+import CalendarRouter from '@/plugins/mixins/calendar-router'
+import { Month } from '@/components/calendar/CreateCalendar'
+import { mapGetters } from 'vuex'
 export default {
   components: {
     CalendarBody,
@@ -65,67 +65,67 @@ export default {
       activeDay: new Date(),
       visibleMonth: new Date(),
       tasksDay: [],
-      openTaskId: ""
-    };
+      openTaskId: ''
+    }
   },
   computed: {
-    ...mapGetters("tasks", { events: "getTasks" }),
+    ...mapGetters('tasks', { events: 'getTasks' }),
 
     getMonth() {
       return Month.createMonth(this.visibleMonth)
         .setTasks(this.events)
-        .getMonth();
+        .getMonth()
     },
 
     getTasksDay() {
       return this.events.filter(task => {
-        return this.isWithinInterval(task.startdate, task.deadline);
-      });
+        return this.isWithinInterval(task.startdate, task.deadline)
+      })
     }
   },
 
   watch: {
     getTasksDay(newValue) {
       this.$store.dispatch(
-        "tasks/thereAreTaskInfo",
+        'tasks/thereAreTaskInfo',
         newValue.map(i => i.id)
-      );
+      )
     }
   },
 
   methods: {
     setActiveDay(date) {
-      this.activeDay = date;
+      this.activeDay = date
     },
 
     toggleTask(idTasks) {
       this.openTaskId == idTasks
-        ? (this.openTaskId = "")
-        : (this.openTaskId = idTasks);
+        ? (this.openTaskId = '')
+        : (this.openTaskId = idTasks)
     },
 
     setTasks(id) {
-      this.tasksDay = id;
+      this.tasksDay = id
     },
 
     isWithinInterval(startdate, deadline) {
-      let stD = new Date(startdate).setHours(0, 0, 0, 0);
-      let dlD = new Date(deadline).setHours(0, 0, 0, 0);
-      let firstB = stD <= this.activeDay;
-      let LastB = this.activeDay <= dlD;
-      return firstB && LastB;
+      let stD = new Date(startdate).setHours(0, 0, 0, 0)
+      let dlD = new Date(deadline).setHours(0, 0, 0, 0)
+      let firstB = stD <= this.activeDay
+      let LastB = this.activeDay <= dlD
+      return firstB && LastB
     },
 
     sliceHide(arr) {
-      if (arr) return arr.slice(0, 3);
-      return null;
+      if (arr) return arr.slice(0, 3)
+      return null
     },
 
     hide(tasks) {
-      return tasks && tasks.length > 4;
+      return tasks && tasks.length > 4
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 .calendar {

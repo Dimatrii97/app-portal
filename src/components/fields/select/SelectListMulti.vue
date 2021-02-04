@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import UserImg from "@/components/ImgUser";
+import UserImg from '@/components/ImgUser'
 export default {
   props: {
     item: {
@@ -31,13 +31,10 @@ export default {
       type: [Object, Array]
     }
   },
-  mounted() {
-    console.log(this.$props, this.$attrs);
-  },
   components: {
     UserImg
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 //.dropdown__item

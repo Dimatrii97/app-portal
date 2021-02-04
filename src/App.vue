@@ -4,16 +4,16 @@
   </div>
 </template>
 <script>
-import userLayout from "@/layout/userLayout";
-import adminLayout from "@/layout/adminLayout";
-import emptyLayout from "@/layout/empty";
-import bodyHidden from "@/plugins/mixins/body-hidden";
-import { mapGetters } from "vuex";
+import userLayout from '@/layout/userLayout'
+import adminLayout from '@/layout/adminLayout'
+import emptyLayout from '@/layout/empty'
+import bodyHidden from '@/plugins/mixins/body-hidden'
+import { mapGetters } from 'vuex'
 export default {
   computed: {
-    ...mapGetters(["isOpenSidebar"]),
+    ...mapGetters(['isOpenSidebar']),
     getLayout() {
-      return this.$route.meta.layout + "-layout";
+      return this.$route.meta.layout + '-layout'
     }
   },
   mixins: [bodyHidden],
@@ -24,11 +24,11 @@ export default {
   },
   watch: {
     isOpenSidebar() {
-      this.bodyOverflowToggle();
+      this.bodyOverflowToggle()
     }
   }
-};
+}
 </script>
 <style lang="scss">
-@import "./assets/scss/global.scss";
+@import './assets/scss/global.scss';
 </style>

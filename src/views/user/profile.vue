@@ -42,9 +42,9 @@
 </template>
 
 <script>
-import VueApexCharts from "vue-apexcharts";
-import UserImg from "@/components/ImgUser.vue";
-import { mapGetters } from "vuex";
+import VueApexCharts from 'vue-apexcharts'
+import UserImg from '@/components/ImgUser.vue'
+import { mapGetters } from 'vuex'
 export default {
   components: {
     UserImg,
@@ -57,41 +57,38 @@ export default {
       chartOptions: {
         chart: {
           height: 350,
-          type: "radialBar"
+          type: 'radialBar'
         },
         plotOptions: {
           radialBar: {
             dataLabels: {
               name: {
-                fontSize: "22px"
+                fontSize: '22px'
               },
               value: {
-                fontSize: "16px"
+                fontSize: '16px'
               },
               total: {
                 show: true,
-                label: "кол-во тасков",
+                label: 'кол-во тасков',
                 formatter: function(w) {
-                  return w.config.series.reduce(
-                    (acc, elem) => (acc += elem),
-                    0
-                  );
+                  return w.config.series.reduce((acc, elem) => (acc += elem), 0)
                 }
               }
             }
           }
         },
-        labels: ["Июнь", "Июль", "Август", "Сентябрь"]
+        labels: ['Июнь', 'Июль', 'Август', 'Сентябрь']
       }
-    };
+    }
   },
 
   computed: {
-    ...mapGetters("user", { user: "getUserFullData" })
+    ...mapGetters('user', { user: 'getUserFullData' })
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/pages/profile";
+@import '@/assets/pages/profile';
 </style>

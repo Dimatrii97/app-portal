@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { isToday, isEqual } from "date-fns";
+import { isToday, isEqual } from 'date-fns'
 export default {
   props: {
     activeDay: {
@@ -67,15 +67,15 @@ export default {
 
   methods: {
     today(day) {
-      return isToday(day);
+      return isToday(day)
     },
     isActive(day) {
-      return isEqual(day, this.activeDay);
+      return isEqual(day, this.activeDay)
     }
   }
-};
+}
 </script>
 
 <style lang="scss">
-@import "@/assets/pages/calendar";
+@import '@/assets/pages/calendar';
 </style>

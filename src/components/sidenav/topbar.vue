@@ -55,11 +55,11 @@
 </template>
 
 <script>
-import VSearch from "@/components/fields/FieldSearch.vue";
-import UserImg from "@/components/ImgUser.vue";
-import { mapGetters, mapMutations } from "vuex";
-import { cleanTokensData } from "@/store/utils/JWT";
-import { debounce } from "@/utils/throttling";
+import VSearch from '@/components/fields/FieldSearch.vue'
+import UserImg from '@/components/ImgUser.vue'
+import { mapGetters, mapMutations } from 'vuex'
+import { cleanTokensData } from '@/store/utils/JWT'
+import { debounce } from '@/utils/throttling'
 export default {
   components: {
     UserImg,
@@ -71,56 +71,56 @@ export default {
       date: null,
       resizeTimer: null,
       profileNav: false
-    };
+    }
   },
 
   computed: {
-    ...mapGetters("user", { user: "getUserHeaderInfo" }),
-    ...mapGetters(["isSizeDesktop", "isOpenSidebar", "getTime"]),
+    ...mapGetters('user', { user: 'getUserHeaderInfo' }),
+    ...mapGetters(['isSizeDesktop', 'isOpenSidebar', 'getTime']),
     resizeDebounce() {
-      return debounce(this.setSize, 100);
+      return debounce(this.setSize, 100)
     },
     mouseDebounce() {
-      return debounce(params => (this.profileNav = params), 400);
+      return debounce(params => (this.profileNav = params), 400)
     }
   },
 
   created() {
-    this.$store.dispatch("user/getUser");
-    this.setSize();
-    window.addEventListener("resize", this.resizeDebounce);
+    this.$store.dispatch('user/getUser')
+    this.setSize()
+    window.addEventListener('resize', this.resizeDebounce)
   },
 
   beforeDestroy() {
-    window.removeEventListener("resize", this.resizeDebounce);
+    window.removeEventListener('resize', this.resizeDebounce)
   },
 
   methods: {
-    ...mapMutations(["SET_SIDEBAR_OPEN"]),
+    ...mapMutations(['SET_SIDEBAR_OPEN']),
 
     isShowSideNav() {
-      this.SET_SIDEBAR_OPEN(!this.isOpenSidebar);
+      this.SET_SIDEBAR_OPEN(!this.isOpenSidebar)
     },
     setShowProfile(params) {
-      this.mouseDebounce(params);
+      this.mouseDebounce(params)
     },
 
     setSize() {
-      this.$store.dispatch("setSize", +window.innerWidth);
+      this.$store.dispatch('setSize', +window.innerWidth)
     },
     outUser() {
-      cleanTokensData();
-      this.$socket.disconnected;
-      this.$router.push("/login").then(() => {
-        document.location.reload();
-      });
+      cleanTokensData()
+      this.$socket.disconnected
+      this.$router.push('/login').then(() => {
+        document.location.reload()
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="scss">
-@import "@/assets/pages/userLayout";
+@import '@/assets/pages/userLayout';
 .menu-up-enter-active,
 .menu-up-leave-active {
   transition: all 0.5s;

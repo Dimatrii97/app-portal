@@ -11,9 +11,9 @@
 </template>
 
 <script>
-import VChip from "@/components/chips";
+import VChip from '@/components/chips'
 export default {
-  inject: ["clickItem"],
+  inject: ['clickItem'],
   components: { VChip },
   props: {
     value: {
@@ -21,7 +21,7 @@ export default {
       default: () => []
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 .chips-group {

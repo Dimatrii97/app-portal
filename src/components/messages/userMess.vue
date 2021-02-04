@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import UserImg from "@/components/ImgUser.vue";
+import UserImg from '@/components/ImgUser.vue'
 export default {
   props: {
     filterSearch: Array,
@@ -32,8 +32,8 @@ export default {
   components: {
     UserImg
   }
-};
+}
 </script>
 <style lang="scss" scoped>
-@import "@/assets/pages/message";
+@import '@/assets/pages/message';
 </style>

@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import UserImg from "@/components/ImgUser.vue";
+import UserImg from '@/components/ImgUser.vue'
 export default {
   components: {
     UserImg
@@ -28,7 +28,7 @@ export default {
       default: false
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

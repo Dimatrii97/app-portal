@@ -1,4 +1,4 @@
-const LOCAL_ACCESS_NAME = 'token'
+const LOCAL_ACCESS_NAME = 'auth_accessToken'
 
 function setTokens(access) {
   localStorage.setItem(LOCAL_ACCESS_NAME, access)

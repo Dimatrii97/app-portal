@@ -120,11 +120,11 @@
 </template>
 
 <script>
-import VInput from "../fields/FieldInput.vue";
-import mySelect from "@/components/fields/FieldSelect.vue";
+import VInput from '../fields/FieldInput.vue'
+import mySelect from '@/components/fields/FieldSelect.vue'
 
-import { mapGetters } from "vuex";
-import { required, email } from "vuelidate/lib/validators";
+import { mapGetters } from 'vuex'
+import { required, email } from 'vuelidate/lib/validators'
 export default {
   components: {
     mySelect,
@@ -133,44 +133,44 @@ export default {
   data() {
     return {
       fields: {
-        login: "",
-        password: "",
-        firstname: "",
-        lastname: "",
-        email: "",
-        age: "",
-        phone: "",
-        department: "",
-        position: ""
+        login: '',
+        password: '',
+        firstname: '',
+        lastname: '',
+        email: '',
+        age: '',
+        phone: '',
+        department: '',
+        position: ''
       }
-    };
+    }
   },
 
   computed: {
-    ...mapGetters("admin", {
-      department: "getDepartment",
-      position: "getPosition"
+    ...mapGetters('admin', {
+      department: 'getDepartment',
+      position: 'getPosition'
     }),
     setDepartment: {
       get() {
-        return this.department;
+        return this.department
       },
       set(department) {
-        this.$store.dispatch("admin/getSocketAllPosition", department);
-        this.fields.department = department;
-        this.$refs.sl2.clearEl();
+        this.$store.dispatch('admin/getSocketAllPosition', department)
+        this.fields.department = department
+        this.$refs.sl2.clearEl()
       }
     },
     setPosition: {
       get() {
-        return this.position;
+        return this.position
       },
       set(position) {
-        this.fields.position = position;
+        this.fields.position = position
       }
     },
     isDepartment() {
-      return !!this.fields.department;
+      return !!this.fields.department
     }
   },
   validations: {
@@ -207,26 +207,26 @@ export default {
   },
 
   created() {
-    this.$store.dispatch("admin/getSocketAllDepartaments");
+    this.$store.dispatch('admin/getSocketAllDepartaments')
   },
   methods: {
     submit() {
       if (!this.$v.fields.$invalid) {
-        this.$store.dispatch("admin/addUser", this.fields);
+        this.$store.dispatch('admin/addUser', this.fields)
         for (const key in this.fields) {
-          this.fields[key] = "";
+          this.fields[key] = ''
         }
         for (const key in this.$refs) {
-          this.$refs[key].clearEl();
+          this.$refs[key].clearEl()
         }
       }
-      this.$v.$reset();
+      this.$v.$reset()
     },
     requiredDirty(name) {
-      return this.$v.fields[name].$dirty && !this.$v.fields[name].required;
+      return this.$v.fields[name].$dirty && !this.$v.fields[name].required
     }
   }
-};
+}
 </script>
 <style lang="scss">
 .ad-form__select {

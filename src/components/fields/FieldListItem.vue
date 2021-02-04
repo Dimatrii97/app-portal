@@ -22,7 +22,7 @@
 export default {
   props: {
     item: {
-      default: "",
+      default: '',
       type: String
     }
   },
@@ -31,33 +31,33 @@ export default {
     return {
       settings: true,
       copyItem: this.item
-    };
+    }
   },
   computed: {
     setValue: {
       get() {
-        return this.copyItem;
+        return this.copyItem
       },
       set(value) {
-        this.copyItem = value;
+        this.copyItem = value
       }
     }
   },
   methods: {
     changeItem() {
-      this.settings = true;
+      this.settings = true
       if (this.copyItem != this.item) {
-        this.$emit("change-item", this.copyItem);
-      } else this.copyItem = this.item;
+        this.$emit('change-item', this.copyItem)
+      } else this.copyItem = this.item
     },
     changeSettings() {
-      this.settings = false;
+      this.settings = false
       this.$nextTick(() => {
-        this.$refs["input-edit"].focus();
-      });
+        this.$refs['input-edit'].focus()
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

@@ -24,15 +24,15 @@ export default {
   },
   computed: {
     getClassIcon() {
-      return this.orderDirection ? "top" : "bottom";
+      return this.orderDirection ? 'top' : 'bottom'
     }
   },
   methods: {
     isDefaultSort(sort) {
-      return this.orderBy !== sort;
+      return this.orderBy !== sort
     }
   }
-};
+}
 </script>
 
 <style></style>

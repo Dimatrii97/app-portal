@@ -14,7 +14,7 @@
 export default {
   props: {
     item: {
-      default: "",
+      default: '',
       type: String
     },
     params: {
@@ -22,7 +22,7 @@ export default {
       type: [Object, Array]
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 //.dropdown__item

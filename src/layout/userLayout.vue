@@ -11,9 +11,9 @@
 </template>
 
 <script>
-import theTopbar from "@/components/sidenav/topbar";
-import theSidebar from "@/components/sidenav/sideNav";
-import { getAccessToken } from "@/store/utils/JWT";
+import theTopbar from '@/components/sidenav/topbar'
+import theSidebar from '@/components/sidenav/sideNav'
+import { getAccessToken } from '@/store/utils/JWT'
 export default {
   components: {
     theTopbar,
@@ -21,13 +21,13 @@ export default {
   },
 
   created() {
-    this.$socket.client.query.token = getAccessToken();
-    this.$socket.client.open();
+    this.$socket.client.query.token = getAccessToken()
+    this.$socket.client.open()
   },
 
   mounted() {
-    this.$store.dispatch("messages/getSocketUserLastMess");
-    this.$store.dispatch("tasks/getTasks");
+    this.$store.dispatch('messages/getSocketUserLastMess')
+    this.$store.dispatch('tasks/getTasks')
   }
-};
+}
 </script>

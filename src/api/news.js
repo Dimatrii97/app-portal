@@ -1,7 +1,6 @@
-import Vue from "vue";
+import Vue from 'vue'
+// http://localhost:5000
 export async function getAll() {
-  const articles = await Vue.http
-    .get("http://localhost:5000/api/news")
-    .then(res => res.json());
-  return articles;
+  const articles = await Vue.http.get('/api/news').then(res => res.json())
+  return articles
 }

@@ -33,17 +33,17 @@
 </template>
 
 <script>
-import CalendarSettings from "@/components/calendar/CalendarSettings.vue";
-import CalendarBody from "@/components/calendar/СalendarBody";
-import CalendarHeader from "@/components/calendar/CalendarHeader.vue";
-import CalendarRouter from "@/plugins/mixins/calendar-router";
-import bodyHidden from "@/plugins/mixins/body-hidden";
-import { Month } from "@/components/calendar/CreateCalendar";
-import { format, isAfter, subDays, isEqual, isDate } from "date-fns";
+import CalendarSettings from '@/components/calendar/CalendarSettings.vue'
+import CalendarBody from '@/components/calendar/СalendarBody'
+import CalendarHeader from '@/components/calendar/CalendarHeader.vue'
+import CalendarRouter from '@/plugins/mixins/calendar-router'
+import bodyHidden from '@/plugins/mixins/body-hidden'
+import { Month } from '@/components/calendar/CreateCalendar'
+import { format, isAfter, subDays, isEqual, isDate } from 'date-fns'
 export default {
   props: {
     value: {
-      default: "",
+      default: '',
       type: String
     }
   },
@@ -59,105 +59,105 @@ export default {
       interval: {
         start: new Date(),
         end: null,
-        active: "start"
+        active: 'start'
       },
       visibleMonth: new Date()
-    };
+    }
   },
 
   computed: {
     getMonth() {
       return Month.createMonth(this.visibleMonth)
         .setInterval(this.interval)
-        .getMonth();
+        .getMonth()
     }
   },
   watch: {
     isActive() {
       if (this.$store.getters.getSize <= 600) {
-        this.bodyOverflowToggle();
+        this.bodyOverflowToggle()
       }
     },
     value(newValue) {
       if (!newValue) {
-        this.interval.start = new Date();
-        this.interval.end = null;
-        this.active = "start";
+        this.interval.start = new Date()
+        this.interval.end = null
+        this.active = 'start'
       }
     }
   },
 
   methods: {
     outside() {
-      this.isActive = false;
+      this.isActive = false
     },
 
     inside() {
-      this.isActive = true;
+      this.isActive = true
     },
 
     emitValue() {
       if (isDate(this.interval.start) && isDate(this.interval.end)) {
         this.$emit(
-          "input",
-          `${format(this.interval.start, "yyyy-MM-dd")}/${format(
+          'input',
+          `${format(this.interval.start, 'yyyy-MM-dd')}/${format(
             this.interval.end,
-            "yyyy-MM-dd"
+            'yyyy-MM-dd'
           )}`
-        );
-        this.isActive = false;
+        )
+        this.isActive = false
       }
     },
 
     setDay(date) {
       switch (this.interval.active) {
-        case "start": {
+        case 'start': {
           if (this.isSetStartdate(date)) {
             if (isAfter(date, this.interval.end)) {
-              this.interval.end = null;
+              this.interval.end = null
             }
-            this.interval.start = date;
-            this.activeDay = date;
-            this.interval.active = "end";
+            this.interval.start = date
+            this.activeDay = date
+            this.interval.active = 'end'
           }
-          return;
+          return
         }
 
-        case "end": {
+        case 'end': {
           if (this.isSetEnddate(date)) {
             if (isAfter(this.interval.start, date)) {
-              this.interval.start = null;
-              this.interval.active = "start";
+              this.interval.start = null
+              this.interval.active = 'start'
             }
-            this.interval.end = date;
-            this.activeDay = date;
+            this.interval.end = date
+            this.activeDay = date
           }
-          return;
+          return
         }
         default:
-          throw new Error("this.interval.active = 'end' || 'start'");
+          throw new Error("this.interval.active = 'end' || 'start'")
       }
     },
 
     setIntervalActive(status) {
-      this.interval.active = status;
+      this.interval.active = status
     },
 
     isSetStartdate(date) {
       return (
         isAfter(date, subDays(new Date(), 1)) ||
         isEqual(date, this.interval.end)
-      );
+      )
     },
 
     isSetEnddate(date) {
       return (
         isAfter(date, subDays(new Date(), 1)) ||
         isEqual(date, this.interval.start)
-      );
+      )
     }
   }
-};
+}
 </script>
 
 <style lang="scss">

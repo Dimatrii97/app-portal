@@ -46,7 +46,7 @@ export default {
       type: Object
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -57,7 +57,7 @@ export default {
   display: flex;
   align-items: center;
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     left: 0;
     top: 50%;

@@ -12,7 +12,7 @@
           </figure>
         </div>
 
-        <FormFactory @input="login($event)" class="login__form">
+        <FormFactory @input="login($event)" class="login__form" ref="form">
           <template #button="propsFactory">
             <div class="button-left">
               <button :disabled="propsFactory.valid" class="btn btn-primary">
@@ -94,7 +94,7 @@
           type="button"
           class="btn btn-primary "
         >
-          {{ showLogins ? "Получить логин && пароль" : "Вернуться" }}
+          {{ showLogins ? 'Получить логин && пароль' : 'Вернуться' }}
         </button>
       </div>
     </article>
@@ -103,20 +103,20 @@
 
 <script>
 // Select || FormFactory experimental component
-import FormBuilder from "@/builder/FormBuilder";
-import FormInput from "@/components/fields/FieldInput";
+import FormBuilder from '@/builder/FormBuilder'
+import FormInput from '@/components/fields/FieldInput'
 
-import { required, minLength, email } from "vuelidate/lib/validators";
+import { required, minLength, email } from 'vuelidate/lib/validators'
 export default {
   components: {
     FormFactory: new FormBuilder()
       .addField({
         component: FormInput,
-        label: "Логин",
-        name: "login",
+        label: 'Логин',
+        name: 'login',
         options: {
           attrs: {
-            placeholder: "Логин"
+            placeholder: 'Логин'
           }
         },
         validation: {
@@ -126,12 +126,12 @@ export default {
       })
       .addField({
         component: FormInput,
-        label: "Пароль",
-        name: "password",
+        label: 'Пароль',
+        name: 'password',
         options: {
           attrs: {
-            placeholder: "Пароль",
-            type: "password"
+            placeholder: 'Пароль',
+            type: 'password'
           }
         },
         validation: {
@@ -144,24 +144,21 @@ export default {
   data() {
     return {
       showLogins: true
-    };
+    }
   },
 
   methods: {
     login(event) {
-      console.log(event);
-      this.$store.dispatch("user/login", event).catch(err => {
-        this.fields.login = "";
-        this.fields.password = "";
-        this.$v.$reset();
-        this.errorText = err.body.message;
-      });
+      this.$store.dispatch('user/login', event).catch(err => {
+        this.$refs.form.clear()
+        this.errorText = err.body.message
+      })
     },
     requiredDirty(name) {
-      return this.$v.fields[name].$dirty && !this.$v.fields[name].required;
+      return this.$v.fields[name].$dirty && !this.$v.fields[name].required
     }
   }
-};
+}
 </script>
 
 <style lang="scss">

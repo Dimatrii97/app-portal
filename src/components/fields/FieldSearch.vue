@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { debounce } from "@/utils/throttling";
+import { debounce } from '@/utils/throttling'
 export default {
   props: {
     className: String,
@@ -32,40 +32,40 @@ export default {
     value: String,
     placeholder: {
       type: String,
-      default: "Поиск"
+      default: 'Поиск'
     }
   },
   data() {
     return {
       isShowInput: false
-    };
+    }
   },
   computed: {
     debounceInput() {
       return debounce(function(value) {
-        this.$emit("input", value);
-      }, 400);
+        this.$emit('input', value)
+      }, 400)
     }
   },
   beforeDestroy() {
-    this.$emit("input", "");
+    this.$emit('input', '')
   },
   methods: {
     toggleSearch() {
-      this.isShowInput = !this.isShowInput;
+      this.isShowInput = !this.isShowInput
       if (this.isShowInput)
         this.$nextTick(() => {
-          this.$refs.input.focus();
-        });
+          this.$refs.input.focus()
+        })
       else {
-        this.$emit("input", "");
+        this.$emit('input', '')
       }
     },
     onEmit(e) {
-      this.debounceInput(e.target.value);
+      this.debounceInput(e.target.value)
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

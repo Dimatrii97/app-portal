@@ -80,10 +80,10 @@
   </div>
 </template>
 <script>
-import TransitionExpand from "../transition-expand.vue";
-import ImgUser from "@/components/ImgUser.vue";
-import vChip from "@/components/chips";
-import { mapGetters } from "vuex";
+import TransitionExpand from '../transition-expand.vue'
+import ImgUser from '@/components/ImgUser.vue'
+import vChip from '@/components/chips'
+import { mapGetters } from 'vuex'
 export default {
   components: {
     ImgUser,
@@ -93,7 +93,7 @@ export default {
   data() {
     return {
       changes: []
-    };
+    }
   },
   props: {
     isOpen: {
@@ -106,80 +106,80 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch("users/thereAreUsers", this.usersIdArray);
+    this.$store.dispatch('users/thereAreUsers', this.usersIdArray)
   },
   computed: {
-    ...mapGetters("user", { user: "getUserHeaderInfo" }),
+    ...mapGetters('user', { user: 'getUserHeaderInfo' }),
     additionalInfo() {
-      return this.$store.getters["tasks/getFindAdditional"](this.$vnode.key);
+      return this.$store.getters['tasks/getFindAdditional'](this.$vnode.key)
     },
     users() {
-      let h = this.$store.getters["users/findUserId"](this.usersIdArray);
-      return h;
+      let h = this.$store.getters['users/findUserId'](this.usersIdArray)
+      return h
     },
     sliceHide() {
-      if (this.users.length) return this.users.slice(0, 3);
-      return null;
+      if (this.users.length) return this.users.slice(0, 3)
+      return null
     },
     hide() {
-      return this.users && this.users.length >= 4;
+      return this.users && this.users.length >= 4
     },
     usersIdArray() {
-      return this.task.users.map(i => i.id);
+      return this.task.users.map(i => i.id)
     },
     allComplite() {
       if (this.additionalInfo.subtasks) {
-        return this.additionalInfo.subtasks.every(task => task.status);
+        return this.additionalInfo.subtasks.every(task => task.status)
       }
-      return false;
+      return false
     }
   },
   methods: {
     open() {
-      this.$emit("open", this.$vnode.key);
+      this.$emit('open', this.$vnode.key)
       if (!this.task.scanned)
-        this.$store.dispatch("tasks/viewedTask", this.$vnode.key);
+        this.$store.dispatch('tasks/viewedTask', this.$vnode.key)
     },
     performSubTask(id) {
       if (!this.changes.includes(id)) {
-        this.changes.push(id);
-        return;
+        this.changes.push(id)
+        return
       }
-      this.changes.splice(this.changes.indexOf(id), 1);
+      this.changes.splice(this.changes.indexOf(id), 1)
     },
     updateSubTask() {
-      this.$store.dispatch("tasks/updateSubTask", this.changes);
-      this.changes = [];
+      this.$store.dispatch('tasks/updateSubTask', this.changes)
+      this.changes = []
     },
     completeTask() {
-      this.$store.dispatch("tasks/completeTask", this.$vnode.key);
+      this.$store.dispatch('tasks/completeTask', this.$vnode.key)
     },
     next() {
       if (!this.changes.length) {
-        this.completeTask();
+        this.completeTask()
       } else {
-        this.updateSubTask();
+        this.updateSubTask()
       }
-      this.showModal = false;
+      this.showModal = false
     },
     enter(element) {
-      const width = getComputedStyle(element).width;
-      element.style.width = width;
-      element.style.position = "absolute";
-      element.style.visibility = "hidden";
-      element.style.height = "auto";
-      const height = getComputedStyle(element).height;
-      element.style.width = null;
-      element.style.position = null;
-      element.style.visibility = null;
-      element.style.height = 0;
-      getComputedStyle(element).height;
+      const width = getComputedStyle(element).width
+      element.style.width = width
+      element.style.position = 'absolute'
+      element.style.visibility = 'hidden'
+      element.style.height = 'auto'
+      const height = getComputedStyle(element).height
+      element.style.width = null
+      element.style.position = null
+      element.style.visibility = null
+      element.style.height = 0
+      getComputedStyle(element).height
       requestAnimationFrame(() => {
-        element.style.height = height;
-      });
+        element.style.height = height
+      })
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 .task-list {
@@ -295,7 +295,7 @@ export default {
   }
 }
 .phontom::after {
-  content: "+";
+  content: '+';
   font-size: 1.8rem;
   position: absolute;
   top: -18px;

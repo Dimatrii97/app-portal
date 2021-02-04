@@ -52,12 +52,12 @@
 </template>
 
 <script>
-import VSearch from "@/components/fields/FieldSearch.vue";
-import UserImg from "@/components/ImgUser.vue";
-import { hasOwnProperty } from "@/store/utils/helper";
-import { mapGetters, mapState, mapMutations } from "vuex";
-import { differenceInCalendarDays } from "date-fns";
-import { dayMonth } from "@/utils/dateType";
+import VSearch from '@/components/fields/FieldSearch.vue'
+import UserImg from '@/components/ImgUser.vue'
+import { hasOwnProperty } from '@/store/utils/helper'
+import { mapGetters, mapState, mapMutations } from 'vuex'
+import { differenceInCalendarDays } from 'date-fns'
+import { dayMonth } from '@/utils/dateType'
 export default {
   components: {
     UserImg,
@@ -68,59 +68,59 @@ export default {
     return {
       messList: [],
       messServerList: []
-    };
+    }
   },
 
   computed: {
-    ...mapState("users", ["searchUsersName"]),
-    ...mapGetters("messages", ["getUsersmess"]),
-    ...mapGetters("user", { user: "getUserNameIdImg" }),
+    ...mapState('users', ['searchUsersName']),
+    ...mapGetters('messages', ['getUsersmess']),
+    ...mapGetters('user', { user: 'getUserNameIdImg' }),
     setSearchNameUsers: {
       get() {
-        return this.searchUsersName;
+        return this.searchUsersName
       },
       set(searchField) {
-        this.SET_SEARCH_USERS(searchField);
-        this.$store.dispatch("users/searchUsersByName", searchField);
+        this.SET_SEARCH_USERS(searchField)
+        this.$store.dispatch('users/searchUsersByName', searchField)
       }
     },
     messagesAndUsers() {
       if (this.searchUsersName) {
-        return this.getMessagesAndAllUsers;
+        return this.getMessagesAndAllUsers
       }
-      return this.messUsers;
+      return this.messUsers
     }
   },
   methods: {
-    ...mapMutations("users", ["SET_SEARCH_USERS"]),
+    ...mapMutations('users', ['SET_SEARCH_USERS']),
     getInterval(date) {
-      let lastMess = new Date(date);
-      let difference = differenceInCalendarDays(new Date(), lastMess);
+      let lastMess = new Date(date)
+      let difference = differenceInCalendarDays(new Date(), lastMess)
       switch (true) {
         case difference == 0: {
-          return "Сегодня";
+          return 'Сегодня'
         }
 
         case difference == 1: {
-          return "Вчера";
+          return 'Вчера'
         }
 
         case difference > 30: {
-          return dayMonth(lastMess);
+          return dayMonth(lastMess)
         }
 
         default:
-          return difference + "д. назад";
+          return difference + 'д. назад'
       }
     },
     isMessages(messageObj) {
-      return hasOwnProperty(messageObj, "message_id");
+      return hasOwnProperty(messageObj, 'message_id')
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
-@import "@/assets/pages/message";
+@import '@/assets/pages/message';
 .clearMess {
   position: absolute;
   top: 50%;

@@ -28,9 +28,9 @@
 </template>
 
 <script>
-import TheNewsCard from "@/components/home/HomeCard";
-import VueApexCharts from "vue-apexcharts";
-import { mapGetters } from "vuex";
+import TheNewsCard from '@/components/home/HomeCard'
+import VueApexCharts from 'vue-apexcharts'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -40,15 +40,15 @@ export default {
   data: function() {
     return {
       chartOptions: {
-        colors: ["#05e6ff", "#004182", "#288fb4"],
+        colors: ['#05e6ff', '#004182', '#288fb4'],
         chart: {
-          id: "basic-bar",
+          id: 'basic-bar',
           toolbar: {
             show: false
           }
         },
         xaxis: {
-          categories: ["Июнь", "Июль", "Август", "Сентябрь"],
+          categories: ['Июнь', 'Июль', 'Август', 'Сентябрь'],
           tooltip: {
             enabled: true
           }
@@ -56,7 +56,7 @@ export default {
         plotOptions: {
           bar: {
             horizontal: false,
-            columnWidth: "40%"
+            columnWidth: '40%'
           }
         },
         dataLabels: {
@@ -65,34 +65,34 @@ export default {
         stroke: {
           show: true,
           width: 2,
-          colors: ["transparent"]
+          colors: ['transparent']
         }
       },
 
       series: [
         {
-          name: "1 неделя",
+          name: '1 неделя',
           data: [19, 24, 41, 13]
         },
         {
-          name: "2 неделя",
+          name: '2 неделя',
           data: [33, 12, 35, 16]
         },
         {
-          name: "3 неделя",
+          name: '3 неделя',
           data: [23, 30, 15, 19]
         }
       ]
-    };
+    }
   },
   created() {
-    this.$store.dispatch("setNews");
+    this.$store.dispatch('setNews')
   },
   computed: {
-    ...mapGetters(["getNews"])
+    ...mapGetters(['getNews'])
   }
-};
+}
 </script>
 <style lang="scss">
-@import "@/assets/pages/home";
+@import '@/assets/pages/home';
 </style>

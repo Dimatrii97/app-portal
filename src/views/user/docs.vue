@@ -61,16 +61,16 @@
 
 <script>
 // select experimental component
-import RadioBtn from "@/components/fields/FieldRadio.vue";
-import VSearch from "@/components/fields/FieldSearch.vue";
-import VSelect from "@/components/fields/FieldSelect";
-import VSelectBody from "@/components/fields/select/SelectBody";
-import VSelectList from "@/components/fields/select/SelectList";
-import FormLabel from "@/components/fields/FormLabel.vue";
-import ThePagination from "@/components/docs/v-pagination.vue";
-import TheMainTable from "@/components/docs/main-table.vue";
-import TheHeaderTable from "@/components/docs/header-table.vue";
-import { mapGetters, mapMutations, mapState } from "vuex";
+import RadioBtn from '@/components/fields/FieldRadio.vue'
+import VSearch from '@/components/fields/FieldSearch.vue'
+import VSelect from '@/components/fields/FieldSelect'
+import VSelectBody from '@/components/fields/select/SelectBody'
+import VSelectList from '@/components/fields/select/SelectList'
+import FormLabel from '@/components/fields/FormLabel.vue'
+import ThePagination from '@/components/docs/v-pagination.vue'
+import TheMainTable from '@/components/docs/main-table.vue'
+import TheHeaderTable from '@/components/docs/header-table.vue'
+import { mapGetters, mapMutations, mapState } from 'vuex'
 
 export default {
   components: {
@@ -87,61 +87,62 @@ export default {
 
   data() {
     return {
-      isSort: ""
-    };
+      isSort: ''
+    }
   },
   computed: {
-    ...mapGetters("docs", { docs: "getOrderSearchDocs" }),
-    ...mapGetters(["getSize"]),
-    ...mapState("docs", [
-      "textSearch",
-      "countItemDocs",
-      "activePage",
-      "orderBy",
-      "orderDirection"
+    ...mapGetters('docs', { docs: 'getOrderSearchDocs' }),
+    ...mapGetters(['getSize']),
+    ...mapState('docs', [
+      'textSearch',
+      'countItemDocs',
+      'activePage',
+      'orderBy',
+      'orderDirection'
     ]),
 
-    ...mapState("mapList", ["mapDocumentTypeSort", "mapTypeSort", "theader"]),
+    ...mapState('mapList', ['mapDocumentTypeSort', 'mapTypeSort', 'theader']),
     search: {
       get() {
-        return this.textSearch;
+        return this.textSearch
       },
       set(text) {
-        this.SET_TEXT_SEARCH(text);
+        this.SET_TEXT_SEARCH(text)
       }
     },
 
     selectList() {
-      return Object.keys(this.mapDocumentTypeSort).filter(el => el);
+      console.log(Object.keys(this.mapDocumentTypeSort).filter(el => el))
+      return Object.keys(this.mapDocumentTypeSort).filter(el => el)
     },
 
     setFilterByType: {
       get() {
-        return this.isSort;
+        return this.isSort
       },
       set(type) {
-        this.SET_DOCUMENT_TYPE(type);
-        this.isSort = type;
+        this.SET_DOCUMENT_TYPE(type)
+        this.isSort = type
       }
     },
 
     setHeader: {
       get() {
-        return this.theader;
+        return this.theader
       },
       set(newSort) {
-        this.SET_ORDER_BY(newSort);
+        this.SET_ORDER_BY(newSort)
       }
     },
     setSort: {
       get() {
-        return Object.values(this.theader).map(el => el.name);
+        return Object.values(this.theader).map(el => el.name)
       },
       set(newSort) {
         for (const key in this.theader) {
           if (this.theader[key].name === newSort) {
-            this.SET_ORDER_BY(key);
-            break;
+            this.SET_ORDER_BY(key)
+            break
           }
         }
       }
@@ -149,39 +150,39 @@ export default {
 
     setActivePage: {
       get() {
-        return this.countListPages;
+        return this.countListPages
       },
       set(newActivePage) {
-        this.SET_ACTIVE_PAGE(newActivePage);
+        this.SET_ACTIVE_PAGE(newActivePage)
       }
     },
 
     paginationTrimming() {
-      let start = (this.activePage - 1) * this.countItemDocs;
-      let end = this.activePage * this.countItemDocs;
-      return this.docs.slice(start, end);
+      let start = (this.activePage - 1) * this.countItemDocs
+      let end = this.activePage * this.countItemDocs
+      return this.docs.slice(start, end)
     },
 
     countListPages() {
-      return Math.ceil(this.docs.length / this.countItemDocs);
+      return Math.ceil(this.docs.length / this.countItemDocs)
     }
   },
   destroyed() {
-    this.SET_DOCUMENT_TYPE("");
-    this.SET_ORDER_BY("name");
+    this.SET_DOCUMENT_TYPE('')
+    this.SET_ORDER_BY('name')
   },
 
   methods: {
-    ...mapMutations("docs", [
-      "SET_ORDER_BY",
-      "SET_TEXT_SEARCH",
-      "SET_DOCUMENT_TYPE",
-      "SET_ACTIVE_PAGE"
+    ...mapMutations('docs', [
+      'SET_ORDER_BY',
+      'SET_TEXT_SEARCH',
+      'SET_DOCUMENT_TYPE',
+      'SET_ACTIVE_PAGE'
     ])
   }
-};
+}
 </script>
 
 <style lang="scss">
-@import "@/assets/pages/docs.scss";
+@import '@/assets/pages/docs.scss';
 </style>

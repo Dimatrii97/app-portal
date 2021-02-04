@@ -23,5 +23,5 @@ export default {
   props: {
     news: Object
   }
-};
+}
 </script>

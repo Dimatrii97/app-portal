@@ -1,135 +1,135 @@
 /* eslint-disable no-constant-condition */
-import Vue from "vue";
-import VueRouter from "vue-router";
-import store from "@/store/index.js";
-Vue.use(VueRouter);
-import { getAccessToken } from "@/store/utils/JWT";
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import store from '@/store/index.js'
+Vue.use(VueRouter)
+import { getAccessToken } from '@/store/utils/JWT'
 
 const routes = [
   {
-    path: "/login",
-    name: "login",
-    component: () => import("../views/user/Login.vue"),
+    path: '/login',
+    name: 'login',
+    component: () => import('../views/user/Login.vue'),
     meta: {
-      layout: "empty",
+      layout: 'empty',
       guest: true
     },
     beforeEnter: function(_, __, next) {
       if (getAccessToken() === null) {
-        next();
+        next()
       } else {
-        next({ name: "home" });
+        next({ name: 'home' })
       }
     }
   },
   {
-    path: "/home",
-    name: "home",
-    component: () => import("../views/user/Home.vue"),
+    path: '/home',
+    name: 'home',
+    component: () => import('../views/user/Home.vue'),
     meta: {
-      layout: "user",
+      layout: 'user',
       requiresAuth: true
     }
   },
   {
-    path: "/calendar",
-    name: "calendar",
-    component: () => import("../views/user/Calendar.vue"),
+    path: '/calendar',
+    name: 'calendar',
+    component: () => import('../views/user/Calendar.vue'),
     meta: {
-      layout: "user",
+      layout: 'user',
       requiresAuth: true
     }
   },
   {
-    path: "/chat",
-    name: "chat",
-    component: () => import("../views/user/Chat.vue"),
+    path: '/chat',
+    name: 'chat',
+    component: () => import('../views/user/Chat.vue'),
     meta: {
-      layout: "user",
+      layout: 'user',
       requiresAuth: true
     }
   },
   {
-    path: "/message/:id",
-    component: () => import("../views/user/Message.vue"),
+    path: '/message/:id',
+    component: () => import('../views/user/Message.vue'),
     meta: {
-      layout: "user",
+      layout: 'user',
       requiresAuth: true
     }
   },
   {
-    path: "/newTasks",
-    name: "newTasks",
-    component: () => import("../views/user/NewTasks.vue"),
+    path: '/newTasks',
+    name: 'newTasks',
+    component: () => import('../views/user/NewTasks.vue'),
     meta: {
-      layout: "user",
+      layout: 'user',
       requiresAuth: true
     }
   },
   {
-    path: "/docs",
-    name: "docs",
-    component: () => import("../views/user/Docs.vue"),
+    path: '/docs',
+    name: 'docs',
+    component: () => import('../views/user/Docs.vue'),
     meta: {
-      layout: "user",
+      layout: 'user',
       requiresAuth: true
     }
   },
   {
-    path: "/admin/",
-    name: "admin",
-    component: () => import("../views/admin/Admin.vue"),
+    path: '/admin/',
+    name: 'admin',
+    component: () => import('../views/admin/Admin.vue'),
     meta: {
-      layout: "admin",
+      layout: 'admin',
       requiresAuth: true
     },
     beforeEnter: async function(_, __, next) {
-      Vue.prototype.$socket.client.query.token = getAccessToken();
-      Vue.prototype.$socket.client.open();
-      await store.getters["admin/readyRole"];
-      if (store.getters["admin/isAdmin"]) {
-        next();
+      Vue.prototype.$socket.client.query.token = getAccessToken()
+      Vue.prototype.$socket.client.open()
+      await store.getters['admin/readyRole']
+      if (store.getters['admin/isAdmin']) {
+        next()
       } else {
-        next({ name: "login" });
+        next({ name: 'login' })
       }
     }
   },
   {
-    path: "/profile",
-    component: () => import("../views/user/Profile.vue"),
+    path: '/profile',
+    component: () => import('../views/user/Profile.vue'),
     meta: {
-      layout: "user",
+      layout: 'user',
       requiresAuth: true
     }
   },
   {
-    path: "/*",
-    name: "all",
-    component: () => import("../views/user/Login.vue"),
+    path: '/*',
+    name: 'all',
+    component: () => import('../views/user/Login.vue'),
     meta: {
-      layout: "empty"
+      layout: 'empty'
     }
   }
-];
+]
 
 const router = new VueRouter({
-  mode: "history",
+  mode: 'history',
   base: process.env.BASE_URL,
   routes
-});
+})
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (getAccessToken() === null) {
       next({
-        path: "/login",
+        path: '/login',
         params: { nextUrl: to.fullPath }
-      });
+      })
     } else {
-      next();
+      next()
     }
   } else {
-    next();
+    next()
   }
-});
+})
 
-export default router;
+export default router

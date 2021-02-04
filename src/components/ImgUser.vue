@@ -4,7 +4,7 @@
     <div v-if="srcParse.defaulName" alt="user avatar" class="name-user">
       {{ srcParse.name }}
     </div>
-    <img v-else :src="src.img" class="img-user__circle" alt="" />
+    <img v-else :src="src.img" class="img-user__circle" alt="user" />
   </figure>
 </template>
 
@@ -16,33 +16,33 @@ export default {
       required: true,
       default: () => {
         return {
-          name: "",
-          img: "default"
-        };
+          name: '',
+          img: 'default'
+        }
       }
     },
     className: {
       type: String,
       required: false,
-      default: ""
+      default: ''
     }
   },
   computed: {
     srcParse() {
-      if (this.src.img === "default") {
+      if (this.src.img === 'default') {
         let name = this.src.name
           ? this.src.name
-              .split(" ")
+              .split(' ')
               .map(el => el[0])
-              .join(" ")
+              .join(' ')
               .toUpperCase()
-          : "";
-        return { name, defaulName: true };
+          : ''
+        return { name, defaulName: true }
       }
-      return { src: this.src.img, defaulName: false };
+      return { src: this.src.img, defaulName: false }
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
