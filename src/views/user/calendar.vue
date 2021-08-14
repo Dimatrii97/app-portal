@@ -17,10 +17,10 @@
                 @next="m_next()"
               />
             </template>
-            <template #events="propsSlot">
-              <div :class="['tasks', { phontom: hide(propsSlot.tasks) }]">
+            <template #events="{tasks}">
+              <div :class="['tasks', { phontom: hide(tasks) }]">
                 <div
-                  v-for="(task, i) in sliceHide(propsSlot.tasks)"
+                  v-for="(task, i) in sliceHide(tasks)"
                   :key="i"
                   :style="{ backgroundColor: task.color }"
                   class="task"
@@ -37,7 +37,11 @@
             :key="task.id"
             :isOpen="task.id === openTaskId"
             :task="task"
+            :additionalInfo="additionalEvents[task.id]"
             @open="toggleTask($event)"
+            @scanned-task="setUpdateTask($event)"
+            @update-subtask="setUpdateTask($event)"
+            @complite="setUpdateTask($event)"
           />
         </article>
       </div>
@@ -51,7 +55,9 @@ import CalendarHeader from '@/components/calendar/CalendarHeader.vue'
 import CalendarBody from '@/components/calendar/СalendarBody'
 import CalendarRouter from '@/plugins/mixins/calendar-router'
 import { Month } from '@/components/calendar/CreateCalendar'
-import { mapGetters } from 'vuex'
+import { emit, subscribe } from '@/websocket/websocket.js'
+import * as apiTask from '@/api/task.js'
+// import { mapGetters } from 'vuex'
 export default {
   components: {
     CalendarBody,
@@ -65,12 +71,12 @@ export default {
       activeDay: new Date(),
       visibleMonth: new Date(),
       tasksDay: [],
+      events: [],
+      additionalEvents: {},
       openTaskId: ''
     }
   },
   computed: {
-    ...mapGetters('tasks', { events: 'getTasks' }),
-
     getMonth() {
       return Month.createMonth(this.visibleMonth)
         .setTasks(this.events)
@@ -83,11 +89,17 @@ export default {
       })
     }
   },
+  async created() {
+    this.events = await apiTask.all()
+    subscribe('setTaskAdditional', this.setAdditionalEvents)
+    subscribe('updatedSubtask', this.updateSubTask)
+    subscribe('updateViewedTask', this.updateScanned)
+  },
 
   watch: {
     getTasksDay(newValue) {
-      this.$store.dispatch(
-        'tasks/thereAreTaskInfo',
+      emit(
+        'getTaskById',
         newValue.map(i => i.id)
       )
     }
@@ -102,6 +114,50 @@ export default {
       this.openTaskId == idTasks
         ? (this.openTaskId = '')
         : (this.openTaskId = idTasks)
+    },
+    setAdditionalEvents(events) {
+      events.forEach(el => {
+        this.additionalEvents[el.id] = el
+      })
+    },
+
+    setUpdateTask({ name, payload }) {
+      emit(name, payload)
+      // completeTask
+      // viewedTask
+    },
+
+    updateSubTask({ idSubtasks, taskId }) {
+      console.log(this.additionalEvents[taskId].subtasks, idSubtasks)
+      const newSubtasks = this.additionalEvents[taskId].subtasks
+      for (const id of idSubtasks) {
+        const index = this.additionalEvents[taskId].subtasks.findIndex(
+          el => el.id === id
+        )
+        newSubtasks[index].scanned = true
+      }
+      this.$set(this.additionalEvents[taskId], 'subtasks', newSubtasks)
+      // this.additionalEvents[taskId].subtasks = this.additionalEvents[
+      //   taskId
+      // ].subtasks.map(el => {
+      //   if (idSubtasks.includes(el.id)) {
+      //     el.status = true
+      //   }
+      //   return el
+      // })
+    },
+
+    updateScanned(id) {
+      console.log('111134')
+      this.events = this.events.map(el => {
+        if (el.id == id) el.scanned = true
+        return el
+      })
+    },
+    complite(id) {
+      const index = this.events.findIndex(el => el.id === id)
+      this.events.slice(index, 1)
+      this.$delete(this.additionalEvents, id)
     },
 
     setTasks(id) {

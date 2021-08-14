@@ -1,6 +1,6 @@
 import * as authApi from '@/api/user'
 import * as Token from '@/utils/token'
-// import router from '@/router'
+
 export default {
   namespaced: true,
   state: {
@@ -40,6 +40,7 @@ export default {
   mutations: {
     SET_USER(state, user) {
       state.user = user
+      state.check = true
     }
   },
   actions: {
@@ -47,33 +48,16 @@ export default {
       // eslint-disable-next-line no-unused-vars
       let { data, ok } = await authApi.login(payload)
       // TODO: повесить на ok
-      if (data.res) {
-        Token.setTokens(data.token)
-        commit('SET_USER', data.user)
-        return true
-      } else {
-        return data
-      }
-
-      // if (token) {
-      //   setTokens(token)
-      //   commit('SET_USER', user)
-      //   if (is_admin == 1) {
-      //     commit('admin/SET_ADMIN', true, { root: true })
-      //     router.push('/admin')
-      //     return
-      //   }
-      //   router.push('/home')
-      // }
+      Token.setTokens(data.token)
+      console.log(data.user)
+      commit('SET_USER', data.user)
+      return true
     },
-    async loadCurrentUser({ commit }) {
-      // eslint-disable-next-line no-unused-vars
-      let { data, ok } = await authApi.current()
-      if (data.res) {
-        commit('SET_USER', data.user)
+    async loadCurrentUser({ commit, state }) {
+      if (!state.check) {
+        let { data } = await authApi.current()
+        commit('SET_USER', data)
         return true
-      } else {
-        return data
       }
     },
     async loadUsersDepartment() {

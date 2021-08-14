@@ -1,45 +1,36 @@
-/* Комопнент отоброжение аватарки пользователя */
 <template>
-  <figure :class="['img-user', className]">
-    <div v-if="srcParse.defaulName" alt="user avatar" class="name-user">
-      {{ srcParse.name }}
+  <figure class="img-user" v-bind="$attrs" v-on="$listeners">
+    <div v-if="test" alt="user avatar" class="name-user">
+      {{ getName }}
     </div>
-    <img v-else :src="src.img" class="img-user__circle" alt="user" />
+    <img v-else :src="src" class="img-user__circle" alt="user" />
   </figure>
 </template>
 
 <script>
 export default {
+  name: 'UserAvatar',
   props: {
     src: {
-      type: Object,
-      required: true,
-      default: () => {
-        return {
-          name: '',
-          img: 'default'
-        }
-      }
-    },
-    className: {
       type: String,
-      required: false,
-      default: ''
+      default: ' '
     }
   },
   computed: {
-    srcParse() {
-      if (this.src.img === 'default') {
-        let name = this.src.name
-          ? this.src.name
-              .split(' ')
-              .map(el => el[0])
-              .join(' ')
-              .toUpperCase()
-          : ''
-        return { name, defaulName: true }
-      }
-      return { src: this.src.img, defaulName: false }
+    test() {
+      // eslint-disable-next-line no-useless-escape
+      return !/[-a-zA-Z0-9@:%_\+.~#?&\/=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&\/=]*)?/gi.test(
+        this.src
+      )
+    },
+    getName() {
+      return this.src
+        ? this.src
+            .split(' ')
+            .map(el => el[0])
+            .join(' ')
+            .toUpperCase()
+        : ' '
     }
   }
 }
@@ -47,8 +38,8 @@ export default {
 
 <style lang="scss" scoped>
 .img-user {
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   background-color: #518cf7;
   display: flex;
@@ -80,12 +71,21 @@ export default {
     width: 25px;
     height: 25px;
   }
+
   .name-user {
-    color: rgba(255, 255, 255, 0.904);
-    font-size: 16px;
+    font-size: 14px;
+  }
+}
+.img-user.esm {
+  width: 24px;
+  height: 24px;
+  @include _480 {
+    width: 20px;
+    height: 20px;
+  }
+  .name-user {
+    font-size: 12px;
     font-weight: 900;
-    text-align: center;
-    word-spacing: -2px;
   }
 }
 </style>

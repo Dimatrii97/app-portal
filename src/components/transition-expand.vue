@@ -11,13 +11,13 @@
 
 <script>
 export default {
+  name: 'TransitionExpand',
   props: {
     time: {
       default: 1,
       type: Number
     }
   },
-  name: 'TransitionExpand',
   methods: {
     enter(element) {
       const width = getComputedStyle(element).width

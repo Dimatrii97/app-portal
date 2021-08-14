@@ -11,10 +11,10 @@
     <i @click="toggleSearch()" :key="isShowInput" class="icon-search"></i>
     <input
       v-if="isShowInput"
-      key="input"
-      @input="onEmit($event)"
       :value="value"
       :placeholder="placeholder"
+      @input="onEmit($event)"
+      key="input"
       ref="input"
       autocomplete="off"
       class="input-clear__input"
@@ -26,6 +26,7 @@
 <script>
 import { debounce } from '@/utils/throttling'
 export default {
+  name: 'FieldSearch',
   props: {
     className: String,
     title: String,

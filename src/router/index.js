@@ -14,12 +14,21 @@ const routes = [
       layout: 'empty',
       guest: true
     },
-    beforeEnter: function(_, __, next) {
+    beforeEnter: function (_, __, next) {
       if (getAccessToken() === null) {
         next()
       } else {
         next({ name: 'home' })
       }
+    }
+  },
+  {
+    path: '/test',
+    name: 'test',
+    component: () => import('../views/test/test.vue'),
+    meta: {
+      layout: '',
+      guest: true
     }
   },
   {
@@ -44,19 +53,33 @@ const routes = [
     path: '/chat',
     name: 'chat',
     component: () => import('../views/user/Chat.vue'),
+    props: { main: true },
     meta: {
       layout: 'user',
-      requiresAuth: true
-    }
+      requiresAuth: true,
+      title: 'Cообщения'
+    },
+    children: [
+      {
+        name: 'messanger',
+        path: 'messanger/:id',
+        component: () => import('../views/user/Message.vue'),
+        meta: {
+          layout: 'user',
+          requiresAuth: true,
+          title: 'Личная переписка'
+        }
+      }
+    ]
   },
-  {
-    path: '/message/:id',
-    component: () => import('../views/user/Message.vue'),
-    meta: {
-      layout: 'user',
-      requiresAuth: true
-    }
-  },
+  // {
+  //   path: '/message/:id',
+  //   component: () => import('../views/user/Message.vue'),
+  //   meta: {
+  //     layout: 'user',
+  //     requiresAuth: true
+  //   }
+  // },
   {
     path: '/newTasks',
     name: 'newTasks',
@@ -83,7 +106,7 @@ const routes = [
       layout: 'admin',
       requiresAuth: true
     },
-    beforeEnter: async function(_, __, next) {
+    beforeEnter: async function (_, __, next) {
       Vue.prototype.$socket.client.query.token = getAccessToken()
       Vue.prototype.$socket.client.open()
       await store.getters['admin/readyRole']

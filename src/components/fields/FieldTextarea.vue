@@ -1,41 +1,81 @@
 <template>
   <div>
+    <slot name="prepend"></slot>
+    <i
+      v-if="prependIcon"
+      @click="$emit('prepen-icon')"
+      :class="[prependIcon, 'prependIcon']"
+    ></i>
     <textarea
-      v-model="setValue"
+      v-bind="{ ...$attrs, value }"
+      v-on="listeners"
       ref="textarea"
-      :class="['form__field', { errors: $attrs.error }]"
-      :id="$attrs.id"
+      :class="['form__field', { errors: error }]"
     />
+
     <slot name="label"></slot>
+    <i
+      v-if="appendIcon"
+      @click="$emit('append-icon')"
+      :class="[appendIcon, 'appendIcon']"
+    ></i>
+    <slot name="append"></slot>
   </div>
 </template>
 
 <script>
-import textareaMixin from '@/plugins/mixins/textarea'
 export default {
   inheritAttrs: false,
-  name: 'FormTextarea',
+  name: 'FieldTextarea',
   props: {
     value: {
       default: '',
       type: String
-    }
+    },
+    error: Boolean,
+    prependIcon: String,
+    appendIcon: String
   },
-  mixins: [textareaMixin],
+
   computed: {
-    setValue: {
-      get() {
-        return this.value
-      },
-      set(value) {
-        this.m_textarea_resize(this.$refs.textarea)
-        this.$emit('input', value)
+    // setValue: {
+    //   get() {
+    //     return this.value
+    //   },
+    //   set(value) {
+    //     this.textareaResize()
+    //     this.$emit('input', value)
+    //   }
+    // }
+    listeners() {
+      return {
+        ...this.$listeners,
+        input: $event => {
+          this.textareaResize()
+          this.$emit('input', $event.target.value)
+        }
       }
     }
+    // attrs() {
+    //   return {
+    //     ...this.$attrs,
+    //     value: ''
+    //   }
+    // }
   },
   watch: {
     value(newValue) {
-      if (!newValue) this.m_textarea_clearResize(this.$refs.textarea)
+      if (!newValue) this.textareaClearResize()
+    }
+  },
+
+  methods: {
+    textareaResize() {
+      this.$refs.textarea.style.height = '5px'
+      this.$refs.textarea.style.height = this.$refs.textarea.scrollHeight + 'px'
+    },
+    textareaClearResize() {
+      this.$refs.textarea.style.height = '41px'
     }
   }
 }
@@ -43,6 +83,6 @@ export default {
 <style>
 textarea.form__field {
   height: 41px;
-  max-height: 230px;
+  max-height: 130px;
 }
 </style>

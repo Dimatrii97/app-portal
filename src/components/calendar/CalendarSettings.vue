@@ -19,20 +19,21 @@
         </li>
       </ul>
       <div class="btn__group">
-        <button
-          type="button"
+        <V-Btn
+          :disabled="disabled"
           @click="$emit('set')"
+          type="button"
           class="btn btn-primary btn-sm"
         >
           Установить
-        </button>
-        <button
-          type="button"
+        </V-Btn>
+        <V-Btn
           @click="$emit('close')"
+          type="button"
           class="btn btn-error btn-sm"
         >
           Закрыть
-        </button>
+        </V-Btn>
       </div>
     </div>
   </div>
@@ -40,11 +41,13 @@
 
 <script>
 export default {
+  name: 'CalendarSettings',
   props: {
     interval: {
       default: () => {},
       type: Object
-    }
+    },
+    disabled: Boolean
   }
 }
 </script>

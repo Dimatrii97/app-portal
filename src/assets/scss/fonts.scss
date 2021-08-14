@@ -1,41 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600&display=swap');
 
-  @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600&display=swap');
-  
-  @font-face {
-    font-family: 'fontello';
-    src: local('fontello'),
-      url('~@/assets/fonts/basket.woff') format('woff'),
-      url('~@/assets/fonts/basket.woff2') format('woff2');
-    font-weight: 100;
-    font-style: normal;
-  }
-  [class^="icon-"]:before, [class*=" icon-"]:before {
-    font-family: "fontello";
-    font-style: normal;
-    font-weight: normal;
-  }
-  
-.icon-search:before { content: '\e805'; } 
-.icon-mail:before { content: '\e800'; } 
-.icon-file:before { content: '\f114'; }
-.icon-out:before { content: '\e801'; } 
-.icon-user:before { content: '\f2c0'; }
-.icon-graph:before { content: '\f201'; }
-.icon-new-tasks:before { content: '\e810'; }
-.icon-calendar:before { content: '\e802'; }
-.icon-check:before { content: '\e803'; } 
-.icon-check-s:before { content: '\e806'; }
-.icon-card:before { content: '\e807'; }
-.icon-close:before { content: '\e808'; }
-.icon-settings:before { content: '\e809'; }
-.icon-help:before { content: '\e80a'; }
-.icon-file-doc:before { content: '\f0f6'; } 
-.icon-download:before { content: '\f02e'; }
-.icon-src:before { content: '\e804'; }    
-.icon-edit:before { content: '\e80b'; }
-.icon-arrow-left:before { content: '\e80d'; }
-.icon-arrow-right:before { content: '\e80c'; }
-.icon-arrow-bottom:before { content: '\e80e'; }
-.icon-arrow-top:before { content: '\e80f'; }
-.icon-arrow-drop-down:before { content: '\e811'; }
-.icon-moon:before {content:'\f186'}
+@font-face {
+  font-family: 'fontello';
+  src: local('fontello'), url('~@/assets/fonts/fontello.woff') format('woff'),
+    url('~@/assets/fonts/fontello.woff2') format('woff2');
+  font-weight: 100;
+  font-style: normal;
+}
+[class^='icon-']:before,
+[class*=' icon-']:before {
+  font-family: 'fontello';
+  font-style: normal;
+  font-weight: normal;
+}
+
+.icon-search:before {
+  content: '\e80b';
+}
+.icon-mail:before {
+  content: '\e800';
+}
+.icon-file:before {
+  content: '\f114';
+}
+.icon-out:before {
+  content: '\e802';
+}
+// TODO: замена
+.icon-user:before {
+  content: '\f2c0';
+}
+// TODO: замена название на news
+.icon-graph:before {
+  content: '\f1ea';
+}
+.icon-new-tasks:before {
+  content: '\f271';
+}
+.icon-calendar:before {
+  content: '\e801';
+}
+
+.icon-check:before {
+  content: '\e80c';
+}
+// TODO: найти где используется
+.icon-check-s:before {
+  content: '\e806';
+}
+// TODO: где используется
+.icon-card:before {
+  content: '\e807';
+}
+.icon-close:before {
+  content: '\e808';
+}
+// TODO: найти
+.icon-settings:before {
+  content: '\e810';
+}
+.icon-help:before {
+  content: '\e803';
+}
+// TODO: найти где используется
+.icon-file-doc:before {
+  content: '\f0f6';
+}
+.icon-download:before {
+  content: '\f0ed';
+}
+// TODO: найти где используется
+.icon-src:before {
+  content: '\e804';
+}
+.icon-edit:before {
+  content: '\e807';
+}
+.icon-arrow-left:before {
+  content: '\f104';
+}
+.icon-arrow-right:before {
+  content: '\f105';
+}
+
+.icon-arrow-bottom:before {
+  content: '\e809';
+}
+.icon-arrow-top:before {
+  content: '\e80a';
+}
+.icon-arrow-drop-down:before {
+  content: '\f0dc';
+}
+.icon-append-file:before {
+  content: '\e804';
+}
+.icon-hide-pass:before {
+  content: '\e805';
+}
+.icon-show-pass:before {
+  content: '\e806';
+}
+.icon-smile:before {
+  content: '\f118';
+}
+.icon-voice:before {
+  content: '\f130';
+}
+.icon-appen-img:before {
+  content: '\e80f';
+}
+.icon-call:before {
+  content: '\e80e';
+}
+.icon-send::before {
+  content: '\f1d8';
+}

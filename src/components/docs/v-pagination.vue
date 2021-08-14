@@ -1,12 +1,12 @@
 <template>
   <div class="paganation">
-    <button
+    <V-Btn
       @click="emit(activePage - 1)"
       :disabled="previousClick"
       class="btn btn-primary"
     >
       Назад
-    </button>
+    </V-Btn>
     <ul class="paganation__list">
       <li
         v-for="(item, i) of getList"
@@ -17,13 +17,13 @@
         {{ item }}
       </li>
     </ul>
-    <button
+    <V-Btn
       @click="emit(activePage + 1)"
       :disabled="nextClick"
       class="btn btn-primary"
     >
       Далее
-    </button>
+    </V-Btn>
   </div>
 </template>
 

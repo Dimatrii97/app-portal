@@ -1,11 +1,13 @@
-<template>
+<template functional>
   <div class="main">
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  name: 'LayoutEmpty'
+}
 </script>
 
 <style></style>

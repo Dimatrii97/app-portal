@@ -1,10 +1,6 @@
 <template>
   <span class="chip">
-    <User-Img
-      :src="{ img: user.img, name: user.name }"
-      class="chip__img"
-      className="sm"
-    />
+    <User-Img :src="user.name" class="chip__img esm" />
     <span class="chip__name">{{ user.name }}</span>
     <i
       v-if="close"
@@ -17,6 +13,7 @@
 <script>
 import UserImg from '@/components/ImgUser.vue'
 export default {
+  name: 'chip',
   components: {
     UserImg
   },
@@ -33,13 +30,14 @@ export default {
 
 <style lang="scss" scoped>
 .chip {
-  margin: 5px 10px 5px 0px;
+  margin: 5px 7px 5px 0px;
   display: inline-flex;
   align-items: center;
   position: relative;
-  padding: 2px 5px 2px 0px;
+  padding: 0px 2px 0px 0px;
   background: $bg-gray;
   border-radius: 15px;
+  font-size: 0.9rem;
   color: $text-dark;
   white-space: nowrap;
   &:first-child {
@@ -48,12 +46,10 @@ export default {
   &__img {
     position: absolute;
     left: -2px;
-    width: 32px;
-    height: 32px;
     border-radius: 50%;
   }
   &__name {
-    margin: 0px 5px 0 34px;
+    margin: 0px 5px 0 24px;
   }
 }
 </style>

@@ -9,25 +9,28 @@
         {{ task.title }}
       </h3>
       <div :class="['task-list__users', { phontom: hide }]">
-        <img-user
+        <Img-User
           v-for="(user, i) in sliceHide"
-          :src="{ img: user.img, name: user.name }"
+          :src="user.name"
           :key="i"
-          className="sm"
-          class="user-item"
+          class="user-item sm"
         />
       </div>
     </div>
-    <transition-expand>
+    <Transition-Expand>
       <div v-if="isOpen" @click.stop="" class="task-list__all">
         <div class="task-list__subtitle">
           <h3 class="task-list__title">Задача:</h3>
-          <p class="task-list__text" v-html="additionalInfo.subtitle"></p>
+          <p v-html="additionalInfo.subtitle" class="task-list__text"></p>
         </div>
         <div v-show="additionalInfo.subtasks.length">
           <h3 class="task-list__title">Структура выполнения:</h3>
           <ul class="subtasks">
-            <li v-for="subTask in additionalInfo.subtasks" :key="subTask.id">
+            <li
+              v-for="subTask in subtasks"
+              :key="subTask.id + 'subtasks' + subTask.status"
+            >
+              <!-- TODO: переписать на check  :disabled="subtask.status" -->
               <div
                 v-if="!subTask.status"
                 @click="performSubTask(subTask.id)"
@@ -49,8 +52,11 @@
         </div>
         <div class="task-list__executors">
           <h3 class="task-list__title">Исполнительный состав:</h3>
-          <v-chip v-for="(user, i) in users" :key="i" :user="user" />
-          <v-chip :user="user" />
+          <V-Chip
+            v-for="(user, i) in additionalInfo.users"
+            :key="i"
+            :user="user"
+          />
         </div>
         <div class="task-list__date">
           <h3 class="task-list__title">
@@ -63,31 +69,36 @@
           </h3>
         </div>
         <div class="button-left">
-          <button v-if="allComplite" @click="next()" class="btn btn-primary">
-            Выполнить задачу
-          </button>
-          <button
-            v-else
+          <V-Btn
+            v-if="allComplite"
+            @click="completeTask()"
             class="btn btn-primary"
-            @click="next()"
+          >
+            Выполнить задачу
+          </V-Btn>
+          <V-Btn
+            v-else
             :disabled="!changes.length"
+            @click="updateSubTask()"
+            class="btn btn-primary"
           >
             Принять изменения
-          </button>
+          </V-Btn>
         </div>
       </div>
-    </transition-expand>
+    </Transition-Expand>
   </div>
 </template>
 <script>
-import TransitionExpand from '../transition-expand.vue'
+import TransitionExpand from '@/components/transition-expand'
 import ImgUser from '@/components/ImgUser.vue'
-import vChip from '@/components/chips'
+import VChip from '../chips'
 import { mapGetters } from 'vuex'
 export default {
+  name: 'CalendarTaskList',
   components: {
     ImgUser,
-    vChip,
+    VChip,
     TransitionExpand
   },
   data() {
@@ -95,7 +106,11 @@ export default {
       changes: []
     }
   },
+  updated() {
+    console.log('uptade')
+  },
   props: {
+    additionalInfo: Object,
     isOpen: {
       default: false,
       type: Boolean
@@ -106,16 +121,21 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch('users/thereAreUsers', this.usersIdArray)
+    // this.$store.dispatch('users/thereAreUsers', this.usersIdArray)
   },
   computed: {
     ...mapGetters('user', { user: 'getUserHeaderInfo' }),
-    additionalInfo() {
-      return this.$store.getters['tasks/getFindAdditional'](this.$vnode.key)
-    },
+    // additionalInfo() {
+    //   return 3
+    //   // this.$store.getters['tasks/getFindAdditional'](this.$vnode.key)
+    // },
     users() {
-      let h = this.$store.getters['users/findUserId'](this.usersIdArray)
-      return h
+      // let h = this.$store.getters['users/findUserId'](this.usersIdArray)
+      // return h
+      return 3
+    },
+    subtasks() {
+      return this.additionalInfo.subtasks
     },
     sliceHide() {
       if (this.users.length) return this.users.slice(0, 3)
@@ -138,7 +158,10 @@ export default {
     open() {
       this.$emit('open', this.$vnode.key)
       if (!this.task.scanned)
-        this.$store.dispatch('tasks/viewedTask', this.$vnode.key)
+        this.$emit('scanned-task', {
+          name: 'updateViewedTask',
+          payload: this.$vnode.key
+        })
     },
     performSubTask(id) {
       if (!this.changes.includes(id)) {
@@ -148,35 +171,16 @@ export default {
       this.changes.splice(this.changes.indexOf(id), 1)
     },
     updateSubTask() {
-      this.$store.dispatch('tasks/updateSubTask', this.changes)
+      this.$emit('update-subtask', {
+        name: 'updateSubtasks',
+        payload: this.changes
+      })
       this.changes = []
-    },
-    completeTask() {
-      this.$store.dispatch('tasks/completeTask', this.$vnode.key)
-    },
-    next() {
-      if (!this.changes.length) {
-        this.completeTask()
-      } else {
-        this.updateSubTask()
-      }
       this.showModal = false
     },
-    enter(element) {
-      const width = getComputedStyle(element).width
-      element.style.width = width
-      element.style.position = 'absolute'
-      element.style.visibility = 'hidden'
-      element.style.height = 'auto'
-      const height = getComputedStyle(element).height
-      element.style.width = null
-      element.style.position = null
-      element.style.visibility = null
-      element.style.height = 0
-      getComputedStyle(element).height
-      requestAnimationFrame(() => {
-        element.style.height = height
-      })
+    completeTask() {
+      this.$emit('complite', { name: 'completeTask', payload: this.$vnode.key })
+      this.showModal = false
     }
   }
 }

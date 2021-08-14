@@ -1,15 +1,15 @@
 <template>
   <div>
-    <the-sidebar
-      v-bind="{ size, openSidebar, taskOverlook, messagesOverLook }"
+    <The-Sidebar
+      v-bind="{ sizeDesktop, openSidebar, taskOverlook, messagesOverLook }"
       class="sidebar"
-    ></the-sidebar>
+    />
     <div class="wrap__main__content">
-      <the-topbar
-        :size="size"
+      <The-Topbar
+        v-bind="{ sizeDesktop, openSidebar }"
         @input="toggleSidebar()"
         class="conteiner-max"
-      ></the-topbar>
+      />
       <div class="conteiner">
         <router-view></router-view>
       </div>
@@ -18,46 +18,60 @@
 </template>
 
 <script>
-import theTopbar from '@/components/sidenav/topbar'
-import theSidebar from '@/components/sidenav/sideNav'
+import TheTopbar from '@/components/sidenav/TheTopbar'
+import TheSidebar from '@/components/sidenav/TheSidebar'
 import { debounce } from '@/utils/throttling'
-import { mapGetters } from 'vuex'
+
+// import { mapGetters } from 'vuex'
+// import { subscribe } from '@/websocket/websocket.js'
+
 export default {
+  name: 'LayoutUser',
   components: {
-    theTopbar,
-    theSidebar
+    TheSidebar,
+    TheTopbar
   },
   data() {
     return {
       size: 0,
+      maxWidth: 768,
       openSidebar: false,
-      messagesOverLook: 0
+      messagesOverLook: 0,
+      taskOverlook: 0
     }
   },
   computed: {
-    ...mapGetters('tasks', { taskOverlook: 'getCountOfUnreadTasks' })
+    // ...mapGetters('tasks', { taskOverlook: 'getCountOfUnreadTasks' }),
+    sizeDesktop() {
+      return this.size > this.maxWidth
+    }
   },
 
   created() {
     // TODO: Подключение soket
     // this.$socket.client.query.token = getAccessToken()
-    // this.$socket.client.open()
-    this.$store.dispatch('user/loadCurrentUser')
+    // this.$socket.client.open();
 
+    this.$store.dispatch('user/loadCurrentUser')
+    // this.$store.dispatch('tasks/loadTasks')
+    this.setSize()
     const setSize = debounce(this.setSize, 100)
     window.addEventListener('resize', setSize)
     this.$once('hook:beforeDestroy', () => {
       window.removeEventListener('resize', setSize)
     })
-
-    this.$store.dispatch('tasks/loadTasks')
+    // subscribe('good', this.hh)
   },
   methods: {
     setSize() {
       this.size = +window.innerWidth
+      this.openSidebar = false
     },
     toggleSidebar() {
       this.openSidebar = !this.openSidebar
+    },
+    hh() {
+      console.log('222')
     }
   },
   watch: {
@@ -65,6 +79,9 @@ export default {
       if (this.openSidebar) {
         this.openSidebar = false
       }
+    },
+    openSidebar(value) {
+      document.body.style.overflow = value ? 'hidden' : 'auto'
     }
   },
 

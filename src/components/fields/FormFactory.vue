@@ -8,9 +8,9 @@
           v-bind="{
             ...field.options.props,
             ...field.options.attrs,
-            error: $v.data[field.name].$error
+            error: $v.data[field.name].$error,
+            id: field.name
           }"
-          :id="field.name"
           @input="delayTouch($v.data[field.name])"
         >
           <template #label>

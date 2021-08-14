@@ -1,33 +1,43 @@
 <template>
-  <div v-click-outside="outside" :class="[{ focus: isActive }, 'date-picker']">
-    <div @click="inside()">
-      <div class="form__field date">{{ value }}</div>
-      <slot name="label"></slot>
-    </div>
+  <div @blur.capture="handleBlur($event)" :class="[{ focus }, 'date-picker']">
+    <div
+      ref="calendar"
+      @focus="isFocus = true"
+      @blur="isFocus = false"
+      @keydown.enter.prevent="showCalendar()"
+      class="date-picker__wrap"
+      tabindex="0"
+    >
+      <div @click="showCalendar()">
+        <div class="form__field date">{{ value }}</div>
+        <slot name="label"></slot>
+      </div>
 
-    <div class="calendar" v-if="isActive">
-      <Calendar-Body
-        :interval="interval"
-        :visibleMonth="visibleMonth"
-        :month="getMonth"
-        @set-day="setDay($event)"
-      >
-        <template #header>
-          <Calendar-Header
-            :visibleMonth="visibleMonth"
-            @back="m_back()"
-            @next="m_next()"
-          />
-        </template>
-      </Calendar-Body>
+      <div v-show="isActive" class="calendar">
+        <Calendar-Body
+          :interval="interval"
+          :visibleMonth="visibleMonth"
+          :month="getMonth"
+          @set-day="setDay($event)"
+        >
+          <template #header>
+            <Calendar-Header
+              :visibleMonth="visibleMonth"
+              @back="m_back()"
+              @next="m_next()"
+            />
+          </template>
+        </Calendar-Body>
 
-      <Calendar-Settings
-        :interval="interval"
-        @today="visibleMonth = new Date()"
-        @change="interval.active = $event"
-        @set="emitValue()"
-        @close="isActive = false"
-      />
+        <Calendar-Settings
+          :interval="interval"
+          :disabled="!validValue"
+          @today="visibleMonth = new Date()"
+          @change="interval.active = $event"
+          @set="emitValue()"
+          @close="isActive = false"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -41,6 +51,7 @@ import bodyHidden from '@/plugins/mixins/body-hidden'
 import { Month } from '@/components/calendar/CreateCalendar'
 import { format, isAfter, subDays, isEqual, isDate } from 'date-fns'
 export default {
+  name: 'FieldDatePicker',
   props: {
     value: {
       default: '',
@@ -56,6 +67,7 @@ export default {
   data() {
     return {
       isActive: false,
+      isFocus: false,
       interval: {
         start: new Date(),
         end: null,
@@ -70,10 +82,17 @@ export default {
       return Month.createMonth(this.visibleMonth)
         .setInterval(this.interval)
         .getMonth()
+    },
+    focus() {
+      return this.isActive || this.isFocus
+    },
+    validValue() {
+      return isDate(this.interval.start) && isDate(this.interval.end)
     }
   },
   watch: {
     isActive() {
+      // TODO: размер
       if (this.$store.getters.getSize <= 600) {
         this.bodyOverflowToggle()
       }
@@ -88,16 +107,22 @@ export default {
   },
 
   methods: {
-    outside() {
+    handleBlur(e) {
+      if (this.$el.contains(e.relatedTarget)) return
+      this.hideCalendar()
+    },
+    toggleOptions() {
+      this.optionsVisible ? this.hideCalendar() : this.showCalendar()
+    },
+    hideCalendar() {
       this.isActive = false
     },
-
-    inside() {
+    showCalendar() {
       this.isActive = true
     },
 
     emitValue() {
-      if (isDate(this.interval.start) && isDate(this.interval.end)) {
+      if (this.validValue) {
         this.$emit(
           'input',
           `${format(this.interval.start, 'yyyy-MM-dd')}/${format(
@@ -105,64 +130,71 @@ export default {
             'yyyy-MM-dd'
           )}`
         )
-        this.isActive = false
+        this.reset()
       }
+    },
+    async reset() {
+      this.hideCalendar()
+      await this.$nextTick()
+      this.$refs.calendar.focus()
     },
 
     setDay(date) {
-      switch (this.interval.active) {
-        case 'start': {
-          if (this.isSetStartdate(date)) {
-            if (isAfter(date, this.interval.end)) {
-              this.interval.end = null
-            }
-            this.interval.start = date
-            this.activeDay = date
-            this.interval.active = 'end'
-          }
-          return
-        }
+      if (this.isValidInterval(date, this.interval.active)) {
+        let activeStart = this.interval.active === 'start'
+        let isAfterDate = activeStart
+          ? isAfter(date, this.interval.end)
+          : isAfter(this.interval.start, date)
+        if (isAfterDate) {
+          this.interval[activeStart ? 'end' : 'start'] = null
 
-        case 'end': {
-          if (this.isSetEnddate(date)) {
-            if (isAfter(this.interval.start, date)) {
-              this.interval.start = null
-              this.interval.active = 'start'
-            }
-            this.interval.end = date
-            this.activeDay = date
-          }
-          return
+          this.setIntervalActive('start')
+        } else {
+          this.setIntervalActive('end')
         }
-        default:
-          throw new Error("this.interval.active = 'end' || 'start'")
+        this.interval[activeStart ? 'start' : 'end'] = date
+        this.activeDay = date
       }
     },
 
     setIntervalActive(status) {
       this.interval.active = status
     },
-
-    isSetStartdate(date) {
-      return (
-        isAfter(date, subDays(new Date(), 1)) ||
-        isEqual(date, this.interval.end)
-      )
-    },
-
-    isSetEnddate(date) {
-      return (
-        isAfter(date, subDays(new Date(), 1)) ||
-        isEqual(date, this.interval.start)
-      )
+    isValidInterval(date, b) {
+      return isAfter(date, subDays(new Date(), 1)) || isEqual(date, b)
     }
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.form__label.empty {
+  font-size: 1.3rem;
+  top: 5px;
+}
+.form__label {
+  top: -15px;
+  font-size: 1rem;
+}
+.focus .form__label {
+  top: -15px !important;
+  font-size: 1rem !important;
+}
+
+::v-deep .calendar-body {
+  flex: 0 0 60%;
+}
+::v-deep .day.today {
+  color: $blue;
+  &::before {
+    background-color: transparent;
+  }
+}
 .date-picker {
-  // position: relative;
+  position: relative;
+  &__wrap {
+    outline: none;
+  }
   & .day {
     font-size: 1.2rem;
   }
@@ -189,15 +221,7 @@ export default {
     background: #fff;
     border: 1px solid #3f51b559;
   }
-  & .calendar-body {
-    flex: 0 0 60%;
-  }
-  & .day.today {
-    color: $blue;
-    &::before {
-      background-color: transparent;
-    }
-  }
+
   & .monthName {
     font-size: 1.2rem;
   }

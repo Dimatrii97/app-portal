@@ -20,6 +20,7 @@
 
 <script>
 export default {
+  name: 'V-Card',
   props: {
     news: Object
   }

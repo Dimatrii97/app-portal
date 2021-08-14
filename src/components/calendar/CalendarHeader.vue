@@ -1,27 +1,28 @@
 <template>
   <div class="control">
-    <button
+    <V-Btn
+      @click="$emit('back')"
       class="btn btn-ghost-primary btn-square"
       type="button"
-      @click="$emit('back')"
     >
       <i class="icon-arrow-left"></i>
-    </button>
+    </V-Btn>
     <h3 class="monthName">
       {{ visibleMonth | localRuMMYYYY }}
     </h3>
-    <button
+    <V-Btn
+      @click="$emit('next')"
       class="btn btn-ghost-primary btn-square"
       type="button"
-      @click="$emit('next')"
     >
       <i class="icon-arrow-right"></i>
-    </button>
+    </V-Btn>
   </div>
 </template>
 
 <script>
 export default {
+  name: 'CalendarHeader',
   props: {
     visibleMonth: Date
   }

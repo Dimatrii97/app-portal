@@ -4,17 +4,24 @@
   </div>
 </template>
 <script>
-import userLayout from '@/layout/userLayout'
-import adminLayout from '@/layout/adminLayout'
-import emptyLayout from '@/layout/empty'
+import userLayout from '@/layout/LayoutUser'
+import adminLayout from '@/layout/LayoutAdmin'
+import emptyLayout from '@/layout/LayoutEmpty'
 import bodyHidden from '@/plugins/mixins/body-hidden'
 import { mapGetters } from 'vuex'
+
 export default {
   name: 'App',
+  data() {
+    return {
+      ff: []
+    }
+  },
   computed: {
     ...mapGetters(['isOpenSidebar']),
     getLayout() {
-      return this.$route.meta.layout + '-layout'
+      let layout = this.$route.meta.layout || 'empty'
+      return layout + '-layout'
     }
   },
   mixins: [bodyHidden],

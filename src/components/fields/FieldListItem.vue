@@ -20,6 +20,7 @@
 
 <script>
 export default {
+  name: 'FieldListItem',
   props: {
     item: {
       default: '',
@@ -50,11 +51,10 @@ export default {
         this.$emit('change-item', this.copyItem)
       } else this.copyItem = this.item
     },
-    changeSettings() {
+    async changeSettings() {
       this.settings = false
-      this.$nextTick(() => {
-        this.$refs['input-edit'].focus()
-      })
+      await this.$nextTick()
+      this.$refs['input-edit'].focus()
     }
   }
 }

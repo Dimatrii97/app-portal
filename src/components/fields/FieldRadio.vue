@@ -2,9 +2,9 @@
   <div class="radio-bnt">
     <label v-for="(name, i) in value" :key="i" :for="name" class="wrap-btn">
       <input
+        v-model="setValue"
         :id="name"
         :value="name"
-        v-model="setValue"
         class="radio"
         type="radio"
         name="radio"
@@ -17,6 +17,7 @@
 
 <script>
 export default {
+  name: 'FieldRadio',
   props: {
     value: Array
   },

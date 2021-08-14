@@ -1,6 +1,6 @@
 import server from './http'
-export async function login({ login, password }) {
-  const data = await server.post('api/login', { login, password })
+export async function login(payload) {
+  const data = await server.post('api/user/auth', payload)
   return data
 }
 export async function current() {
@@ -8,6 +8,13 @@ export async function current() {
   return data
 }
 export async function usersDepartment() {
-  const data = await server.post('/api/users')
+  const { data } = await server.get('/api/users/deparment')
   return data
+}
+export function getUserById(id) {
+  return server
+    .get('/api/user/id', {
+      params: { id }
+    })
+    .then(res => res.data)
 }

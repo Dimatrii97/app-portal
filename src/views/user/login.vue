@@ -3,21 +3,15 @@
     <article class="login">
       <template v-if="showLogins">
         <div class="login__img">
-          <figure class="img__wrap">
-            <img
-              src="@/assets/img/img-01.png"
-              alt="img-login"
-              class="img__login"
-            />
-          </figure>
+          <V-Img :src="imgLogin" class="img__wrap" alt="img-login" />
         </div>
 
         <FormFactory @input="login($event)" class="login__form" ref="form">
           <template #button="propsFactory">
             <div class="button-left">
-              <button :disabled="propsFactory.valid" class="btn btn-primary">
+              <V-Btn :disabled="propsFactory.valid" class="btn btn-primary">
                 Войти
-              </button>
+              </V-Btn>
             </div>
           </template>
         </FormFactory>
@@ -89,26 +83,28 @@
       </div>
 
       <div class="btn-get">
-        <button
+        <V-Btn
           @click="showLogins = !showLogins"
           type="button"
           class="btn btn-primary "
         >
           {{ showLogins ? 'Получить логин && пароль' : 'Вернуться' }}
-        </button>
+        </V-Btn>
       </div>
     </article>
   </section>
 </template>
 
 <script>
-// Select || FormFactory experimental component
-import FormBuilder from '@/builder/FormBuilder'
+import VImg from '@/components/base/base-img'
+// TODO: можно удалить
+import FormBuilder from '@/components/fields/builder/FormBuilder'
 import FormInput from '@/components/fields/FieldInput'
-
+import imgLogin from '@/assets/img/img-01.png'
 import { required, minLength, email } from 'vuelidate/lib/validators'
 export default {
   components: {
+    VImg,
     FormFactory: new FormBuilder()
       .addField({
         component: FormInput,
@@ -117,7 +113,8 @@ export default {
         options: {
           attrs: {
             placeholder: 'Логин'
-          }
+          },
+          defaultValue: 'exemple1@mail.ru'
         },
         validation: {
           required,
@@ -132,7 +129,8 @@ export default {
           attrs: {
             placeholder: 'Пароль',
             type: 'password'
-          }
+          },
+          defaultValue: '123456'
         },
         validation: {
           required,
@@ -143,16 +141,18 @@ export default {
   },
   data() {
     return {
-      showLogins: true
+      showLogins: true,
+      imgLogin
     }
   },
 
   methods: {
-    login(event) {
-      this.$store.dispatch('user/login', event).catch(err => {
-        this.$refs.form.clear()
-        this.errorText = err.body.message
-      })
+    async login(event) {
+      const ok = await this.$store.dispatch('user/login', event)
+      if (ok) {
+        console.log('1')
+        this.$router.push('/home')
+      }
     },
     requiredDirty(name) {
       return this.$v.fields[name].$dirty && !this.$v.fields[name].required

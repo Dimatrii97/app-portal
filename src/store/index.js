@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
 import Vue from 'vue'
 import Vuex from 'vuex'
-import tasks from './module/tasks'
+// import tasks from './module/tasks'
 import user from './module/user'
-import users from './module/users'
-import admin from './module/admin'
+// import users from './module/users'
+// import admin from './module/admin'
 import docs from './module/docs'
 import mapList from './module/mapList'
 
@@ -13,6 +13,7 @@ Vue.use(Vuex)
 let news
 export default new Vuex.Store({
   state: {
+    maxWidth: 600,
     navbarSnow: false,
     sizeDesktop: true,
     size: null,
@@ -61,5 +62,5 @@ export default new Vuex.Store({
       }
     }
   },
-  modules: { tasks, user, users, admin, mapList, docs }
+  modules: { user, mapList, docs }
 })

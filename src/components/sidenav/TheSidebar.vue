@@ -26,9 +26,10 @@
 import VSearch from '@/components/fields/FieldSearch.vue'
 import { navlist, phone } from './navigarions'
 export default {
+  name: 'V-Sidebar',
   components: { VSearch },
   props: {
-    size: Number,
+    sizeDesktop: Boolean,
     openSidebar: Boolean,
     taskOverlook: Number,
     messagesOverlook: Number
@@ -41,7 +42,9 @@ export default {
   },
   computed: {
     getnavlist() {
-      return this.size > 600 ? this.navlist : { ...this.navlist, ...this.phone }
+      return this.sizeDesktop
+        ? this.navlist
+        : { ...this.navlist, ...this.phone }
     }
   },
   watch: {

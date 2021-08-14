@@ -59,7 +59,7 @@ export default {
   },
   actions: {
     getUsersDepartment({ state }, data) {
-      this._vm.$socket.client.emit('getUsersDepartment')
+      // this._vm.$socket.client.emit('getUsersDepartment')
     },
     getUserById({ state }, id) {
       this._vm.$socket.client.emit('getUserById', id)

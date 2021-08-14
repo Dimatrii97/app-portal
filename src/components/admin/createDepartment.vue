@@ -52,14 +52,14 @@
         </template>
       </v-input>
       <div class="button-left">
-        <button
+        <V-Btn
           @click.prevent="submit()"
           type="button"
           :disabled="$v.fields.$invalid"
           class="btn btn-primary"
         >
           Создать
-        </button>
+        </V-Btn>
       </div>
     </form>
   </article>

@@ -106,14 +106,14 @@
         </template>
       </my-select>
       <div class="button-left">
-        <button
+        <V-Btn
           @click.prevent="submit()"
           type="button"
           :disabled="$v.fields.$invalid"
           class="btn btn-primary"
         >
           Создать пользователя
-        </button>
+        </V-Btn>
       </div>
     </form>
   </article>
@@ -123,7 +123,7 @@
 import VInput from '../fields/FieldInput.vue'
 import mySelect from '@/components/fields/FieldSelect.vue'
 
-import { mapGetters } from 'vuex'
+// import { mapGetters } from 'vuex'
 import { required, email } from 'vuelidate/lib/validators'
 export default {
   components: {
@@ -147,10 +147,10 @@ export default {
   },
 
   computed: {
-    ...mapGetters('admin', {
-      department: 'getDepartment',
-      position: 'getPosition'
-    }),
+    // ...mapGetters('admin', {
+    //   department: 'getDepartment',
+    //   position: 'getPosition'
+    // }),
     setDepartment: {
       get() {
         return this.department

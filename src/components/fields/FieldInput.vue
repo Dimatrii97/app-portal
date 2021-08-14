@@ -1,9 +1,9 @@
 <template>
   <div>
     <input
+      v-model="setValue"
       :id="$attrs.id"
       :type="$attrs.type || 'text'"
-      v-model="setValue"
       :class="['form__field', { errors: $attrs.error }]"
     />
     <slot name="label"></slot>
@@ -11,6 +11,7 @@
 </template>
 <script>
 export default {
+  name: 'FieldInput',
   inheritAttrs: false,
   props: {
     value: {

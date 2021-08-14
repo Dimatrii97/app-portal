@@ -24,17 +24,14 @@
                 id="search-type-docs"
                 placeholder="Поиск по типу"
               >
-                <template #default="slotProps">
-                  <V-Select-Body v-bind="slotProps" />
-                </template>
                 <template #label>
                   <FormLabel for="search-type-docs" :class="{ empty: !isSort }">
                     Поиск по типу
                   </FormLabel>
                 </template>
 
-                <template #list="slotProps">
-                  <V-Select-List v-bind="slotProps" />
+                <template #list="">
+                  <!-- <V-Select-List v-bind="slotProps" /> -->
                 </template>
               </V-Select>
             </div>
@@ -64,8 +61,7 @@
 import RadioBtn from '@/components/fields/FieldRadio.vue'
 import VSearch from '@/components/fields/FieldSearch.vue'
 import VSelect from '@/components/fields/FieldSelect'
-import VSelectBody from '@/components/fields/select/SelectBody'
-import VSelectList from '@/components/fields/select/SelectList'
+
 import FormLabel from '@/components/fields/FormLabel.vue'
 import ThePagination from '@/components/docs/v-pagination.vue'
 import TheMainTable from '@/components/docs/main-table.vue'
@@ -80,8 +76,7 @@ export default {
     VSearch,
     RadioBtn,
     VSelect,
-    VSelectBody,
-    VSelectList,
+
     FormLabel
   },
 

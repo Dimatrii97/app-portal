@@ -6,3 +6,5 @@ export function datePostgres(date) {
 export function dayMonth(date) {
   return format(date, 'd MMM', { locale: ru })
 }
+
+

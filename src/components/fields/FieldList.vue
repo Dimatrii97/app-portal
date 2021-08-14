@@ -1,12 +1,18 @@
 <template>
-  <div v-click-outside="outside">
-    <div :class="[{ focus: isFocus }, { errors: $attrs.error }, 'multi-field']">
+  <div @blur.capture="handleBlur($event)">
+    <div
+      :class="[
+        { focus: optionsVisible },
+        { errors: $attrs.error },
+        'multi-field'
+      ]"
+    >
       <input
         v-model="textSubtask"
         :placeholder="$attrs.placeholder"
         :id="$attrs.id"
-        @keyup.enter.stop="pushSubtask()"
-        @focus="focus = true"
+        @keyup.enter.prevent="pushSubtask()"
+        @focus="showOptions()"
         class="form__field"
         type="text"
         autocomplete="off"
@@ -14,14 +20,12 @@
       />
 
       <slot name="label"></slot>
-
-      <button
+      <V-Btn
         @click="pushSubtask()"
         class="btn btn-ghost-primary btn-square"
         type="button"
+        >+</V-Btn
       >
-        +
-      </button>
     </div>
 
     <ul v-if="value.length" class="dropdown">
@@ -39,6 +43,7 @@
 <script>
 import FieldListItem from './FieldListItem'
 export default {
+  name: 'FieldList',
   inheritAttrs: false,
   props: {
     value: {
@@ -54,17 +59,27 @@ export default {
   data() {
     return {
       textSubtask: '',
-      focus: false
+      optionsVisible: false
     }
   },
 
   computed: {
     isFocus() {
-      return this.focus || this.textSubtask
+      return this.optionsVisible || this.textSubtask
     }
   },
 
   methods: {
+    handleBlur(e) {
+      if (this.$el.contains(e.relatedTarget)) return
+      this.hideOptions()
+    },
+    hideOptions() {
+      this.optionsVisible = false
+    },
+    showOptions() {
+      this.optionsVisible = true
+    },
     pushSubtask() {
       this.$refs.input.focus()
       if (!(this.textSubtask === '')) {
@@ -83,15 +98,16 @@ export default {
       let newValue = [...this.value]
       newValue.splice(index, 1)
       this.$emit('input', newValue)
-    },
-    outside() {
-      this.focus = false
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.form__group .form__label {
+  font-size: 1rem;
+  top: 0px;
+}
 .dropdown {
   z-index: 9;
   max-height: 90px;
